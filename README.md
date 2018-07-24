@@ -3,6 +3,8 @@
 [![GoDoc](https://godoc.org/github.com/astroflow/astro-go?status.svg)](https://godoc.org/github.com/astroflow/astro-go)
 [![GitHub release](https://img.shields.io/github/release/astroflow/astro-go.svg)](https://github.com/astroflow/astro-go/releases)
 
+![Console logging](_docs/example_screenshot.png)
+
 ```go
 package main
 
@@ -44,8 +46,6 @@ func main() {
 	subLogger.Error("error from sublogger")
 }
 ```
-
-![Console logging](_docs/example_screenshot.png)
 
 ## Log
 ```go
