@@ -12,7 +12,6 @@ import (
 
 func main() {
 
-    //
     // log.Init(
     //     astro.SetWriter(os.Stderr),
     // )
