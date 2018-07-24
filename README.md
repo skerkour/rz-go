@@ -1,6 +1,7 @@
 ## Astro
 
 [![GoDoc](https://godoc.org/github.com/astroflow/astro-go?status.svg)](https://godoc.org/github.com/astroflow/astro-go)
+[![GitHub release](https://img.shields.io/github/release/astroflow/astro-go.svg)](https://github.com/astroflow/astro-go/releases)
 
 ```go
 
