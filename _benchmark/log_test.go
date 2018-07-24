@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/astroflow/astro-go"
 	"github.com/sirupsen/logrus"
-	"gitlab.com/astroflow/astro-go"
 )
 
 func newDisabledLogrus() *logrus.Logger {

@@ -31,7 +31,9 @@ func getTIme() time.Time {
 	return time.Now().UTC()
 }
 
-func NewLogger(options ...func(*Logger) error) Logger {
+type LoggerOption func(logger *Logger) error
+
+func NewLogger(options ...LoggerOption) Logger {
 	logger := Logger{
 		hooks:                make([]Hook, 0),
 		fields:               make([]interface{}, 0),
@@ -49,7 +51,7 @@ func NewLogger(options ...func(*Logger) error) Logger {
 	return logger
 }
 
-func (logger *Logger) Config(options ...func(*Logger) error) error {
+func (logger *Logger) Config(options ...LoggerOption) error {
 	var err error
 
 	for _, option := range options {
@@ -60,16 +62,6 @@ func (logger *Logger) Config(options ...func(*Logger) error) error {
 	}
 
 	return nil
-}
-
-func (logger *Logger) With(fields ...interface{}) Logger {
-	newLogger := *logger
-
-	if len(fields) != 0 {
-		newLogger.fields = append(logger.fields, fields...)
-	}
-
-	return newLogger
 }
 
 func (logger *Logger) log(level Level, message string) {
@@ -114,6 +106,16 @@ func (logger *Logger) log(level Level, message string) {
 	}
 	bytes := logger.formatter.Format(data)
 	logger.writer.Write(bytes)
+}
+
+func (logger *Logger) With(fields ...interface{}) Logger {
+	newLogger := *logger
+
+	if len(fields) != 0 {
+		newLogger.fields = append(logger.fields, fields...)
+	}
+
+	return newLogger
 }
 
 func (logger Logger) Debug(message string) {

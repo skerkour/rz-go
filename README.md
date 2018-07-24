@@ -41,3 +41,19 @@ SetLevelFieldName(fieldName string) // default to astro.LevelFieldName ("level")
 SetTimestampFunc(fn func() time.Time) // default to time.Now().UTC
 AddHook(hook astro.Hook)
 ```
+
+## Log
+```go
+import (
+    "github.com/astroflow/astro-go/log"
+)
+
+log.Init(options ...astro.LoggerOption) error
+log.Config(options ...astro.LoggerOption) error
+log.With(fields ...interface{}) astro.Logger
+log.Debug(message string)
+log.Info(message string)
+log.Warn(message string)
+log.Error(message string)
+log.Fatal(message string) // log with the "fatal" level then os.Exit(1)
+```

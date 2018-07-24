@@ -1,8 +1,8 @@
 package main
 
 import (
-	"gitlab.com/astroflow/astro-go"
-	"gitlab.com/astroflow/astro-go/log"
+	"github.com/astroflow/astro-go"
+	"github.com/astroflow/astro-go/log"
 )
 
 func main() {
