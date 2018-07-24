@@ -19,7 +19,16 @@ func SetFormatter(formatter Formatter) LoggerOption {
 	}
 }
 
-func AddWith(fields ...interface{}) LoggerOption {
+// SetFields replace the logger's internal fields with the provided fields
+func SetFields(fields ...interface{}) LoggerOption {
+	return func(logger *Logger) error {
+		logger.fields = fields
+		return nil
+	}
+}
+
+// AddFields add the provided fields to the logger's internal fields
+func AddFields(fields ...interface{}) LoggerOption {
 	return func(logger *Logger) error {
 		logger.fields = append(logger.fields, fields...)
 		return nil

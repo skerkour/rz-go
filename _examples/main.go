@@ -14,7 +14,7 @@ func main() {
 
 	log.Init(
 		//   astro.SetWriter(os.Stderr),
-		astro.AddWith(
+		astro.AddFields(
 			"service", "api",
 			"host", hostname,
 			"environment", env,

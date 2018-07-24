@@ -22,7 +22,7 @@ func main() {
 
 	log.Init(
 		//   astro.SetWriter(os.Stderr),
-		astro.AddWith(
+		astro.AddFields(
 			"service", "api",
 			"host", hostname,
 			"environment", env,
@@ -68,7 +68,8 @@ log.Fatal(message string) // log with the "fatal" level then os.Exit(1)
 ```go
 SetWriter(writer io.Writer) // default to os.Stdout
 SetFormatter(formatter astro.Formatter) // default to astro.JSONFormatter
-SetWith(fields ...interface{})
+SetFields(fields ...interface{})
+AddFields(fields ...interface{})
 SetInsertTimestampField(insert bool) // default to true
 SetLevel(level Level) // default to astro.DebugLevel
 SetTimestampFieldName(fieldName string) // default to astro.TimestampFieldName ("timestamp")
