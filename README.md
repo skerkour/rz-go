@@ -17,7 +17,7 @@ func main() {
     //     astro.SetWriter(os.Stderr),
     // )
 
-    if os.Getenv("GO_ENV") == "pduction" {
+    if os.Getenv("GO_ENV") == "production" {
         log.Config(
             astro.SetFormatter(astro.JSONFormatter{}),
             astro.SetLevel(astro.InfoLevel),
