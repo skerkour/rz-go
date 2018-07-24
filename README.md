@@ -1,5 +1,7 @@
 ## Astro
 
+[![GoDoc](https://godoc.org/github.com/astroflow/astro-go?status.svg)](https://godoc.org/github.com/astroflow/astro-go)
+
 ```go
 
 import (
