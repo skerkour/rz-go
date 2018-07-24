@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/astroflow/astro-go"
+	"github.com/astroflow/astroflow-go"
 	"github.com/sirupsen/logrus"
 )
 
@@ -25,9 +25,9 @@ func newLogrus() *logrus.Logger {
 	}
 }
 
-func newAstro() astro.Logger {
-	logger := astro.NewLogger(
-		astro.SetWriter(ioutil.Discard),
+func newAstro() astroflow.Logger {
+	logger := astroflow.NewLogger(
+		astroflow.SetWriter(ioutil.Discard),
 	)
 	return logger
 }

@@ -1,4 +1,4 @@
-package astro
+package astroflow
 
 import (
 	"github.com/json-iterator/go"

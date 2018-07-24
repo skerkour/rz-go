@@ -1,7 +1,7 @@
 ## Astro
 
-[![GoDoc](https://godoc.org/github.com/astroflow/astro-go?status.svg)](https://godoc.org/github.com/astroflow/astro-go)
-[![GitHub release](https://img.shields.io/github/release/astroflow/astro-go.svg)](https://github.com/astroflow/astro-go/releases)
+[![GoDoc](https://godoc.org/github.com/astroflow/astroflow-go?status.svg)](https://godoc.org/github.com/astroflow/astroflow-go)
+[![GitHub release](https://img.shields.io/github/release/astroflow/astroflow-go.svg)](https://github.com/astroflow/astroflow-go/releases)
 
 ![Console logging](_docs/example_screenshot.png)
 
@@ -50,7 +50,7 @@ func main() {
 ## Log
 ```go
 import (
-    "github.com/astroflow/astro-go/log"
+    "github.com/astroflow/astroflow-go/log"
 )
 
 log.Init(options ...astro.LoggerOption) error

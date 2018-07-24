@@ -1,20 +1,20 @@
 package log
 
 import (
-	"github.com/astroflow/astro-go"
+	"github.com/astroflow/astroflow-go"
 )
 
-var logger = astro.NewLogger()
+var logger = astroflow.NewLogger()
 
-func Init(options ...astro.LoggerOption) error {
+func Init(options ...astroflow.LoggerOption) error {
 	return logger.Config(options...)
 }
 
-func Config(options ...astro.LoggerOption) error {
+func Config(options ...astroflow.LoggerOption) error {
 	return logger.Config(options...)
 }
 
-func With(fields ...interface{}) astro.Logger {
+func With(fields ...interface{}) astroflow.Logger {
 	return logger.With(fields...)
 }
 

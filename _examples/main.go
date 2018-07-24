@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/astroflow/astro-go"
-	"github.com/astroflow/astro-go/log"
+	"github.com/astroflow/astroflow-go"
+	"github.com/astroflow/astroflow-go/log"
 )
 
 func main() {
@@ -13,19 +13,19 @@ func main() {
 	hostname, _ := os.Hostname()
 
 	log.Init(
-		//   astro.SetWriter(os.Stderr),
-		astro.AddFields(
+		//   astroflow.SetWriter(os.Stderr),
+		astroflow.AddFields(
 			"service", "api",
 			"host", hostname,
 			"environment", env,
 		),
-		astro.SetFormatter(astro.NewConsoleFormatter()),
+		astroflow.SetFormatter(astroflow.NewConsoleFormatter()),
 	)
 
 	if env == "production" {
 		log.Config(
-			astro.SetFormatter(astro.JSONFormatter{}),
-			astro.SetLevel(astro.InfoLevel),
+			astroflow.SetFormatter(astroflow.JSONFormatter{}),
+			astroflow.SetLevel(astroflow.InfoLevel),
 		)
 	}
 
