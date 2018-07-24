@@ -1,26 +1,39 @@
 package main
 
 import (
+	"os"
+
 	"github.com/astroflow/astro-go"
 	"github.com/astroflow/astro-go/log"
 )
 
 func main() {
+
+	env := os.Getenv("GO_ENV")
+	hostname, _ := os.Hostname()
+
 	log.Init(
+		//   astro.SetWriter(os.Stderr),
+		astro.AddWith(
+			"service", "api",
+			"host", hostname,
+			"environment", env,
+		),
 		astro.SetFormatter(astro.NewConsoleFormatter()),
-		astro.SetLevel(astro.InfoLevel),
 	)
-	sublogger := log.With("4343", "4343")
 
-	sublogger.Info("lol")
-	sublogger.Debug("lol")
-	log.Warn("lol2")
+	if env == "production" {
+		log.Config(
+			astro.SetFormatter(astro.JSONFormatter{}),
+			astro.SetLevel(astro.InfoLevel),
+		)
+	}
 
-	/*
-		for i := 0; i < 10000; i++ {
-			go func() {
-				log.With("user", struct{ Name string }{}, "n", " \\ \"ee").Info("lol\"\\dede")
-			}()
-		}
-	*/
+	subLogger := log.With("contextual_field", 42)
+
+	log.Info("info from logger")
+	log.With("field1", "hello world", "field2", 999.99).Info("info from logger with fields")
+	subLogger.Debug("debug from sublogger")
+	subLogger.Warn("warning from sublogger")
+	subLogger.Error("error from sublogger")
 }

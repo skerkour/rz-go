@@ -87,7 +87,9 @@ func (formatter ConsoleFormatter) Format(event Event) []byte {
 
 		switch value := event[field].(type) {
 		case string:
-			if needsQuote(value) {
+			if len(value) == 0 {
+				ret.WriteString("\"\"")
+			} else if needsQuote(value) {
 				ret.WriteString(strconv.Quote(value))
 			} else {
 				ret.WriteString(value)

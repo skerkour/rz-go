@@ -4,31 +4,48 @@
 [![GitHub release](https://img.shields.io/github/release/astroflow/astro-go.svg)](https://github.com/astroflow/astro-go/releases)
 
 ```go
+package main
 
 import (
-    "os"
+	"os"
 
-    "github.com/astroflow/astro-go"
-    "github.com/astroflow/astro-go/log"
+	"github.com/astroflow/astro-go"
+	"github.com/astroflow/astro-go/log"
 )
-
 
 func main() {
 
-    // log.Init(
-    //     astro.SetWriter(os.Stderr),
-    // )
+	env := os.Getenv("GO_ENV")
+	hostname, _ := os.Hostname()
 
-    if os.Getenv("GO_ENV") == "production" {
-        log.Config(
-            astro.SetFormatter(astro.JSONFormatter{}),
-            astro.SetLevel(astro.InfoLevel),
-        )
-    }
+	log.Init(
+		//   astro.SetWriter(os.Stderr),
+		astro.AddWith(
+			"service", "api",
+			"host", hostname,
+			"environment", env,
+		),
+		astro.SetFormatter(astro.NewConsoleFormatter()),
+	)
 
+	if env == "production" {
+		log.Config(
+			astro.SetFormatter(astro.JSONFormatter{}),
+			astro.SetLevel(astro.InfoLevel),
+		)
+	}
+
+	subLogger := log.With("contextual_field", 42)
+
+	log.Info("info from logger")
+	log.With("field1", "hello world", "field2", 999.99).Info("info from logger with fields")
+	subLogger.Debug("debug from sublogger")
+	subLogger.Warn("warning from sublogger")
+	subLogger.Error("error from sublogger")
 }
-
 ```
+
+![Console logging](_docs/example_screenshot.png)
 
 ## Log
 ```go
@@ -50,7 +67,7 @@ log.Fatal(message string) // log with the "fatal" level then os.Exit(1)
 
 ```go
 SetWriter(writer io.Writer) // default to os.Stdout
-SetFormatter(formatter astro.Formatter) // default to astro.ConsoleFormatter
+SetFormatter(formatter astro.Formatter) // default to astro.JSONFormatter
 SetWith(fields ...interface{})
 SetInsertTimestampField(insert bool) // default to true
 SetLevel(level Level) // default to astro.DebugLevel

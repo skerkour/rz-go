@@ -19,9 +19,9 @@ func SetFormatter(formatter Formatter) LoggerOption {
 	}
 }
 
-func SetWith(fields ...interface{}) LoggerOption {
+func AddWith(fields ...interface{}) LoggerOption {
 	return func(logger *Logger) error {
-		logger.fields = fields
+		logger.fields = append(logger.fields, fields...)
 		return nil
 	}
 }
