@@ -53,8 +53,6 @@ import (
     "github.com/astroflow/astroflow-go/log"
 )
 
-log.Logger() // return a copy of the global logger
-
 log.Init(options ...astro.LoggerOption) error
 log.Config(options ...astro.LoggerOption) error
 log.With(fields ...interface{}) astro.Logger
@@ -81,7 +79,7 @@ AddHook(hook astro.Hook)
 ```
 
 ## HTTPHandler
-Astroflow provide an http handler helper to log http requests
+Astroflow provides an http handler helper to log http requests
 ```go
 package main
 
@@ -102,7 +100,6 @@ func main() {
 	}
 
 	log.Init(
-		//   astroflow.SetWriter(os.Stderr),
 		astroflow.AddFields(
 			"service", "api",
 			"host", "abcd",
@@ -114,7 +111,7 @@ func main() {
 
 	http.HandleFunc("/", HelloWorld)
 
-	middleware := astroflow.HTTPHandler(log.Logger())
+	middleware := astroflow.HTTPHandler(log.With())
 	err := http.ListenAndServe(":"+port, middleware(http.DefaultServeMux))
 	if err != nil {
 		log.Fatal(err.Error())

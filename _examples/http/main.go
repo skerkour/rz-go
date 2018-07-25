@@ -17,7 +17,6 @@ func main() {
 	}
 
 	log.Init(
-		//   astroflow.SetWriter(os.Stderr),
 		astroflow.AddFields(
 			"service", "api",
 			"host", "abcd",
@@ -29,7 +28,7 @@ func main() {
 
 	http.HandleFunc("/", HelloWorld)
 
-	middleware := astroflow.HTTPHandler(log.Logger())
+	middleware := astroflow.HTTPHandler(log.With())
 	err := http.ListenAndServe(":"+port, middleware(http.DefaultServeMux))
 	if err != nil {
 		log.Fatal(err.Error())
