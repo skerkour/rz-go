@@ -111,9 +111,7 @@ func (logger *Logger) log(level Level, message string) {
 func (logger *Logger) With(fields ...interface{}) Logger {
 	newLogger := *logger
 
-	if len(fields) != 0 {
-		newLogger.fields = append(logger.fields, fields...)
-	}
+	newLogger.fields = append(logger.fields, fields...)
 
 	return newLogger
 }
