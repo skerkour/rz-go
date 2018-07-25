@@ -77,3 +77,9 @@ SetLevelFieldName(fieldName string) // default to astro.LevelFieldName ("level")
 SetTimestampFunc(fn func() time.Time) // default to time.Now().UTC
 AddHook(hook astro.Hook)
 ```
+
+## Roadmap
+
+- [ ] SetAsync logger option
+- [ ] sampling
+- [ ] a zero alloc json logger (so without formatter)
