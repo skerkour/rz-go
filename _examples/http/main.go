@@ -22,7 +22,6 @@ func main() {
 			"host", "abcd",
 			"environment", env,
 		),
-		astroflow.SetFormatter(astroflow.NewConsoleFormatter()),
 		astroflow.SetFormatter(astroflow.JSONFormatter{}),
 	)
 
