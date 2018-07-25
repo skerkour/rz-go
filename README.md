@@ -1,5 +1,7 @@
 ## Astroflow
 
+[Make logging great again](https://kerkour.com/post/logging/)
+
 [![GoDoc](https://godoc.org/github.com/astroflow/astroflow-go?status.svg)](https://godoc.org/github.com/astroflow/astroflow-go)
 [![GitHub release](https://img.shields.io/github/release/astroflow/astroflow-go.svg)](https://github.com/astroflow/astroflow-go/releases)
 
