@@ -6,6 +6,10 @@ import (
 
 var logger = astroflow.NewLogger()
 
+func Logger() astroflow.Logger {
+	return logger
+}
+
 func Init(options ...astroflow.LoggerOption) error {
 	return logger.Config(options...)
 }
