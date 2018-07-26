@@ -11,7 +11,7 @@ usage:
 		formatter = astro.JSONFormatter
 	}
 
-	log.Init( // or log.Config
+	log.Config( // or log.Config
 		astro.Token(...),
 		astro.With({"app" "api"}, {"host": host}),
 		astro.DisplayLogLevel(level),

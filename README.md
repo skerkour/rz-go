@@ -34,7 +34,7 @@ func main() {
 	env := os.Getenv("GO_ENV")
 	hostname, _ := os.Hostname()
 
-	log.Init(
+	log.Config(
 		//   astroflow.SetWriter(os.Stderr),
 		astroflow.AddFields(
 			"service", "api",
@@ -82,7 +82,6 @@ import (
     "github.com/astroflow/astroflow-go/log"
 )
 
-log.Init(options ...astro.LoggerOption) error
 log.Config(options ...astro.LoggerOption) error
 log.With(fields ...interface{}) astro.Logger
 log.Debug(message string)
@@ -129,7 +128,7 @@ func main() {
 		port = "9090"
 	}
 
-	log.Init(
+	log.Config(
 		astroflow.AddFields(
 			"service", "api",
 			"host", "abcd",
