@@ -65,14 +65,14 @@ func main() {
 
 ```
 pkg: github.com/astroflow/astroflow-go/_benchmark
-BenchmarkWithoutFields/sirupsen/logrus-4         	  500000	      3161 ns/op	    1473 B/op	      24 allocs/op
-BenchmarkWithoutFields/astroflow/astro-go-4      	 1000000	      1539 ns/op	     840 B/op	      10 allocs/op
-Benchmark10FieldsContext/sirupsen/logrus-4       	  100000	     13213 ns/op	    5680 B/op	      54 allocs/op
-Benchmark10FieldsContext/astroflow/astro-go-4    	  200000	      6508 ns/op	    3728 B/op	      13 allocs/op
-Benchmark10Fields/sirupsen/logrus-4              	  100000	     14206 ns/op	    6393 B/op	      57 allocs/op
-Benchmark10Fields/astroflow/astro-go-4           	  200000	      6785 ns/op	    4048 B/op	      14 allocs/op
+BenchmarkWithoutFields/sirupsen/logrus-4         	  500000	      3077 ns/op	    1473 B/op	      24 allocs/op
+BenchmarkWithoutFields/astroflow/astroflow-go-4  	 1000000	      1482 ns/op	     840 B/op	      10 allocs/op
+Benchmark10FieldsContext/sirupsen/logrus-4       	  100000	     12917 ns/op	    5680 B/op	      54 allocs/op
+Benchmark10FieldsContext/astroflow/astroflow-go-4         	  200000	      6250 ns/op	    3728 B/op	      13 allocs/op
+Benchmark10Fields/sirupsen/logrus-4                       	  100000	     13891 ns/op	    6393 B/op	      57 allocs/op
+Benchmark10Fields/astroflow/astroflow-go-4                	  200000	      6446 ns/op	    4049 B/op	      14 allocs/op
 PASS
-ok  	github.com/astroflow/astroflow-go/_benchmark	9.017s
+ok  	github.com/astroflow/astroflow-go/_benchmark	8.724s
 ```
 
 ## Log usage
