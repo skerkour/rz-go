@@ -12,7 +12,7 @@ func main() {
 	env := os.Getenv("GO_ENV")
 	hostname, _ := os.Hostname()
 
-	log.Init(
+	log.Config(
 		//   astroflow.SetWriter(os.Stderr),
 		astroflow.AddFields(
 			"service", "api",

@@ -42,7 +42,7 @@ func (formatter LogfmtFormatter) Format(event Event) []byte {
 			if err != nil {
 				fmt.Fprintf(ret, "[error: %v]", err)
 			} else {
-				fmt.Fprint(ret, string(b))
+				fmt.Fprint(ret, strconv.Quote(string(b)))
 			}
 		}
 

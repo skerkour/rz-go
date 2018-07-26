@@ -16,7 +16,7 @@ func main() {
 		port = "9090"
 	}
 
-	log.Init(
+	log.Config(
 		astroflow.AddFields(
 			"service", "api",
 			"host", "abcd",
