@@ -108,10 +108,8 @@ func (logger *Logger) log(level Level, message string) {
 	logger.writer.Write(bytes)
 }
 
-func (logger *Logger) With(fields ...interface{}) Logger {
-	newLogger := *logger
-
-	newLogger.fields = append(logger.fields, fields...)
+func (newLogger Logger) With(fields ...interface{}) Logger {
+	newLogger.fields = append(newLogger.fields, fields...)
 
 	return newLogger
 }
