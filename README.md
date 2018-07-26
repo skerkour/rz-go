@@ -7,6 +7,18 @@
 
 ![Console logging](_docs/example_screenshot.png)
 
+
+1. [Quickstart](#quickstart)
+2. [Benchmark](#benchmark)
+3. [Log usage](#log-usage)
+4. [Configuration](#configuration)
+5. [HTTPHandler](#httphandler)
+6. [Roadmap](#roadmap)
+
+-------------------
+
+## Quickstart
+
 ```go
 package main
 
@@ -49,7 +61,22 @@ func main() {
 }
 ```
 
-## Log
+## Benchmark
+
+```
+pkg: github.com/astroflow/astroflow-go/_benchmark
+BenchmarkWithoutFields/sirupsen/logrus-4         	  500000	      3161 ns/op	    1473 B/op	      24 allocs/op
+BenchmarkWithoutFields/astroflow/astro-go-4      	 1000000	      1539 ns/op	     840 B/op	      10 allocs/op
+Benchmark10FieldsContext/sirupsen/logrus-4       	  100000	     13213 ns/op	    5680 B/op	      54 allocs/op
+Benchmark10FieldsContext/astroflow/astro-go-4    	  200000	      6508 ns/op	    3728 B/op	      13 allocs/op
+Benchmark10Fields/sirupsen/logrus-4              	  100000	     14206 ns/op	    6393 B/op	      57 allocs/op
+Benchmark10Fields/astroflow/astro-go-4           	  200000	      6785 ns/op	    4048 B/op	      14 allocs/op
+PASS
+ok  	github.com/astroflow/astroflow-go/_benchmark	9.017s
+```
+
+## Log usage
+
 ```go
 import (
     "github.com/astroflow/astroflow-go/log"
@@ -81,6 +108,7 @@ AddHook(hook astro.Hook)
 ```
 
 ## HTTPHandler
+
 Astroflow provides an http handler helper to log http requests
 ```go
 package main
