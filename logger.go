@@ -37,7 +37,7 @@ func NewLogger(options ...LoggerOption) Logger {
 	logger := Logger{
 		hooks:                make([]Hook, 0),
 		fields:               make([]interface{}, 0),
-		writer:               os.Stdout,
+		writer:               StdoutWriter{},
 		insertTimestampField: true,
 		timestampFieldName:   TimestampFieldName,
 		timestampFunc:        getTIme,

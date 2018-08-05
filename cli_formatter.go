@@ -86,7 +86,6 @@ func (formatter CLIFormatter) Format(event Event) []byte {
 		}
 
 	}
-	ret.WriteByte('\n')
 
 	return ret.Bytes()
 }

@@ -11,5 +11,5 @@ func (formatter JSONFormatter) Format(entry Event) []byte {
 	if err != nil {
 		return nil
 	}
-	return append(serialized, '\n')
+	return serialized
 }

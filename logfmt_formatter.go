@@ -47,7 +47,6 @@ func (formatter LogfmtFormatter) Format(event Event) []byte {
 		}
 
 	}
-	ret.WriteByte('\n')
 
 	return ret.Bytes()
 }
