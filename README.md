@@ -89,6 +89,8 @@ log.Info(message string)
 log.Warn(message string)
 log.Error(message string)
 log.Fatal(message string) // log with the "fatal" level then os.Exit(1)
+log.Msg(message string) // log an event without level
+log.Track(fields ...interface{}) // log an event without level nor message
 ```
 
 ## Configuration
