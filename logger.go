@@ -88,6 +88,7 @@ func (logger *Logger) log(level Level, message string) {
 		data[logger.messageFieldName] = message
 	}
 
+	// default case: do not insert level field
 	switch level {
 	case DebugLevel:
 		data[logger.levelFieldName] = "debug"
@@ -133,4 +134,13 @@ func (logger Logger) Error(message string) {
 func (logger Logger) Fatal(message string) {
 	logger.log(FatalLevel, message)
 	os.Exit(1)
+}
+
+func (logger Logger) Msg(message string) {
+	logger.log(NoneLevel, message)
+}
+
+func (logger Logger) Track(fields ...interface{}) {
+	newLogger := logger.With(fields...)
+	newLogger.log(NoneLevel, "")
 }

@@ -8,5 +8,6 @@ const (
 	WarnLevel
 	ErrorLevel
 	FatalLevel
+	NoneLevel
 	NoopLevel
 )
