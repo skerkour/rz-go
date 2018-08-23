@@ -1,0 +1,26 @@
+# This is a weird way of telling Travis to use the fast container-based test
+# runner instead of the slow VM-based runner.
+sudo: false
+
+language: go
+
+go:
+  - 1.10.3
+
+git:
+  depth: false
+  submodules: false
+
+before_script:
+  - go vet $(go list ./... | grep -v /vendor/)
+  - go test -v -race ./...
+
+script:
+  - go build
+
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  on:
+    repo: astroflow/astroflow-go
+    tags: true # The deployment happens only if the commit has a tag
