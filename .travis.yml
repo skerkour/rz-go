@@ -4,24 +4,19 @@ sudo: false
 
 language: go
 
+env:
+  - GO111MODULE=on
+
 go:
-  - 1.10.3
+  - 1.11
 
 git:
   depth: false
   submodules: false
 
 before_script:
-  - go get -u github.com/golang/dep/cmd/dep
-  - dep ensure
+  - go get
   - make test
 
 script:
   - make build
-
-deploy:
-  provider: releases
-  api_key: $GITHUB_TOKEN
-  on:
-    repo: astroflow/astroflow-go
-    tags: true # The deployment happens only if the commit has a tag
