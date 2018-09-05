@@ -34,11 +34,6 @@ func Fatal(message string) {
 	logger.Fatal(message)
 }
 
-// Msg log an event without level
-func Msg(message string) {
-	logger.Msg(message)
-}
-
 // Track log an event without message nor level
 func Track(fields ...interface{}) {
 	logger.Track(fields...)

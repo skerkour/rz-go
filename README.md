@@ -83,14 +83,13 @@ import (
     "github.com/astroflow/astroflow-go/log"
 )
 
-log.Config(options ...astro.LoggerOption) error
+log.Config(options ...astroflow.LoggerOption) error
 log.With(fields ...interface{}) astro.Logger
 log.Debug(message string)
 log.Info(message string)
 log.Warn(message string)
 log.Error(message string)
 log.Fatal(message string) // log with the "fatal" level then os.Exit(1)
-log.Msg(message string) // log an event without level
 log.Track(fields ...interface{}) // log an event without level nor message
 ```
 
@@ -98,7 +97,7 @@ log.Track(fields ...interface{}) // log an event without level nor message
 
 ```go
 SetWriter(writer io.Writer) // default to os.Stdout
-SetFormatter(formatter astro.Formatter) // default to astro.JSONFormatter
+SetFormatter(formatter astroflow.Formatter) // default to astro.JSONFormatter
 SetFields(fields ...interface{})
 AddFields(fields ...interface{})
 SetInsertTimestampField(insert bool) // default to true

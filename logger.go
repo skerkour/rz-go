@@ -136,10 +136,6 @@ func (logger Logger) Fatal(message string) {
 	os.Exit(1)
 }
 
-func (logger Logger) Msg(message string) {
-	logger.log(NoneLevel, message)
-}
-
 func (logger Logger) Track(fields ...interface{}) {
 	newLogger := logger.With(fields...)
 	newLogger.log(NoneLevel, "")
