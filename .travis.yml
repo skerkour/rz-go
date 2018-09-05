@@ -15,16 +15,20 @@ git:
   submodules: false
 
 before_script:
+  - go get -u github.com/astrocorp42/rocket
   - go get
   - make test
 
 script:
   - make build
 
-# do not deploy any binary, but create a github release
 deploy:
-  provider: releases
-  api_key: $GITHUB_TOKEN
+  provider: script
+  skip_cleanup: true # Important, otherwise the build output would be purged.
+  script: rocket # use rocket to deploy
   on:
-    repo: astroflow/astroflow-go
     tags: true # The deployment happens only if the commit has a tag
+
+notifications:
+  email:
+    on_success: never
