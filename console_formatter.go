@@ -62,11 +62,18 @@ func (formatter ConsoleFormatter) Format(event Event) []byte {
 		timestamp = t.Format(time.RFC3339)
 	}
 
-	ret.WriteString(fmt.Sprintf("%-20s |%-4s| %-42s ",
-		timestamp,
-		colorize(level, lvlColor, !formatter.NoColor),
-		message,
-	))
+	if message != "" {
+		ret.WriteString(fmt.Sprintf("%-20s |%-4s| %-42s ",
+			timestamp,
+			colorize(level, lvlColor, !formatter.NoColor),
+			message,
+		))
+	} else {
+		ret.WriteString(fmt.Sprintf("%-20s |%-4s| ",
+			timestamp,
+			colorize(level, lvlColor, !formatter.NoColor),
+		))
+	}
 
 	fields := make([]string, 0, len(event))
 	for field := range event {
