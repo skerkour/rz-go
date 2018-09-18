@@ -85,11 +85,14 @@ import (
 
 log.Config(options ...astroflow.LoggerOption) error
 log.With(fields ...interface{}) astro.Logger
+
+// each of the following have it's XXXf companion (e.g. log.Debugf("%s" ,err) ...)
 log.Debug(message string)
 log.Info(message string)
 log.Warn(message string)
 log.Error(message string)
 log.Fatal(message string) // log with the "fatal" level then os.Exit(1)
+
 log.Track(fields ...interface{}) // log an event without level nor message
 ```
 
