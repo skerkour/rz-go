@@ -1,6 +1,6 @@
 .PHONY: all test release build benchmark
 
-VERSION := $(shell cat version.go| grep "\sVersion" | cut -d '"' -f2)
+VERSION := $(shell cat version.go| grep "\sVersion =" | cut -d '"' -f2)
 
 all: test build
 
