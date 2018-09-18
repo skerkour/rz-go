@@ -69,7 +69,7 @@ func (formatter ConsoleFormatter) Format(event Event) []byte {
 			message,
 		))
 	} else {
-		ret.WriteString(fmt.Sprintf("%-20s |%-4s| ",
+		ret.WriteString(fmt.Sprintf("%-20s |%-4s|",
 			timestamp,
 			colorize(level, lvlColor, !formatter.NoColor),
 		))
