@@ -1,4 +1,4 @@
-module github.com/astroflow/astroflow-go
+module github.com/astrocorp42/astroflow-go
 
 require (
 	github.com/json-iterator/go v1.1.5

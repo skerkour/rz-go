@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/astroflow/astroflow-go"
+	"github.com/astrocorp42/astroflow-go"
 	"github.com/sirupsen/logrus"
 )
 
