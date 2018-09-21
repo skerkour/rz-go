@@ -2,5 +2,5 @@ package astroflow
 
 const (
 	// Version is the astroflow's library version
-	Version = "0.9.0"
+	Version = "0.9.1"
 )
