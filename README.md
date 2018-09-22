@@ -3,8 +3,8 @@
 [Make logging great again](https://kerkour.com/post/logging/)
 
 [![GoDoc](https://godoc.org/github.com/astrocorp42/astroflow-go?status.svg)](https://godoc.org/github.com/astrocorp42/astroflow-go)
-[![Build Status](https://travis-ci.org/astroflow/astroflow-go.svg?branch=master)](https://travis-ci.org/astroflow/astroflow-go)
-[![GitHub release](https://img.shields.io/github/release/astroflow/astroflow-go.svg)](https://github.com/astrocorp42/astroflow-go/releases)
+[![Build Status](https://travis-ci.org/astrocorp42/astroflow-go.svg?branch=master)](https://travis-ci.org/astrocorp42/astroflow-go)
+[![GitHub release](https://img.shields.io/github/release/astrocorp42/astroflow-go.svg)](https://github.com/astrocorp42/astroflow-go/releases)
 
 ![Console logging](_docs/example_screenshot.png)
 
@@ -67,11 +67,11 @@ func main() {
 ```
 pkg: github.com/astrocorp42/astroflow-go/_benchmark
 BenchmarkWithoutFields/sirupsen/logrus-4         	  500000	      3104 ns/op	    1473 B/op	      24 allocs/op
-BenchmarkWithoutFields/astroflow/astroflow-go-4  	 1000000	      1454 ns/op	     664 B/op	       9 allocs/op
+BenchmarkWithoutFields/astrocorp42/astroflow-go-4  	 1000000	      1454 ns/op	     664 B/op	       9 allocs/op
 Benchmark10FieldsContext/sirupsen/logrus-4       	  100000	     12996 ns/op	    5680 B/op	      54 allocs/op
-Benchmark10FieldsContext/astroflow/astroflow-go-4         	  300000	      5779 ns/op	    1934 B/op	      12 allocs/op
+Benchmark10FieldsContext/astrocorp42/astroflow-go-4         	  300000	      5779 ns/op	    1934 B/op	      12 allocs/op
 Benchmark10Fields/sirupsen/logrus-4                       	  100000	     14016 ns/op	    6393 B/op	      57 allocs/op
-Benchmark10Fields/astroflow/astroflow-go-4                	  200000	      6038 ns/op	    2254 B/op	      13 allocs/op
+Benchmark10Fields/astrocorp42/astroflow-go-4                	  200000	      6038 ns/op	    2254 B/op	      13 allocs/op
 PASS
 ok  	github.com/astrocorp42/astroflow-go/_benchmark	9.120s
 ```
