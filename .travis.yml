@@ -15,7 +15,7 @@ git:
   submodules: false
 
 before_script:
-  - go get -u github.com/astrocorp42/rocket
+  - go get -u github.com/bloom42/rocket
   - go get
   - make test
 

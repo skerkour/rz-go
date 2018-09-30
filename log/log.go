@@ -1,7 +1,7 @@
 package log
 
 import (
-	"github.com/astrocorp42/astroflow-go"
+	"github.com/bloom42/astroflow-go"
 )
 
 var logger = astroflow.NewLogger()

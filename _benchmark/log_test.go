@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/astrocorp42/astroflow-go"
+	"github.com/bloom42/astroflow-go"
 	"github.com/sirupsen/logrus"
 )
 
@@ -95,7 +95,7 @@ func BenchmarkWithoutFields(b *testing.B) {
 			}
 		})
 	})
-	b.Run("astrocorp42/astroflow-go", func(b *testing.B) {
+	b.Run("bloom42/astroflow-go", func(b *testing.B) {
 		logger := newAstro()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
@@ -118,7 +118,7 @@ func Benchmark10FieldsContext(b *testing.B) {
 			}
 		})
 	})
-	b.Run("astrocorp42/astroflow-go", func(b *testing.B) {
+	b.Run("bloom42/astroflow-go", func(b *testing.B) {
 		logger := newAstro()
 		fields := fakeAstroFields()
 		l := logger.With(fields...)
@@ -142,7 +142,7 @@ func Benchmark10Fields(b *testing.B) {
 			}
 		})
 	})
-	b.Run("astrocorp42/astroflow-go", func(b *testing.B) {
+	b.Run("bloom42/astroflow-go", func(b *testing.B) {
 		logger := newAstro()
 		fields := fakeAstroFields()
 		b.ResetTimer()

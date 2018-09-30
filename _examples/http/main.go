@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/astrocorp42/astroflow-go"
-	"github.com/astrocorp42/astroflow-go/log"
+	"github.com/bloom42/astroflow-go"
+	"github.com/bloom42/astroflow-go/log"
 )
 
 func main() {
