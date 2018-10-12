@@ -65,8 +65,9 @@ func HTTPHandler(logger Logger) func(next http.Handler) http.Handler {
 			userAgent := r.Header.Get("user-agent")
 
 			remote := r.RemoteAddr
-			if strings.Contains(remote, ":") {
-				net.SplitHostPort(remote)
+			host, _, err := net.SplitHostPort(remote)
+			if err != nil {
+				remote = host
 			}
 
 			requestLogger := logger.With(
