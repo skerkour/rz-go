@@ -74,7 +74,7 @@ func HTTPHandler(logger Logger) func(next http.Handler) http.Handler {
 				"host", r.Host,
 				"url", uri,
 				"method", method,
-				"remote_address", r.RemoteAddr,
+				"remote_address", remote,
 				"user_agent", userAgent,
 			)
 
