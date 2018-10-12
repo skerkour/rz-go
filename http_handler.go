@@ -65,7 +65,7 @@ func HTTPHandler(logger Logger) func(next http.Handler) http.Handler {
 
 			remote := r.RemoteAddr
 			host, _, err := net.SplitHostPort(remote)
-			if err != nil {
+			if err == nil {
 				remote = host
 			}
 
