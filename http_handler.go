@@ -2,7 +2,9 @@ package astroflow
 
 import (
 	"fmt"
+	"net"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -61,6 +63,11 @@ func HTTPHandler(logger Logger) func(next http.Handler) http.Handler {
 			method := r.Method
 			uri := r.RequestURI
 			userAgent := r.Header.Get("user-agent")
+
+			remote := r.RemoteAddr
+			if strings.Contains(remote, ":") {
+				net.SplitHostPort(remote)
+			}
 
 			requestLogger := logger.With(
 				"scheme", scheme,
