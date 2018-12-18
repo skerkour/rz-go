@@ -160,7 +160,7 @@ func HelloWorld(w http.ResponseWriter, r *http.Request) {
 
 ## Examples
 
-See the [example](https://github.com/bloom42/astro-go/tree/master/examples) folder.
+See the [examples](https://github.com/bloom42/astro-go/tree/master/examples) folder.
 
 
 ## Roadmap
