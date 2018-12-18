@@ -1,3 +1,3 @@
-package astroflow
+package astro
 
 type Event map[string]interface{}

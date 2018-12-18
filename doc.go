@@ -26,4 +26,4 @@ usage:
 	log.With("port", Port).Info("server stared")
 ```
 */
-package astroflow
+package astro

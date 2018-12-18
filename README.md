@@ -1,10 +1,10 @@
-## Astroflow
+## Astro
 
 [Make logging great again](https://kerkour.com/post/logging/)
 
-[![GoDoc](https://godoc.org/github.com/bloom42/astroflow-go?status.svg)](https://godoc.org/github.com/bloom42/astroflow-go)
-[![Build Status](https://travis-ci.org/bloom42/astroflow-go.svg?branch=master)](https://travis-ci.org/bloom42/astroflow-go)
-[![GitHub release](https://img.shields.io/github/release/bloom42/astroflow-go.svg)](https://github.com/bloom42/astroflow-go/releases)
+[![GoDoc](https://godoc.org/github.com/bloom42/astro-go?status.svg)](https://godoc.org/github.com/bloom42/astro-go)
+[![Build Status](https://travis-ci.org/bloom42/astro-go.svg?branch=master)](https://travis-ci.org/bloom42/astro-go)
+[![GitHub release](https://img.shields.io/github/release/bloom42/astro-go.svg)](https://github.com/bloom42/astro-go/releases)
 
 ![Console logging](_docs/example_screenshot.png)
 
@@ -26,8 +26,8 @@ package main
 import (
 	"os"
 
-	"github.com/bloom42/astroflow-go"
-	"github.com/bloom42/astroflow-go/log"
+	"github.com/bloom42/astro-go"
+	"github.com/bloom42/astro-go/log"
 )
 
 func main() {
@@ -36,19 +36,19 @@ func main() {
 	hostname, _ := os.Hostname()
 
 	log.Config(
-		//   astroflow.SetWriter(os.Stderr),
-		astroflow.AddFields(
+		//   astro.SetWriter(os.Stderr),
+		astro.AddFields(
 			"service", "api",
 			"host", hostname,
 			"environment", env,
 		),
-		astroflow.SetFormatter(astroflow.NewConsoleFormatter()),
+		astro.SetFormatter(astro.NewConsoleFormatter()),
 	)
 
 	if env == "production" {
 		log.Config(
-			astroflow.SetFormatter(astroflow.JSONFormatter{}),
-			astroflow.SetLevel(astroflow.InfoLevel),
+			astro.SetFormatter(astro.JSONFormatter{}),
+			astro.SetLevel(astro.InfoLevel),
 		)
 	}
 
@@ -65,25 +65,25 @@ func main() {
 ## Benchmark
 
 ```
-pkg: github.com/bloom42/astroflow-go/_benchmark
+pkg: github.com/bloom42/astro-go/_benchmark
 BenchmarkWithoutFields/sirupsen/logrus-4         	  500000	      3104 ns/op	    1473 B/op	      24 allocs/op
-BenchmarkWithoutFields/bloom42/astroflow-go-4  	 1000000	      1454 ns/op	     664 B/op	       9 allocs/op
+BenchmarkWithoutFields/bloom42/astro-go-4  	 1000000	      1454 ns/op	     664 B/op	       9 allocs/op
 Benchmark10FieldsContext/sirupsen/logrus-4       	  100000	     12996 ns/op	    5680 B/op	      54 allocs/op
-Benchmark10FieldsContext/bloom42/astroflow-go-4         	  300000	      5779 ns/op	    1934 B/op	      12 allocs/op
+Benchmark10FieldsContext/bloom42/astro-go-4         	  300000	      5779 ns/op	    1934 B/op	      12 allocs/op
 Benchmark10Fields/sirupsen/logrus-4                       	  100000	     14016 ns/op	    6393 B/op	      57 allocs/op
-Benchmark10Fields/bloom42/astroflow-go-4                	  200000	      6038 ns/op	    2254 B/op	      13 allocs/op
+Benchmark10Fields/bloom42/astro-go-4                	  200000	      6038 ns/op	    2254 B/op	      13 allocs/op
 PASS
-ok  	github.com/bloom42/astroflow-go/_benchmark	9.120s
+ok  	github.com/bloom42/astro-go/_benchmark	9.120s
 ```
 
 ## Log usage
 
 ```go
 import (
-    "github.com/bloom42/astroflow-go/log"
+    "github.com/bloom42/astro-go/log"
 )
 
-log.Config(options ...astroflow.LoggerOption) error
+log.Config(options ...astro.LoggerOption) error
 log.With(fields ...interface{}) astro.Logger
 
 // each of the following have it's XXXf companion (e.g. log.Debugf("%s" ,err) ...)
@@ -100,7 +100,7 @@ log.Track(fields ...interface{}) // log an event without level nor message
 
 ```go
 SetWriter(writer io.Writer) // default to os.Stdout
-SetFormatter(formatter astroflow.Formatter) // default to astro.JSONFormatter
+SetFormatter(formatter astro.Formatter) // default to astro.JSONFormatter
 SetFields(fields ...interface{})
 AddFields(fields ...interface{})
 SetInsertTimestampField(insert bool) // default to true
@@ -113,7 +113,7 @@ AddHook(hook astro.Hook)
 
 ## HTTPHandler
 
-Astroflow provides an http handler helper to log http requests
+astro provides an http handler helper to log http requests
 ```go
 package main
 
@@ -122,8 +122,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/bloom42/astroflow-go"
-	"github.com/bloom42/astroflow-go/log"
+	"github.com/bloom42/astro-go"
+	"github.com/bloom42/astro-go/log"
 )
 
 func main() {
@@ -134,17 +134,17 @@ func main() {
 	}
 
 	log.Config(
-		astroflow.AddFields(
+		astro.AddFields(
 			"service", "api",
 			"host", "abcd",
 			"environment", env,
 		),
-		astroflow.SetFormatter(astroflow.JSONFormatter{}),
+		astro.SetFormatter(astro.JSONFormatter{}),
 	)
 
 	http.HandleFunc("/", HelloWorld)
 
-	middleware := astroflow.HTTPHandler(log.With())
+	middleware := astro.HTTPHandler(log.With())
 	err := http.ListenAndServe(":"+port, middleware(http.DefaultServeMux))
 	if err != nil {
 		log.Fatal(err.Error())

@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/bloom42/astroflow-go"
-	"github.com/bloom42/astroflow-go/log"
+	"github.com/bloom42/astro-go"
+	"github.com/bloom42/astro-go/log"
 )
 
 func main() {

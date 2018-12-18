@@ -9,11 +9,11 @@ test:
 	go test -v -race ./...
 
 build:
-	go build ./...
+	go build
 
 release:
 	git tag v$(VERSION)
 	git push origin v$(VERSION)
 
 benchmark:
-	cd _benchmark && ./run.sh
+	cd benchmark && ./run.sh

@@ -1,4 +1,4 @@
-package astroflow
+package astro
 
 import (
 	"bytes"

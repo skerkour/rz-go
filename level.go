@@ -1,4 +1,4 @@
-package astroflow
+package astro
 
 type Level int
 
