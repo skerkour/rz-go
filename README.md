@@ -6,7 +6,7 @@
 [![Build Status](https://travis-ci.org/bloom42/astro-go.svg?branch=master)](https://travis-ci.org/bloom42/astro-go)
 [![GitHub release](https://img.shields.io/github/release/bloom42/astro-go.svg)](https://github.com/bloom42/astro-go/releases)
 
-![Console logging](_docs/example_screenshot.png)
+![Console logging](docs/example_screenshot.png)
 
 
 1. [Quickstart](#quickstart)
@@ -14,7 +14,8 @@
 3. [Log usage](#log-usage)
 4. [Configuration](#configuration)
 5. [HTTPHandler](#httphandler)
-6. [Roadmap](#roadmap)
+6. [Examples](#examples)
+7. [Roadmap](#roadmap)
 
 -------------------
 
@@ -155,6 +156,12 @@ func HelloWorld(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello, you've requested: %s\n", r.URL.Path)
 }
 ```
+
+
+## Examples
+
+See the [example](https://github.com/bloom42/astro-go/tree/master/examples) folder.
+
 
 ## Roadmap
 - [ ] method GetIP for the HTTPHandler to parse the IP form headers if trustProxy is set
