@@ -9,7 +9,7 @@ test:
 	go test -v -race ./...
 
 build:
-	go build
+	go build ./...
 
 release:
 	git tag v$(VERSION)
