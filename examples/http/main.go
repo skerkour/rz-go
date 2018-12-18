@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/bloom42/astroflow-go"
-	"github.com/bloom42/astroflow-go/log"
+	"github.com/bloom42/astro-go"
+	"github.com/bloom42/astro-go/log"
 )
 
 func main() {
@@ -17,17 +17,17 @@ func main() {
 	}
 
 	log.Config(
-		astroflow.AddFields(
+		astro.AddFields(
 			"service", "api",
 			"host", "abcd",
 			"environment", env,
 		),
-		astroflow.SetFormatter(astroflow.JSONFormatter{}),
+		astro.SetFormatter(astro.JSONFormatter{}),
 	)
 
 	http.HandleFunc("/", HelloWorld)
 
-	middleware := astroflow.HTTPHandler(log.With())
+	middleware := astro.HTTPHandler(log.With())
 	err := http.ListenAndServe(":"+port, middleware(http.DefaultServeMux))
 	if err != nil {
 		log.Fatal(err.Error())

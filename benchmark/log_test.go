@@ -25,9 +25,9 @@ func newLogrus() *logrus.Logger {
 	}
 }
 
-func newAstro() astroflow.Logger {
-	logger := astroflow.NewLogger(
-		astroflow.SetWriter(ioutil.Discard),
+func newAstro() astro.Logger {
+	logger := astro.NewLogger(
+		astro.SetWriter(ioutil.Discard),
 	)
 	return logger
 }
@@ -95,7 +95,7 @@ func BenchmarkWithoutFields(b *testing.B) {
 			}
 		})
 	})
-	b.Run("bloom42/astroflow-go", func(b *testing.B) {
+	b.Run("bloom42/astro-go", func(b *testing.B) {
 		logger := newAstro()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
@@ -118,7 +118,7 @@ func Benchmark10FieldsContext(b *testing.B) {
 			}
 		})
 	})
-	b.Run("bloom42/astroflow-go", func(b *testing.B) {
+	b.Run("bloom42/astro-go", func(b *testing.B) {
 		logger := newAstro()
 		fields := fakeAstroFields()
 		l := logger.With(fields...)
@@ -142,7 +142,7 @@ func Benchmark10Fields(b *testing.B) {
 			}
 		})
 	})
-	b.Run("bloom42/astroflow-go", func(b *testing.B) {
+	b.Run("bloom42/astro-go", func(b *testing.B) {
 		logger := newAstro()
 		fields := fakeAstroFields()
 		b.ResetTimer()

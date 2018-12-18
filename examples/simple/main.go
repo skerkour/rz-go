@@ -13,25 +13,25 @@ func main() {
 	hostname, _ := os.Hostname()
 
 	log.Config(
-		//   astroflow.SetWriter(os.Stderr),
-		astroflow.AddFields(
+		//   astro.SetWriter(os.Stderr),
+		astro.AddFields(
 			"service", "api",
 			"host", hostname,
 			"environment", env,
 		),
-		astroflow.SetFormatter(astroflow.NewConsoleFormatter()),
+		astro.SetFormatter(astro.NewConsoleFormatter()),
 	)
 
 	if env == "production" {
 		log.Config(
-			astroflow.SetFormatter(astroflow.JSONFormatter{}),
-			astroflow.SetLevel(astroflow.InfoLevel),
+			astro.SetFormatter(astro.JSONFormatter{}),
+			astro.SetLevel(astro.InfoLevel),
 		)
 	}
 
 	subLogger := log.With("contextual_field", 42)
 	subLogger.Config(
-		astroflow.SetFormatter(astroflow.NewCLIFormatter()),
+		astro.SetFormatter(astro.NewCLIFormatter()),
 	)
 
 	log.Info("info from logger")
