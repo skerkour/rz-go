@@ -16,6 +16,7 @@
 5. [HTTPHandler](#httphandler)
 6. [Examples](#examples)
 7. [Roadmap](#roadmap)
+8. [License](#license)
 
 -------------------
 
@@ -168,3 +169,8 @@ See the [examples](https://github.com/bloom42/astro-go/tree/master/examples) fol
 - [ ] SetAsync logger option
 - [ ] sampling
 - [ ] a zero alloc json logger (so without formatter)
+
+
+## License
+
+See `LICENSE.txt` and [https://code.bloom.sh/licensing](https://code.bloom.sh/licensing)
