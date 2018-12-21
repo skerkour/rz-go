@@ -173,4 +173,4 @@ See the [examples](https://github.com/bloom42/astro-go/tree/master/examples) fol
 
 ## License
 
-See `LICENSE.txt` and [https://code.bloom.sh/licensing](https://code.bloom.sh/licensing)
+See `LICENSE.txt` and [https://opensource.bloom.sh/licensing](https://opensource.bloom.sh/licensing)
