@@ -48,7 +48,7 @@ func NewLogger(options ...LoggerOption) Logger {
 		levelFieldName:       LevelFieldName,
 		level:                DebugLevel,
 		formatter:            JSONFormatter{},
-		callerLevel:          2,
+		callerLevel:          3,
 	}
 
 	logger.Config(options...)
@@ -122,8 +122,6 @@ func (logger *Logger) log(level Level, message string) {
 // With returns a new Logger with the provided fields added
 func (logger Logger) With(fields ...interface{}) Logger {
 	logger.fields = append(logger.fields, fields...)
-	logger.callerLevel += 1
-
 	return logger
 }
 
