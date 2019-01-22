@@ -27,6 +27,7 @@ type Logger struct {
 	level                Level
 	formatter            Formatter
 	callerLevel          int
+	insertCaller         bool
 }
 
 func getTIme() time.Time {
@@ -49,6 +50,7 @@ func NewLogger(options ...LoggerOption) Logger {
 		level:                DebugLevel,
 		formatter:            JSONFormatter{},
 		callerLevel:          3,
+		insertCaller:         true,
 	}
 
 	logger.Config(options...)

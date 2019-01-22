@@ -13,7 +13,9 @@ func Config(options ...astro.LoggerOption) error {
 
 // With returns a new Logger with the provided fields added
 func With(fields ...interface{}) astro.Logger {
-	return logger.With(fields...)
+	ret := logger.With(fields...)
+	ret.Config(astro.SetCallerLevel(5))
+	return ret
 }
 
 // Debug level message

@@ -84,6 +84,13 @@ func AddHook(hook Hook) LoggerOption {
 	}
 }
 
+func EnableCaller(enable bool) LoggerOption {
+	return func(logger *Logger) error {
+		logger.insertCaller = enable
+		return nil
+	}
+}
+
 func SetCallerLevel(level int) LoggerOption {
 	return func(logger *Logger) error {
 		logger.callerLevel = level

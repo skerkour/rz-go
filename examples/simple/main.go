@@ -35,6 +35,7 @@ func main() {
 	)
 
 	otherLogger := astro.NewLogger()
+	otherOtherLogger := otherLogger.With("field", "MyUUID")
 
 	log.Info("info from logger")
 	log.With("field1", "hello world", "field2", 999.99).Info("info from logger with fields")
@@ -43,4 +44,10 @@ func main() {
 	subLogger.Warn("warning from sublogger")
 	subLogger.Error("error from sublogger")
 	otherLogger.Info("info from other logger")
+	otherOtherLogger.Info("info from otherOther logger")
+	myFunc(otherLogger)
+}
+
+func myFunc(logger astro.Logger) {
+	logger.Info("info from other logger in func")
 }
