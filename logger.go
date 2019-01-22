@@ -84,7 +84,7 @@ func (logger *Logger) log(level Level, message string) {
 	}
 
 	caller, err := caller(2)
-	if err != nil {
+	if err == nil {
 		data["caller"] = caller
 	}
 
