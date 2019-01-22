@@ -83,6 +83,11 @@ func (logger *Logger) log(level Level, message string) {
 		data[logger.fields[i].(string)] = logger.fields[i+1]
 	}
 
+	caller, err := caller(2)
+	if err != nil {
+		data["caller"] = caller
+	}
+
 	if logger.insertTimestampField {
 		data[logger.timestampFieldName] = logger.timestampFunc()
 	}
