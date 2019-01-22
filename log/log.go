@@ -4,7 +4,7 @@ import (
 	"github.com/bloom42/astro-go"
 )
 
-var logger = astro.NewLogger(astro.SetCallerLevel(3))
+var logger = astro.NewLogger(astro.SetCallerLevel(4))
 
 // Config configure the logger
 func Config(options ...astro.LoggerOption) error {

@@ -8,6 +8,8 @@ github.com/bloom42/astro-go v0.12.1 h1:/bRP/pIxqCn+qaFAQwBfCSKCSyMYjDingNibK18zZ
 github.com/bloom42/astro-go v0.12.1/go.mod h1:j6wCDMzQEgLLifSjoMoFQvd06r/TcCF2itBy1nxwVqo=
 github.com/bloom42/astro-go v0.12.2 h1:SXvHkV4be3w4LosciY5bAk2eBLRMtIn7+gU/luPH1k4=
 github.com/bloom42/astro-go v0.12.2/go.mod h1:j6wCDMzQEgLLifSjoMoFQvd06r/TcCF2itBy1nxwVqo=
+github.com/bloom42/astro-go v0.12.3 h1:bz53dmiXVo49BMPRzNp2UNlbP/kFNaDKeH0flWVqVqw=
+github.com/bloom42/astro-go v0.12.3/go.mod h1:j6wCDMzQEgLLifSjoMoFQvd06r/TcCF2itBy1nxwVqo=
 github.com/json-iterator/go v1.1.5 h1:gL2yXlmiIo4+t+y32d4WGwOjKGYcGOuyrg46vadswDE=
 github.com/json-iterator/go v1.1.5/go.mod h1:+SdeFBvtyEkXs7REEP0seUULqWtbJapLOCVDaaPEHmU=
 github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd h1:TRLaZ9cD/w8PVh93nsPXa1VrQ6jlwL5oN8l14QlcNfg=
