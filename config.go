@@ -83,3 +83,10 @@ func AddHook(hook Hook) LoggerOption {
 		return nil
 	}
 }
+
+func SetCallerLevel(level int) LoggerOption {
+	return func(logger *Logger) error {
+		logger.callerLevel = level
+		return nil
+	}
+}
