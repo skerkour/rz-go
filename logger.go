@@ -83,7 +83,7 @@ func (logger *Logger) log(level Level, message string) {
 		data[logger.fields[i].(string)] = logger.fields[i+1]
 	}
 
-	caller, err := caller(2)
+	caller, err := caller(3)
 	if err == nil {
 		data["caller"] = caller
 	}
