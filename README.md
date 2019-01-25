@@ -15,7 +15,7 @@
 4. [Configuration](#configuration)
 5. [HTTPHandler](#httphandler)
 6. [Examples](#examples)
-7. [Roadmap](#roadmap)
+6. [Contributing](#contributing)
 8. [License](#license)
 
 -------------------
@@ -164,11 +164,9 @@ func HelloWorld(w http.ResponseWriter, r *http.Request) {
 See the [examples](https://github.com/bloom42/astro-go/tree/master/examples) folder.
 
 
-## Roadmap
-- [ ] method GetIP for the HTTPHandler to parse the IP form headers if trustProxy is set
-- [ ] SetAsync logger option
-- [ ] sampling
-- [ ] a zero alloc json logger (so without formatter)
+## Contributing
+
+See [https://opensource.bloom.sh/contributing](https://opensource.bloom.sh/contributing)
 
 
 ## License
