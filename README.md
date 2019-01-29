@@ -15,7 +15,7 @@
 4. [Configuration](#configuration)
 5. [HTTPHandler](#httphandler)
 6. [Examples](#examples)
-6. [Contributing](#contributing)
+7. [Contributing](#contributing)
 8. [License](#license)
 
 -------------------
