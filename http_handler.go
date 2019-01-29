@@ -80,16 +80,16 @@ func HTTPHandler(logger Logger) func(next http.Handler) http.Handler {
 
 			next.ServeHTTP(res, r)
 
-			latencyMs := time.Since(start).Nanoseconds() / 1000000
-			if latencyMs < 1 {
-				latencyMs = 1
+			durationMs := time.Since(start).Nanoseconds() / 1000000
+			if durationMs < 1 {
+				durationMs = 1
 			}
 
 			status := res.status
 			requestLogger = requestLogger.With(
 				"status", res.status,
 				"size", res.written,
-				"latency", latencyMs,
+				"duration", durationMs,
 			)
 
 			message := fmt.Sprintf("%d %s %s", status, method, uri)
