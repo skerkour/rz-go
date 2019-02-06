@@ -72,14 +72,17 @@ cd benchmarks && ./run.sh
 goos: linux
 goarch: amd64
 pkg: github.com/bloom42/astro-go/benchmarks
-BenchmarkWithoutFields/sirupsen/logrus-4                  300000              4653 ns/op            1137 B/op         24 allocs/op
-BenchmarkWithoutFields/bloom42/astro-go-4                1000000              1593 ns/op             832 B/op         13 allocs/op
-Benchmark10FieldsContext/sirupsen/logrus-4                100000             21492 ns/op            3261 B/op         50 allocs/op
-Benchmark10FieldsContext/bloom42/astro-go-4               300000              4646 ns/op            3196 B/op         17 allocs/op
-Benchmark10Fields/sirupsen/logrus-4                        50000             25341 ns/op            4043 B/op         54 allocs/op
-Benchmark10Fields/bloom42/astro-go-4                      300000              5067 ns/op            3516 B/op         18 allocs/op
+BenchmarkWithoutFields/sirupsen/logrus-4                  300000              4605 ns/op            1137 B/op         24 allocs/op
+BenchmarkWithoutFields/bloom42/astro-go-4                1000000              1657 ns/op             832 B/op         13 allocs/op
+BenchmarkWithoutFields/rs/zerolog-4                     500000000                4.01 ns/op            0 B/op          0 allocs/op
+Benchmark10FieldsContext/sirupsen/logrus-4                100000             20759 ns/op            3261 B/op         50 allocs/op
+Benchmark10FieldsContext/bloom42/astro-go-4               300000              4863 ns/op            3196 B/op         17 allocs/op
+Benchmark10FieldsContext/rs/zerolog-4                   300000000                3.89 ns/op            0 B/op          0 allocs/op
+Benchmark10Fields/sirupsen/logrus-4                        50000             24993 ns/op            4043 B/op         54 allocs/op
+Benchmark10Fields/bloom42/astro-go-4                      300000              5023 ns/op            3517 B/op         18 allocs/op
+Benchmark10Fields/rs/zerolog-4                          10000000               186 ns/op             224 B/op          6 allocs/op
 PASS
-ok      github.com/bloom42/astro-go/benchmarks  10.970s
+ok      github.com/bloom42/astro-go/benchmarks  17.988s
 ```
 
 ## Log usage

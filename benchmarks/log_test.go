@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/bloom42/astro-go"
+	"github.com/rs/zerolog"
 	"github.com/sirupsen/logrus"
 )
 
@@ -30,6 +31,14 @@ func newAstro() astro.Logger {
 		astro.SetWriter(ioutil.Discard),
 	)
 	return logger
+}
+
+func newZerolog() zerolog.Logger {
+	return zerolog.New(ioutil.Discard).With().Timestamp().Logger()
+}
+
+func newDisabledZerolog() zerolog.Logger {
+	return newZerolog().Level(zerolog.Disabled)
 }
 
 var _tenInts = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
@@ -82,6 +91,34 @@ func fakeAstroFields() []interface{} {
 	}
 }
 
+func fakeZerologFields(e *zerolog.Event) *zerolog.Event {
+	return e.
+		Int("int", _tenInts[0]).
+		Interface("ints", _tenInts).
+		Str("string", _tenStrings[0]).
+		Interface("strings", _tenStrings).
+		Time("time", _tenTimes[0]).
+		Interface("times", _tenTimes).
+		Interface("user1", _oneUser).
+		Interface("user2", _oneUser).
+		Interface("users", _tenUsers).
+		Err(errExample)
+}
+
+func fakeZerologContext(c zerolog.Context) zerolog.Context {
+	return c.
+		Int("int", _tenInts[0]).
+		Interface("ints", _tenInts).
+		Str("string", _tenStrings[0]).
+		Interface("strings", _tenStrings).
+		Time("time", _tenTimes[0]).
+		Interface("times", _tenTimes).
+		Interface("user1", _oneUser).
+		Interface("user2", _oneUser).
+		Interface("users", _tenUsers).
+		Err(errExample)
+}
+
 var _testMessage = "hello world"
 
 func BenchmarkWithoutFields(b *testing.B) {
@@ -101,6 +138,15 @@ func BenchmarkWithoutFields(b *testing.B) {
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				logger.Info(_testMessage)
+			}
+		})
+	})
+	b.Run("rs/zerolog", func(b *testing.B) {
+		logger := newDisabledZerolog()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Info().Msg(_testMessage)
 			}
 		})
 	})
@@ -129,6 +175,15 @@ func Benchmark10FieldsContext(b *testing.B) {
 			}
 		})
 	})
+	b.Run("rs/zerolog", func(b *testing.B) {
+		logger := fakeZerologContext(newDisabledZerolog().With()).Logger()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Info().Msg(_testMessage)
+			}
+		})
+	})
 }
 
 func Benchmark10Fields(b *testing.B) {
@@ -149,6 +204,15 @@ func Benchmark10Fields(b *testing.B) {
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				logger.With(fields...).Info(_testMessage)
+			}
+		})
+	})
+	b.Run("rs/zerolog", func(b *testing.B) {
+		logger := newDisabledZerolog()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				fakeZerologFields(logger.Info()).Msg(_testMessage)
 			}
 		})
 	})
