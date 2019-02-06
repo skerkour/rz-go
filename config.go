@@ -50,13 +50,16 @@ func Hooks(hooks ...LogHook) Option {
 	}
 }
 
-// // With replaces logger's fields
-// func With(f func(*Event)) Option {
-// 	return func(logger *Logger) {
-// 		l := logger.With(f)
-// 		*(&logger) = &l
-// 	}
-// }
+// Fields replaces logger's fields
+func Fields(fields func(*Event)) Option {
+	return func(logger *Logger) {
+		if fields != nil {
+			e := newEvent(nil, NoLevel)
+			fields(e)
+			logger.context = enc.AppendObjectData(make([]byte, 0, 500), e.buf)
+		}
+	}
+}
 
 // Stack enable/disable stack in error messages
 func Stack(enableStack bool) Option {
