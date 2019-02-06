@@ -15,11 +15,11 @@ var (
 	Rarely = RandomSampler(1000)
 )
 
-// Sampler defines an interface to a log sampler.
-type Sampler interface {
+// LogSampler defines an interface to a log sampler.
+type LogSampler interface {
 	// Sample returns true if the event should be part of the sample, false if
 	// the event should be dropped.
-	Sample(lvl Level) bool
+	Sample(lvl LogLevel) bool
 }
 
 // RandomSampler use a PRNG to randomly sample an event out of N events,
@@ -27,7 +27,7 @@ type Sampler interface {
 type RandomSampler uint32
 
 // Sample implements the Sampler interface.
-func (s RandomSampler) Sample(lvl Level) bool {
+func (s RandomSampler) Sample(lvl LogLevel) bool {
 	if s <= 0 {
 		return false
 	}
@@ -45,7 +45,7 @@ type BasicSampler struct {
 }
 
 // Sample implements the Sampler interface.
-func (s *BasicSampler) Sample(lvl Level) bool {
+func (s *BasicSampler) Sample(lvl LogLevel) bool {
 	c := atomic.AddUint32(&s.counter, 1)
 	return c%s.N == s.N-1
 }
@@ -60,14 +60,14 @@ type BurstSampler struct {
 	Period time.Duration
 	// NextSampler is the sampler used after the burst is reached. If nil,
 	// events are always rejected after the burst.
-	NextSampler Sampler
+	NextSampler LogSampler
 
 	counter uint32
 	resetAt int64
 }
 
 // Sample implements the Sampler interface.
-func (s *BurstSampler) Sample(lvl Level) bool {
+func (s *BurstSampler) Sample(lvl LogLevel) bool {
 	if s.Burst > 0 && s.Period > 0 {
 		if s.inc() <= s.Burst {
 			return true
@@ -100,10 +100,10 @@ func (s *BurstSampler) inc() uint32 {
 
 // LevelSampler applies a different sampler for each level.
 type LevelSampler struct {
-	DebugSampler, InfoSampler, WarnSampler, ErrorSampler Sampler
+	DebugSampler, InfoSampler, WarnSampler, ErrorSampler LogSampler
 }
 
-func (s LevelSampler) Sample(lvl Level) bool {
+func (s LevelSampler) Sample(lvl LogLevel) bool {
 	switch lvl {
 	case DebugLevel:
 		if s.DebugSampler != nil {

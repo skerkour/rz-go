@@ -64,13 +64,13 @@ var (
 // values is raised, all Loggers will use at least this value.
 //
 // To globally disable logs, set GlobalLevel to Disabled.
-func SetGlobalLevel(l Level) {
+func SetGlobalLevel(l LogLevel) {
 	atomic.StoreUint32(gLevel, uint32(l))
 }
 
 // GlobalLevel returns the current global log level
-func GlobalLevel() Level {
-	return Level(atomic.LoadUint32(gLevel))
+func GlobalLevel() LogLevel {
+	return LogLevel(atomic.LoadUint32(gLevel))
 }
 
 // DisableSampling will disable sampling in all Loggers if true.

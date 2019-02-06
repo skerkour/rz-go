@@ -8,7 +8,7 @@ import (
 func TestLog(t *testing.T) {
 	t.Run("empty", func(t *testing.T) {
 		out := &bytes.Buffer{}
-		log := New(out)
+		log := New(Writer(out))
 		log.Log("", nil)
 		if got, want := decodeIfBinaryToString(out.Bytes()), "{}\n"; got != want {
 			t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
@@ -17,7 +17,7 @@ func TestLog(t *testing.T) {
 
 	t.Run("one-field", func(t *testing.T) {
 		out := &bytes.Buffer{}
-		log := New(out)
+		log := New(Writer(out))
 		log.Log("", func(e *Event) {
 			e.String("foo", "bar")
 		})
@@ -28,7 +28,7 @@ func TestLog(t *testing.T) {
 
 	t.Run("two-field", func(t *testing.T) {
 		out := &bytes.Buffer{}
-		log := New(out)
+		log := New(Writer(out))
 		log.Log("", func(e *Event) {
 			e.String("foo", "bar")
 			e.Int("n", 123)
@@ -42,7 +42,7 @@ func TestLog(t *testing.T) {
 func TestInfo(t *testing.T) {
 	t.Run("empty", func(t *testing.T) {
 		out := &bytes.Buffer{}
-		log := New(out)
+		log := New(Writer(out))
 		log.Info("", nil)
 		if got, want := decodeIfBinaryToString(out.Bytes()), `{"level":"info"}`+"\n"; got != want {
 			t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
@@ -51,7 +51,7 @@ func TestInfo(t *testing.T) {
 
 	t.Run("one-field", func(t *testing.T) {
 		out := &bytes.Buffer{}
-		log := New(out)
+		log := New(Writer(out))
 		log.Info("", func(e *Event) {
 			e.String("foo", "bar")
 		})
@@ -62,7 +62,7 @@ func TestInfo(t *testing.T) {
 
 	t.Run("two-field", func(t *testing.T) {
 		out := &bytes.Buffer{}
-		log := New(out)
+		log := New(Writer(out))
 		log.Info("", func(e *Event) {
 			e.String("foo", "bar").
 				Int("n", 123)

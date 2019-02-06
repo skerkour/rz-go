@@ -22,10 +22,10 @@ var eventPool = &sync.Pool{
 type Event struct {
 	buf   []byte
 	w     LevelWriter
-	level Level
+	level LogLevel
 	done  func(msg string)
-	stack bool   // enable error stack trace
-	ch    []Hook // hooks from context
+	stack bool      // enable error stack trace
+	ch    []LogHook // hooks from context
 }
 
 func putEvent(e *Event) {
@@ -54,7 +54,7 @@ type LogArrayMarshaler interface {
 	MarshalZerologArray(a *Array)
 }
 
-func newEvent(w LevelWriter, level Level) *Event {
+func newEvent(w LevelWriter, level LogLevel) *Event {
 	e := eventPool.Get().(*Event)
 	e.buf = e.buf[:0]
 	e.ch = nil
@@ -113,13 +113,16 @@ func (e *Event) msg(msg string) {
 		if ErrorHandler != nil {
 			ErrorHandler(err)
 		} else {
-			fmt.Fprintf(os.Stderr, "zerolog: could not write event: %v\n", err)
+			fmt.Fprintf(os.Stderr, "astro: could not write event: %v\n", err)
 		}
 	}
 }
 
 // Fields is a helper function to use a map to set fields using type assertion.
 func (e *Event) Fields(fields map[string]interface{}) *Event {
+	if e == nil {
+		return e
+	}
 	e.buf = appendFields(e.buf, fields)
 	return e
 }
@@ -127,6 +130,9 @@ func (e *Event) Fields(fields map[string]interface{}) *Event {
 // Dict adds the field key with a dict to the event context.
 // Use zerolog.Dict() to create the dictionary.
 func (e *Event) Dict(key string, dict *Event) *Event {
+	if e == nil {
+		return e
+	}
 	dict.buf = enc.AppendEndMarker(dict.buf)
 	e.buf = append(enc.AppendKey(e.buf, key), dict.buf...)
 	putEvent(dict)
@@ -175,7 +181,7 @@ func (e *Event) Object(key string, obj LogObjectMarshaler) *Event {
 	return e
 }
 
-// Object marshals an object that implement the LogObjectMarshaler interface.
+// EmbedObject marshals an object that implement the LogObjectMarshaler interface.
 func (e *Event) EmbedObject(obj LogObjectMarshaler) *Event {
 	if e == nil {
 		return e
@@ -235,9 +241,9 @@ func (e *Event) RawJSON(key string, b []byte) *Event {
 	return e
 }
 
-// AnErr adds the field key with serialized err to the *Event context.
+// Error adds the field key with serialized err to the *Event context.
 // If err is nil, no field is added.
-func (e *Event) AnErr(key string, err error) *Event {
+func (e *Event) Error(key string, err error) *Event {
 	if e == nil {
 		return e
 	}
@@ -255,9 +261,9 @@ func (e *Event) AnErr(key string, err error) *Event {
 	}
 }
 
-// Errs adds the field key with errs as an array of serialized errors to the
+// Errors adds the field key with errs as an array of serialized errors to the
 // *Event context.
-func (e *Event) Errs(key string, errs []error) *Event {
+func (e *Event) Errors(key string, errs []error) *Event {
 	if e == nil {
 		return e
 	}
@@ -304,7 +310,7 @@ func (e *Event) Err(err error) *Event {
 			e.Interface(ErrorStackFieldName, m)
 		}
 	}
-	return e.AnErr(ErrorFieldName, err)
+	return e.Error(ErrorFieldName, err)
 }
 
 // Stack enables stack trace printing for the error passed to Err().
