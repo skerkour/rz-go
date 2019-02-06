@@ -6,8 +6,9 @@ import (
 	"testing"
 	"time"
 
+	zl "github.com/astrolib/zerolog"
 	"github.com/bloom42/astro-go"
-	"github.com/rs/zerolog"
+	"github.com/bloom42/astro-go"
 	"github.com/sirupsen/logrus"
 )
 
@@ -35,6 +36,10 @@ func newAstro() astro.Logger {
 
 func newZerolog() zerolog.Logger {
 	return zerolog.New(ioutil.Discard).With().Timestamp().Logger()
+}
+
+func newZl() zl.Logger {
+	return zl.New(ioutil.Discard).With().Timestamp().Logger()
 }
 
 func newDisabledZerolog() zerolog.Logger {
@@ -94,11 +99,11 @@ func fakeAstroFields() []interface{} {
 func fakeZerologFields(e *zerolog.Event) *zerolog.Event {
 	return e.
 		Int("int", _tenInts[0]).
-		Interface("ints", _tenInts).
+		Ints("ints", _tenInts).
 		Str("string", _tenStrings[0]).
-		Interface("strings", _tenStrings).
+		Strs("strings", _tenStrings).
 		Time("time", _tenTimes[0]).
-		Interface("times", _tenTimes).
+		Times("times", _tenTimes).
 		Interface("user1", _oneUser).
 		Interface("user2", _oneUser).
 		Interface("users", _tenUsers).
@@ -108,11 +113,11 @@ func fakeZerologFields(e *zerolog.Event) *zerolog.Event {
 func fakeZerologContext(c zerolog.Context) zerolog.Context {
 	return c.
 		Int("int", _tenInts[0]).
-		Interface("ints", _tenInts).
+		Ints("ints", _tenInts).
 		Str("string", _tenStrings[0]).
-		Interface("strings", _tenStrings).
+		Strs("strings", _tenStrings).
 		Time("time", _tenTimes[0]).
-		Interface("times", _tenTimes).
+		Times("times", _tenTimes).
 		Interface("user1", _oneUser).
 		Interface("user2", _oneUser).
 		Interface("users", _tenUsers).
@@ -213,6 +218,124 @@ func Benchmark10Fields(b *testing.B) {
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				fakeZerologFields(logger.Info()).Msg(_testMessage)
+			}
+		})
+	})
+}
+
+func BenchmarkZl(b *testing.B) {
+	b.Run("rs/zerolog", func(b *testing.B) {
+		logger := newZerolog()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Warn().
+					Str("Hello", "world").
+					Str("Hello2", "world").
+					Str("Hello3", "world").
+					Str("Hello4", "world").
+					Msg(_testMessage)
+			}
+		})
+	})
+	b.Run("astrolib/zl", func(b *testing.B) {
+		logger := newZl()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Warn(_testMessage, func(e *zl.Event) {
+					e.Str("Hello", "world")
+					e.Str("Hello2", "world")
+					e.Str("Hello3", "world")
+					e.Str("Hello4", "world")
+				})
+			}
+		})
+	})
+}
+
+func BenchmarkZlNoFields(b *testing.B) {
+	b.Run("rs/zerolog", func(b *testing.B) {
+		logger := newZerolog()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Warn().
+					Msg(_testMessage)
+			}
+		})
+	})
+	b.Run("astrolib/zl", func(b *testing.B) {
+		logger := newZl()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Warn(_testMessage, nil)
+			}
+		})
+	})
+}
+
+func BenchmarkZlNoFieldsNoMessage(b *testing.B) {
+	b.Run("rs/zerolog", func(b *testing.B) {
+		logger := newZerolog()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Warn().
+					Msg("")
+			}
+		})
+	})
+	b.Run("astrolib/zl", func(b *testing.B) {
+		logger := newZl()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Warn("", nil)
+			}
+		})
+	})
+}
+
+func BenchmarkZlLotOfFields(b *testing.B) {
+	b.Run("rs/zerolog", func(b *testing.B) {
+		logger := newZerolog()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Warn().
+					Int("int", _tenInts[0]).
+					Ints("ints", _tenInts).
+					Str("string", _tenStrings[0]).
+					Strs("strings", _tenStrings).
+					Time("time", _tenTimes[0]).
+					Times("times", _tenTimes).
+					Interface("user1", _oneUser).
+					Interface("user2", _oneUser).
+					Interface("users", _tenUsers).
+					Err(errExample).
+					Msg(_testMessage)
+			}
+		})
+	})
+	b.Run("astrolib/zl", func(b *testing.B) {
+		logger := newZl()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Warn(_testMessage, func(e *zl.Event) {
+					e.Int("int", _tenInts[0])
+					e.Ints("ints", _tenInts)
+					e.Str("string", _tenStrings[0])
+					e.Strs("strings", _tenStrings)
+					e.Time("time", _tenTimes[0])
+					e.Times("times", _tenTimes)
+					e.Interface("user1", _oneUser)
+					e.Interface("user2", _oneUser)
+					e.Interface("users", _tenUsers)
+					e.Err(errExample)
+				})
 			}
 		})
 	})
