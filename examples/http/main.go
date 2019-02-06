@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/bloom42/astro-go"
-	"github.com/bloom42/astro-go/log"
+	"github.com/bloom42/rz-go"
+	"github.com/bloom42/rz-go/log"
 )
 
 func main() {
@@ -17,17 +17,17 @@ func main() {
 	}
 
 	log.Config(
-		astro.AddFields(
+		rz.AddFields(
 			"service", "api",
 			"host", "abcd",
 			"environment", env,
 		),
-		astro.SetFormatter(astro.JSONFormatter{}),
+		rz.SetFormatter(rz.JSONFormatter{}),
 	)
 
 	http.HandleFunc("/", HelloWorld)
 
-	middleware := astro.HTTPHandler(log.With())
+	middleware := rz.HTTPHandler(log.With())
 	err := http.ListenAndServe(":"+port, middleware(http.DefaultServeMux))
 	if err != nil {
 		log.Fatal(err.Error())

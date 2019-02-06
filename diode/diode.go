@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bloom42/astro-go/diode/internal/diodes"
+	"github.com/bloom42/rz-go/diode/internal/diodes"
 )
 
 var bufPool = &sync.Pool{

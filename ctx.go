@@ -1,4 +1,4 @@
-package astro
+package rz
 
 import (
 	"context"
@@ -28,7 +28,7 @@ func (l *Logger) ToCtx(ctx context.Context) context.Context {
 // notation:
 //
 //     ctx := r.Context()
-//     l := astro.FromCtx(ctx)
+//     l := rz.FromCtx(ctx)
 //     l.With(...)
 func FromCtx(ctx context.Context) *Logger {
 	if l, ok := ctx.Value(ctxKey{}).(*Logger); ok {

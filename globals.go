@@ -1,4 +1,4 @@
-package astro
+package rz
 
 import "time"
 import "sync/atomic"

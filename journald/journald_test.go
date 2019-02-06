@@ -2,8 +2,8 @@
 
 package journald_test
 
-import "github.com/bloom42/astro-go"
-import "github.com/bloom42/astro-go/journald"
+import "github.com/bloom42/rz-go"
+import "github.com/bloom42/rz-go/journald"
 
 func ExampleNewJournalDWriter() {
 	log := zerolog.New(journald.NewJournalDWriter())

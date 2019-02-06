@@ -1,6 +1,6 @@
 // +build !binary_log
 
-package astro_test
+package rz_test
 
 // import (
 // 	"errors"
@@ -10,7 +10,7 @@ package astro_test
 // 	"os"
 // 	"time"
 
-// 	"github.com/bloom42/astro-go"
+// 	"github.com/bloom42/rz-go"
 // )
 
 // func ExampleNew() {

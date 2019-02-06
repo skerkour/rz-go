@@ -1,3 +1,3 @@
-module github.com/bloom42/astro-go/examples/http
+module github.com/bloom42/rz-go/examples/http
 
-require github.com/bloom42/astro-go v0.11.1 // indirect
+require github.com/bloom42/rz-go v0.11.1 // indirect

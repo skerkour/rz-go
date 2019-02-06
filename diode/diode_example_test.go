@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/bloom42/astro-go"
-	"github.com/bloom42/astro-go/diode"
+	"github.com/bloom42/rz-go"
+	"github.com/bloom42/rz-go/diode"
 )
 
 func ExampleNewWriter() {

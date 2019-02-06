@@ -5,11 +5,11 @@ package log_test
 import (
 	"errors"
 	"flag"
-	"os"
+	"fmt"
 	"time"
 
-	"github.com/bloom42/astro-go"
-	"github.com/bloom42/astro-go/log"
+	"github.com/bloom42/rz-go"
+	"github.com/bloom42/rz-go/log"
 )
 
 // setup would normally be an init() function, however, there seems
@@ -17,39 +17,22 @@ import (
 // global Logger from an init()
 func setup() {
 	// UNIX Time is faster and smaller than most timestamps
-	// If you set zerolog.TimeFieldFormat to an empty string,
+	// If you set rz.TimeFieldFormat to an empty string,
 	// logs will write with UNIX time
-	zerolog.TimeFieldFormat = ""
+	rz.TimeFieldFormat = ""
 	// In order to always output a static time to stdout for these
-	// examples to pass, we need to override zerolog.TimestampFunc
+	// examples to pass, we need to override rz.TimestampFunc
 	// and log.Logger globals -- you would not normally need to do this
-	zerolog.TimestampFunc = func() time.Time {
+	rz.TimestampFunc = func() time.Time {
 		return time.Date(2008, 1, 8, 17, 5, 05, 0, time.UTC)
 	}
-	log.Logger = zerolog.New(os.Stdout).With().Timestamp().Logger()
-}
-
-// Simple logging example using the Print function in the log package
-// Note that both Print and Printf are at the debug log level by default
-func ExamplePrint() {
-	setup()
-
-	log.Print("hello world")
-	// Output: {"level":"debug","time":1199811905,"message":"hello world"}
-}
-
-// Simple logging example using the Printf function in the log package
-func ExamplePrintf() {
-	setup()
-
-	log.Printf("hello %s", "world")
-	// Output: {"level":"debug","time":1199811905,"message":"hello world"}
+	log.Logger = rz.New()
 }
 
 // Example of a log with no particular "level"
 func ExampleLog() {
 	setup()
-	log.Log().Msg("hello world")
+	log.Log("hello world", nil)
 
 	// Output: {"time":1199811905,"message":"hello world"}
 }
@@ -57,7 +40,7 @@ func ExampleLog() {
 // Example of a log at a particular "level" (in this case, "debug")
 func ExampleDebug() {
 	setup()
-	log.Debug().Msg("hello world")
+	log.Debug("hello world", nil)
 
 	// Output: {"level":"debug","time":1199811905,"message":"hello world"}
 }
@@ -65,7 +48,7 @@ func ExampleDebug() {
 // Example of a log at a particular "level" (in this case, "info")
 func ExampleInfo() {
 	setup()
-	log.Info().Msg("hello world")
+	log.Info("hello world", nil)
 
 	// Output: {"level":"info","time":1199811905,"message":"hello world"}
 }
@@ -73,7 +56,7 @@ func ExampleInfo() {
 // Example of a log at a particular "level" (in this case, "warn")
 func ExampleWarn() {
 	setup()
-	log.Warn().Msg("hello world")
+	log.Warn("hello world", nil)
 
 	// Output: {"level":"warn","time":1199811905,"message":"hello world"}
 }
@@ -81,7 +64,7 @@ func ExampleWarn() {
 // Example of a log at a particular "level" (in this case, "error")
 func ExampleError() {
 	setup()
-	log.Error().Msg("hello world")
+	log.Error("hello world", nil)
 
 	// Output: {"level":"error","time":1199811905,"message":"hello world"}
 }
@@ -92,10 +75,10 @@ func ExampleFatal() {
 	err := errors.New("A repo man spends his life getting into tense situations")
 	service := "myservice"
 
-	log.Fatal().
-		Err(err).
-		Str("service", service).
-		Msgf("Cannot start %s", service)
+	log.Fatal(fmt.Sprintf("Cannot start %s", service), func(e *rz.Event) {
+		e.Err(err).
+			String("service", service)
+	})
 
 	// Outputs: {"level":"fatal","time":1199811905,"error":"A repo man spends his life getting into tense situations","service":"myservice","message":"Cannot start myservice"}
 }
@@ -111,19 +94,19 @@ func Example() {
 	flag.Parse()
 
 	// Default level for this example is info, unless debug flag is present
-	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	rz.SetGlobalLevel(rz.InfoLevel)
 	if *debug {
-		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+		rz.SetGlobalLevel(rz.DebugLevel)
 	}
 
-	log.Debug().Msg("This message appears only when log level set to Debug")
-	log.Info().Msg("This message appears when log level set to Debug or Info")
+	log.Debug("This message appears only when log level set to Debug", nil)
+	log.Info("This message appears when log level set to Debug or Info", nil)
 
-	if e := log.Debug(); e.Enabled() {
-		// Compute log output only if enabled.
-		value := "bar"
-		e.Str("foo", value).Msg("some debug message")
-	}
+	// if e := log.Debug(); e.Enabled() {
+	// 	// Compute log output only if enabled.
+	// 	value := "bar"
+	// 	e.Str("foo", value).Msg("some debug message")
+	// }
 
 	// Output: {"level":"info","time":1199811905,"message":"This message appears when log level set to Debug or Info"}
 }

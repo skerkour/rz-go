@@ -1,4 +1,4 @@
-package astro
+package rz
 
 import (
 	"fmt"
@@ -117,7 +117,7 @@ func (e *Event) msg(msg string) {
 		if ErrorHandler != nil {
 			ErrorHandler(err)
 		} else {
-			fmt.Fprintf(os.Stderr, "astro: could not write event: %v\n", err)
+			fmt.Fprintf(os.Stderr, "rz: could not write event: %v\n", err)
 		}
 	}
 }

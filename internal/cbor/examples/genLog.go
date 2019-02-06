@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/bloom42/astro-go"
+	"github.com/bloom42/rz-go"
 )
 
 func writeLog(fname string, count int, useCompress bool) {

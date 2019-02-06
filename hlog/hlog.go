@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/rs/xid"
-	"github.com/bloom42/astro-go"
-	"github.com/bloom42/astro-go/log"
+	"github.com/bloom42/rz-go"
+	"github.com/bloom42/rz-go/log"
 	"github.com/zenazn/goji/web/mutil"
 )
 

@@ -7,18 +7,18 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/bloom42/astro-go"
+	"github.com/bloom42/rz-go"
 	"github.com/pkg/errors"
 )
 
 func TestLogStack(t *testing.T) {
-	astro.ErrorStackMarshaler = MarshalStack
+	rz.ErrorStackMarshaler = MarshalStack
 
 	out := &bytes.Buffer{}
-	log := astro.New(astro.Writer(out))
+	log := rz.New(rz.Writer(out))
 
 	err := errors.Wrap(errors.New("error message"), "from error")
-	log.Log("", func(e *astro.Event) {
+	log.Log("", func(e *rz.Event) {
 		e.Stack().Err(err)
 	})
 
@@ -30,16 +30,16 @@ func TestLogStack(t *testing.T) {
 }
 
 func TestContextStack(t *testing.T) {
-	astro.ErrorStackMarshaler = MarshalStack
+	rz.ErrorStackMarshaler = MarshalStack
 
 	out := &bytes.Buffer{}
-	log := astro.New(
-		astro.Writer(out),
-		astro.Stack(true),
+	log := rz.New(
+		rz.Writer(out),
+		rz.Stack(true),
 	)
 
 	err := errors.Wrap(errors.New("error message"), "from error")
-	log.Log("", func(e *astro.Event) {
+	log.Log("", func(e *rz.Event) {
 		e.Err(err)
 	})
 
@@ -51,14 +51,14 @@ func TestContextStack(t *testing.T) {
 }
 
 func BenchmarkLogStack(b *testing.B) {
-	astro.ErrorStackMarshaler = MarshalStack
+	rz.ErrorStackMarshaler = MarshalStack
 	out := &bytes.Buffer{}
-	log := astro.New(astro.Writer(out))
+	log := rz.New(rz.Writer(out))
 	err := errors.Wrap(errors.New("error message"), "from error")
 	b.ReportAllocs()
 
 	for i := 0; i < b.N; i++ {
-		log.Log("", func(e *astro.Event) {
+		log.Log("", func(e *rz.Event) {
 			e.Stack().Err(err)
 		})
 		out.Reset()

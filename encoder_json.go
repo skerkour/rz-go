@@ -1,12 +1,12 @@
 // +build !binary_log
 
-package astro
+package rz
 
 // encoder_json.go file contains bindings to generate
 // JSON encoded byte stream.
 
 import (
-	"github.com/bloom42/astro-go/internal/json"
+	"github.com/bloom42/rz-go/internal/json"
 )
 
 var (

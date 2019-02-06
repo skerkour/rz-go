@@ -1,7 +1,7 @@
 // +build !windows
 // +build !binary_log
 
-package astro
+package rz
 
 import (
 	"io"

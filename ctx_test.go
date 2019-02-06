@@ -1,4 +1,4 @@
-package astro
+package rz
 
 import (
 	"context"
@@ -36,9 +36,10 @@ func TestFromCtxDisabled(t *testing.T) {
 		t.Error("ToCtx stored a disabled logger")
 	}
 
-	l := New(Writer(ioutil.Discard)).With(func(e *Event) {
-		e.String("foo", "bar")
-	})
+	l := New(
+		Writer(ioutil.Discard),
+		With(func(e *Event) { e.String("foo", "bar") }),
+	)
 	ctx = l.ToCtx(ctx)
 	if FromCtx(ctx) != &l {
 		t.Error("WithContext did not store logger")

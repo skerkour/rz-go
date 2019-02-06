@@ -2,9 +2,9 @@
 
 [Make logging great again](https://kerkour.com/post/logging/)
 
-[![GoDoc](https://godoc.org/github.com/bloom42/astro-go?status.svg)](https://godoc.org/github.com/bloom42/astro-go)
-[![Build Status](https://travis-ci.org/bloom42/astro-go.svg?branch=master)](https://travis-ci.org/bloom42/astro-go)
-[![GitHub release](https://img.shields.io/github/release/bloom42/astro-go.svg)](https://github.com/bloom42/astro-go/releases)
+[![GoDoc](https://godoc.org/github.com/bloom42/rz-go?status.svg)](https://godoc.org/github.com/bloom42/rz-go)
+[![Build Status](https://travis-ci.org/bloom42/rz-go.svg?branch=master)](https://travis-ci.org/bloom42/rz-go)
+[![GitHub release](https://img.shields.io/github/release/bloom42/rz-go.svg)](https://github.com/bloom42/rz-go/releases)
 
 ![Console logging](docs/example_screenshot.png)
 
@@ -35,21 +35,21 @@
 
 ```go
 SetWriter(writer io.Writer) // default to os.Stdout
-SetFormatter(formatter astro.Formatter) // default to astro.JSONFormatter
+SetFormatter(formatter rz.Formatter) // default to rz.JSONFormatter
 SetFields(fields ...interface{})
 AddFields(fields ...interface{})
 SetInsertTimestampField(insert bool) // default to true
-SetLevel(level Level) // default to astro.DebugLevel
-SetTimestampFieldName(fieldName string) // default to astro.TimestampFieldName ("timestamp")
-SetLevelFieldName(fieldName string) // default to astro.LevelFieldName ("level")
+SetLevel(level Level) // default to rz.DebugLevel
+SetTimestampFieldName(fieldName string) // default to rz.TimestampFieldName ("timestamp")
+SetLevelFieldName(fieldName string) // default to rz.LevelFieldName ("level")
 SetTimestampFunc(fn func() time.Time) // default to time.Now().UTC
-AddHook(hook astro.Hook)
+AddHook(hook rz.Hook)
 ```
 
 
 ## Examples
 
-See the [examples](https://github.com/bloom42/astro-go/tree/master/examples) folder.
+See the [examples](https://github.com/bloom42/rz-go/tree/master/examples) folder.
 
 
 ## Contributing

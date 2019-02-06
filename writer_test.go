@@ -1,7 +1,7 @@
 // +build !binary_log
 // +build !windows
 
-package astro
+package rz
 
 // func TestMultiSyslogWriter(t *testing.T) {
 // 	sw := &syslogTestWriter{}

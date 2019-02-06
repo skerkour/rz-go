@@ -1,4 +1,4 @@
-package astro
+package rz
 
 import (
 	"errors"
@@ -43,12 +43,15 @@ func BenchmarkInfo(b *testing.B) {
 }
 
 func BenchmarkContextFields(b *testing.B) {
-	logger := New(Writer(ioutil.Discard)).With(func(e *Event) {
-		e.String("string", "four!")
-		e.Time("time", time.Time{})
-		e.Int("int", 123)
-		e.Float32("float", -2.203230293249593)
-	})
+	logger := New(
+		Writer(ioutil.Discard),
+		With(func(e *Event) {
+			e.String("string", "four!")
+			e.Time("time", time.Time{})
+			e.Int("int", 123)
+			e.Float32("float", -2.203230293249593)
+		}),
+	)
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
@@ -58,15 +61,15 @@ func BenchmarkContextFields(b *testing.B) {
 }
 
 func BenchmarkContextAppend(b *testing.B) {
-	logger := New(Writer(ioutil.Discard)).With(func(e *Event) {
+	logger := New(Writer(ioutil.Discard), With(func(e *Event) {
 		e.String("foo", "bar")
-	})
+	}))
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			logger.With(func(e *Event) {
+			logger.Config(With(func(e *Event) {
 				e.String("bar", "baz")
-			})
+			}))
 		}
 	})
 }

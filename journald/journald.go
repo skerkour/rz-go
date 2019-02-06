@@ -21,8 +21,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/coreos/go-systemd/journal"
-	"github.com/bloom42/astro-go"
-	"github.com/bloom42/astro-go/internal/cbor"
+	"github.com/bloom42/rz-go"
+	"github.com/bloom42/rz-go/internal/cbor"
 	"io"
 	"strings"
 )

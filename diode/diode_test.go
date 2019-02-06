@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bloom42/astro-go"
-	"github.com/bloom42/astro-go/diode"
-	"github.com/bloom42/astro-go/internal/cbor"
+	"github.com/bloom42/rz-go"
+	"github.com/bloom42/rz-go/diode"
+	"github.com/bloom42/rz-go/internal/cbor"
 )
 
 func TestNewWriter(t *testing.T) {

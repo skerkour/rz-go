@@ -1,11 +1,11 @@
 // +build binary_log
 
-package astro
+package rz
 
 // This file contains bindings to do binary encoding.
 
 import (
-	"github.com/bloom42/astro-go/internal/cbor"
+	"github.com/bloom42/rz-go/internal/cbor"
 )
 
 var (

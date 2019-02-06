@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/bloom42/astro-go"
+	"github.com/bloom42/rz-go"
 )
 
 func main() {
@@ -12,47 +12,47 @@ func main() {
 	hostname, _ := os.Hostname()
 	_ = hostname
 
-	// log := astro.New(astro.Fields(func(e *astro.Event) {
+	// log := rz.New(rz.Fields(func(e *rz.Event) {
 	// 	e.String("service", "api").
 	// 		String("host", hostname).
 	// 		String("environment", env)
 	// }))
-	log := astro.New()
-	log2 := log.Config(astro.With(func(e *astro.Event) {
+	log := rz.New()
+	log2 := log.Config(rz.With(func(e *rz.Event) {
 		e.String("service", "api").
 			String("host", hostname).
 			String("environment", env)
 	}))
 
 	// log.Logger = log.Config(
-	// 	//   astro.SetWriter(os.Stderr),
-	// 	astro.AddFields(
+	// 	//   rz.SetWriter(os.Stderr),
+	// 	rz.AddFields(
 	// 		"service", "api",
 	// 		"host", hostname,
 	// 		"environment", env,
 	// 	),
-	// 	astro.SetFormatter(astro.NewConsoleFormatter()),
+	// 	rz.SetFormatter(rz.NewConsoleFormatter()),
 	// )
 
 	if env == "production" {
 		log = log.Config(
-			// astro.SetFormatter(astro.JSONFormatter{}),
-			astro.Level(astro.InfoLevel),
+			// rz.SetFormatter(rz.JSONFormatter{}),
+			rz.Level(rz.InfoLevel),
 		)
 	}
 
 	// subLogger := log.With("contextual_field", 42)
 	// subLogger.Config(
-	// 	astro.SetFormatter(astro.NewCLIFormatter()),
+	// 	rz.SetFormatter(rz.NewCLIFormatter()),
 	// )
 
-	// otherLogger := astro.NewLogger()
+	// otherLogger := rz.NewLogger()
 	// otherOtherLogger := otherLogger.With("field", "MyUUID")
 
-	log.Info("info from logger", func(e *astro.Event) {
+	log.Info("info from logger", func(e *rz.Event) {
 		e.String("hello", "world")
 	})
-	log2.Info("info from logger2", func(e *astro.Event) {
+	log2.Info("info from logger2", func(e *rz.Event) {
 		e.String("hello2", "world2")
 	})
 	// log.With("field1", "hello world", "field2", 999.99).Info("info from logger with fields")
@@ -65,6 +65,6 @@ func main() {
 	// myFunc(otherLogger)
 }
 
-// func myFunc(logger astro.Logger) {
+// func myFunc(logger rz.Logger) {
 // 	logger.Info("info from other logger in func")
 // }

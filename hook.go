@@ -1,4 +1,4 @@
-package astro
+package rz
 
 // LogHook defines an interface to a log hook.
 type LogHook interface {

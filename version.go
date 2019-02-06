@@ -1,6 +1,6 @@
-package astro
+package rz
 
 const (
-	// Version is the astro's library version
-	Version = "0.13.3"
+	// Version is the rz's library version
+	Version = "0.13.4"
 )

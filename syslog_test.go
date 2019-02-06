@@ -1,7 +1,7 @@
 // +build !binary_log
 // +build !windows
 
-package astro
+package rz
 
 type syslogEvent struct {
 	level string

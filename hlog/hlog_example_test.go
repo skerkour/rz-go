@@ -9,8 +9,8 @@ import (
 
 	"net/http/httptest"
 
-	"github.com/bloom42/astro-go"
-	"github.com/bloom42/astro-go/hlog"
+	"github.com/bloom42/rz-go"
+	"github.com/bloom42/rz-go/hlog"
 )
 
 // fake alice to avoid dep

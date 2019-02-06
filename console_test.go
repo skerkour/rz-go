@@ -1,7 +1,7 @@
-package astro_test
+package rz_test
 
 // func ExampleConsoleWriter() {
-// 	log := astro.New(astro.ConsoleWriter{Out: os.Stdout, NoColor: true})
+// 	log := rz.New(rz.ConsoleWriter{Out: os.Stdout, NoColor: true})
 
 // 	log.Info().Str("foo", "bar").Msg("Hello World")
 // 	// Output: <nil> INF Hello World foo=bar

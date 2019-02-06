@@ -14,8 +14,8 @@ import (
 
 	"net/http/httptest"
 
-	"github.com/bloom42/astro-go"
-	"github.com/bloom42/astro-go/internal/cbor"
+	"github.com/bloom42/rz-go"
+	"github.com/bloom42/rz-go/internal/cbor"
 )
 
 func decodeIfBinary(out *bytes.Buffer) string {
