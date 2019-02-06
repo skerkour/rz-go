@@ -20,7 +20,7 @@ var (
 	CallerFieldName = "caller"
 
 	// CallerSkipFrameCount is the number of stack frames to skip to find the caller.
-	CallerSkipFrameCount = 2
+	CallerSkipFrameCount = 4
 
 	// ErrorStackFieldName is the field name used for error stacks.
 	ErrorStackFieldName = "stack"

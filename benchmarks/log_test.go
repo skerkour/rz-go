@@ -28,7 +28,7 @@ func newLogrus() *logrus.Logger {
 }
 
 func newAstro() astro.Logger {
-	return astro.New(ioutil.Discard).With(func(e *astro.Event) { e.Timestamp() })
+	return astro.New(astro.Writer(ioutil.Discard)).With(func(e *astro.Event) { e.Timestamp() })
 }
 
 func newZerolog() zerolog.Logger {
@@ -109,8 +109,8 @@ func zerolog10Context(c zerolog.Context) zerolog.Context {
 func astro10Fields(e *astro.Event) {
 	e.Int("int", _tenInts[0]).
 		Ints("ints", _tenInts).
-		Str("string", _tenStrings[0]).
-		Strs("strings", _tenStrings).
+		String("string", _tenStrings[0]).
+		Strings("strings", _tenStrings).
 		Time("time", _tenTimes[0]).
 		Times("times", _tenTimes).
 		Interface("user1", _oneUser).
@@ -237,10 +237,10 @@ func BenchmarkZl(b *testing.B) {
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				logger.Warn(_testMessage, func(e *astro.Event) {
-					e.Str("Hello", "world")
-					e.Str("Hello2", "world")
-					e.Str("Hello3", "world")
-					e.Str("Hello4", "world")
+					e.String("Hello", "world")
+					e.String("Hello2", "world")
+					e.String("Hello3", "world")
+					e.String("Hello4", "world")
 				})
 			}
 		})
@@ -320,8 +320,8 @@ func BenchmarkZlLotOfFields(b *testing.B) {
 				logger.Warn(_testMessage, func(e *astro.Event) {
 					e.Int("int", _tenInts[0])
 					e.Ints("ints", _tenInts)
-					e.Str("string", _tenStrings[0])
-					e.Strs("strings", _tenStrings)
+					e.String("string", _tenStrings[0])
+					e.Strings("strings", _tenStrings)
 					e.Time("time", _tenTimes[0])
 					e.Times("times", _tenTimes)
 					e.Interface("user1", _oneUser)

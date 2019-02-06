@@ -2,7 +2,11 @@ package astro
 
 import (
 	"bytes"
+	"errors"
+	"fmt"
+	"runtime"
 	"testing"
+	"time"
 )
 
 func TestLog(t *testing.T) {
@@ -73,37 +77,41 @@ func TestInfo(t *testing.T) {
 	})
 }
 
-// func TestWith(t *testing.T) {
-// 	out := &bytes.Buffer{}
-// 	ctx := New(out).With().
-// 		Str("string", "foo").
-// 		Bytes("bytes", []byte("bar")).
-// 		Hex("hex", []byte{0x12, 0xef}).
-// 		RawJSON("json", []byte(`{"some":"json"}`)).
-// 		AnErr("some_err", nil).
-// 		Err(errors.New("some error")).
-// 		Bool("bool", true).
-// 		Int("int", 1).
-// 		Int8("int8", 2).
-// 		Int16("int16", 3).
-// 		Int32("int32", 4).
-// 		Int64("int64", 5).
-// 		Uint("uint", 6).
-// 		Uint8("uint8", 7).
-// 		Uint16("uint16", 8).
-// 		Uint32("uint32", 9).
-// 		Uint64("uint64", 10).
-// 		Float32("float32", 11.101).
-// 		Float64("float64", 12.30303).
-// 		Time("time", time.Time{})
-// 	_, file, line, _ := runtime.Caller(0)
-// 	caller := fmt.Sprintf("%s:%d", file, line+3)
-// 	log := ctx.Caller().Logger()
-// 	log.Log().Msg("")
-// 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"string":"foo","bytes":"bar","hex":"12ef","json":{"some":"json"},"error":"some error","bool":true,"int":1,"int8":2,"int16":3,"int32":4,"int64":5,"uint":6,"uint8":7,"uint16":8,"uint32":9,"uint64":10,"float32":11.101,"float64":12.30303,"time":"0001-01-01T00:00:00Z","caller":"`+caller+`"}`+"\n"; got != want {
-// 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
-// 	}
-// }
+func TestWith(t *testing.T) {
+	out := &bytes.Buffer{}
+	log := New(
+		Writer(out),
+		With(func(e *Event) {
+			e.String("string", "foo").
+				Bytes("bytes", []byte("bar")).
+				Hex("hex", []byte{0x12, 0xef}).
+				RawJSON("json", []byte(`{"some":"json"}`)).
+				Error("some_err", nil).
+				Err(errors.New("some error")).
+				Bool("bool", true).
+				Int("int", 1).
+				Int8("int8", 2).
+				Int16("int16", 3).
+				Int32("int32", 4).
+				Int64("int64", 5).
+				Uint("uint", 6).
+				Uint8("uint8", 7).
+				Uint16("uint16", 8).
+				Uint32("uint32", 9).
+				Uint64("uint64", 10).
+				Float32("float32", 11.101).
+				Float64("float64", 12.30303).
+				Time("time", time.Time{}).
+				Caller()
+		}),
+	)
+	_, file, line, _ := runtime.Caller(0)
+	caller := fmt.Sprintf("%s:%d", file, line+2)
+	log.Log("", nil)
+	if got, want := decodeIfBinaryToString(out.Bytes()), `{"string":"foo","bytes":"bar","hex":"12ef","json":{"some":"json"},"error":"some error","bool":true,"int":1,"int8":2,"int16":3,"int32":4,"int64":5,"uint":6,"uint8":7,"uint16":8,"uint32":9,"uint64":10,"float32":11.101,"float64":12.30303,"time":"0001-01-01T00:00:00Z","caller":"`+caller+`"}`+"\n"; got != want {
+		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
+	}
+}
 
 // func TestFieldsMap(t *testing.T) {
 // 	out := &bytes.Buffer{}

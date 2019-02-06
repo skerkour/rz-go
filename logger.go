@@ -110,6 +110,7 @@ import (
 type Logger struct {
 	writer  LevelWriter
 	stack   bool
+	caller  bool
 	level   LogLevel
 	sampler LogSampler
 	context []byte
@@ -137,6 +138,11 @@ func Nop() Logger {
 
 // Config apply all the options to the logger
 func (l Logger) Config(options ...Option) Logger {
+	context := l.context
+	l.context = make([]byte, 0, 500)
+	if context != nil {
+		l.context = append(l.context, context...)
+	}
 	for _, option := range options {
 		option(&l)
 	}
@@ -150,6 +156,7 @@ func (l Logger) With(fields func(*Event)) Logger {
 		fields(e)
 		l.context = enc.AppendObjectData(l.context, e.buf)
 		l.stack = e.stack
+		l.caller = e.caller
 	}
 	return l
 }
@@ -212,27 +219,8 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 	e := newEvent(l.writer, level)
 	e.done = done
 	e.ch = l.hooks
-	if level != NoLevel {
-		e.String(LevelFieldName, level.String())
-	}
-	if l.context != nil && len(l.context) > 0 {
-		e.buf = enc.AppendObjectData(e.buf, l.context)
-	}
-
-	if fields != nil {
-		fields(e)
-	}
-	e.msg(message)
-}
-
-func (l *Logger) newEvent(level LogLevel, message string, fields func(*Event), done func(string)) {
-	enabled := l.should(level)
-	if !enabled {
-		return
-	}
-	e := newEvent(l.writer, level)
-	e.done = done
-	e.ch = l.hooks
+	e.caller = l.caller
+	e.stack = l.stack
 	if level != NoLevel {
 		e.String(LevelFieldName, level.String())
 	}

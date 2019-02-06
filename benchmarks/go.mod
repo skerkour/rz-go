@@ -2,7 +2,7 @@ module github.com/bloom42/astro-go/benchmarks
 
 require (
 	github.com/astrolib/zerolog v1.19.0
-	github.com/bloom42/astro-go v0.13.0
+	github.com/bloom42/astro-go v0.13.1
 	github.com/rs/zerolog v1.11.0
 	github.com/sirupsen/logrus v1.3.0
 	github.com/stretchr/testify v1.3.0 // indirect

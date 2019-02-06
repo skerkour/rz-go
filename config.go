@@ -50,12 +50,15 @@ func Hooks(hooks ...LogHook) Option {
 	}
 }
 
-// Fields replaces logger's fields
-func Fields(fields func(*Event)) Option {
+// With replaces logger's configuration
+func With(fields func(*Event)) Option {
 	return func(logger *Logger) {
 		if fields != nil {
-			e := newEvent(nil, NoLevel)
+			e := newEvent(logger.writer, logger.level)
+			e.buf = nil
 			fields(e)
+			logger.stack = e.stack
+			logger.caller = e.caller
 			logger.context = enc.AppendObjectData(make([]byte, 0, 500), e.buf)
 		}
 	}

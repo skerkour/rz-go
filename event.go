@@ -20,12 +20,13 @@ var eventPool = &sync.Pool{
 
 // Event represents a log event. It is instanced by one of the level method.
 type Event struct {
-	buf   []byte
-	w     LevelWriter
-	level LogLevel
-	done  func(msg string)
-	stack bool      // enable error stack trace
-	ch    []LogHook // hooks from context
+	buf    []byte
+	w      LevelWriter
+	level  LogLevel
+	done   func(msg string)
+	stack  bool      // enable error stack trace
+	caller bool      // enable caller field
+	ch     []LogHook // hooks from context
 }
 
 func putEvent(e *Event) {
@@ -105,6 +106,9 @@ func (e *Event) msg(msg string) {
 	}
 	if msg != "" {
 		e.buf = enc.AppendString(enc.AppendKey(e.buf, MessageFieldName), msg)
+	}
+	if e.caller {
+		e._caller(CallerSkipFrameCount)
 	}
 	if e.done != nil {
 		defer e.done(msg)
@@ -639,10 +643,12 @@ func (e *Event) Interface(key string, i interface{}) *Event {
 
 // Caller adds the file:line of the caller with the zerolog.CallerFieldName key.
 func (e *Event) Caller() *Event {
-	return e.caller(CallerSkipFrameCount)
+	e.caller = true
+	return e
+	// return e.caller(CallerSkipFrameCount)
 }
 
-func (e *Event) caller(skip int) *Event {
+func (e *Event) _caller(skip int) *Event {
 	if e == nil {
 		return e
 	}
