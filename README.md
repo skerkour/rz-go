@@ -64,18 +64,22 @@ func main() {
 }
 ```
 
-## Benchmark
+## Benchmarks
 
 ```
-pkg: github.com/bloom42/astro-go/_benchmark
-BenchmarkWithoutFields/sirupsen/logrus-4         	  500000	      3104 ns/op	    1473 B/op	      24 allocs/op
-BenchmarkWithoutFields/bloom42/astro-go-4  	 1000000	      1454 ns/op	     664 B/op	       9 allocs/op
-Benchmark10FieldsContext/sirupsen/logrus-4       	  100000	     12996 ns/op	    5680 B/op	      54 allocs/op
-Benchmark10FieldsContext/bloom42/astro-go-4         	  300000	      5779 ns/op	    1934 B/op	      12 allocs/op
-Benchmark10Fields/sirupsen/logrus-4                       	  100000	     14016 ns/op	    6393 B/op	      57 allocs/op
-Benchmark10Fields/bloom42/astro-go-4                	  200000	      6038 ns/op	    2254 B/op	      13 allocs/op
+$ make benchmarks
+cd benchmarks && ./run.sh
+goos: linux
+goarch: amd64
+pkg: github.com/bloom42/astro-go/benchmarks
+BenchmarkWithoutFields/sirupsen/logrus-4                  300000              4653 ns/op            1137 B/op         24 allocs/op
+BenchmarkWithoutFields/bloom42/astro-go-4                1000000              1593 ns/op             832 B/op         13 allocs/op
+Benchmark10FieldsContext/sirupsen/logrus-4                100000             21492 ns/op            3261 B/op         50 allocs/op
+Benchmark10FieldsContext/bloom42/astro-go-4               300000              4646 ns/op            3196 B/op         17 allocs/op
+Benchmark10Fields/sirupsen/logrus-4                        50000             25341 ns/op            4043 B/op         54 allocs/op
+Benchmark10Fields/bloom42/astro-go-4                      300000              5067 ns/op            3516 B/op         18 allocs/op
 PASS
-ok  	github.com/bloom42/astro-go/_benchmark	9.120s
+ok      github.com/bloom42/astro-go/benchmarks  10.970s
 ```
 
 ## Log usage

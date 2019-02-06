@@ -1,4 +1,4 @@
-.PHONY: all test release build benchmark
+.PHONY: all test release build benchmarks
 
 VERSION := $(shell cat version.go| grep "\sVersion =" | cut -d '"' -f2)
 
@@ -15,5 +15,5 @@ release:
 	git tag v$(VERSION)
 	git push origin v$(VERSION)
 
-benchmark:
-	cd benchmark && ./run.sh
+benchmarks:
+	cd benchmarks && ./run.sh
