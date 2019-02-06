@@ -151,14 +151,7 @@ func (l Logger) Config(options ...Option) Logger {
 
 // With creates a child logger with the field added to its context.
 func (l Logger) With(fields func(*Event)) Logger {
-	if fields != nil {
-		e := newEvent(nil, NoLevel)
-		fields(e)
-		l.context = enc.AppendObjectData(l.context, e.buf)
-		l.stack = e.stack
-		l.caller = e.caller
-	}
-	return l
+	return l.Config(With(fields))
 }
 
 // Debug logs a new message with debug level.
