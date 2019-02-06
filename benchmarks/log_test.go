@@ -6,7 +6,6 @@ import (
 	"testing"
 	"time"
 
-	zl "github.com/rzlib/zerolog"
 	"github.com/bloom42/rz-go"
 	"github.com/rs/zerolog"
 	"github.com/sirupsen/logrus"
@@ -27,16 +26,15 @@ func newLogrus() *logrus.Logger {
 	}
 }
 
-func newAstro() rz.Logger {
-	return rz.New(rz.Writer(ioutil.Discard)).With(func(e *rz.Event) { e.Timestamp() })
+func newRz() rz.Logger {
+	return rz.New(
+		rz.Writer(ioutil.Discard),
+		rz.With(func(e *rz.Event) { e.Timestamp() }),
+	)
 }
 
 func newZerolog() zerolog.Logger {
 	return zerolog.New(ioutil.Discard).With().Timestamp().Logger()
-}
-
-func newZl() zl.Logger {
-	return zl.New(ioutil.Discard).With().Timestamp().Logger()
 }
 
 func newDisabledZerolog() zerolog.Logger {
@@ -122,7 +120,7 @@ func rz10Fields(e *rz.Event) {
 var _testMessage = "hello world"
 
 func BenchmarkWithoutFields(b *testing.B) {
-	b.Logf("Logging at a disabled level without any structured context.")
+	b.Logf("Logging without any structured context.")
 	b.Run("sirupsen/logrus", func(b *testing.B) {
 		logger := newLogrus()
 		b.ResetTimer()
@@ -133,7 +131,7 @@ func BenchmarkWithoutFields(b *testing.B) {
 		})
 	})
 	b.Run("bloom42/rz-go", func(b *testing.B) {
-		logger := newAstro()
+		logger := newRz()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -153,6 +151,7 @@ func BenchmarkWithoutFields(b *testing.B) {
 }
 
 func Benchmark10FieldsContext(b *testing.B) {
+	b.Logf("Logging with 10 fields in context")
 	b.Run("sirupsen/logrus", func(b *testing.B) {
 		logger := newLogrus()
 		fields := logrus10Fields()
@@ -165,12 +164,11 @@ func Benchmark10FieldsContext(b *testing.B) {
 		})
 	})
 	b.Run("bloom42/rz-go", func(b *testing.B) {
-		logger := newAstro()
-		l := logger.With(rz10Fields)
+		logger := newRz().Config(rz.With(rz10Fields))
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				l.Info(_testMessage, nil)
+				logger.Info(_testMessage, nil)
 			}
 		})
 	})
@@ -197,7 +195,7 @@ func Benchmark10Fields(b *testing.B) {
 		})
 	})
 	b.Run("bloom42/rz-go", func(b *testing.B) {
-		logger := newAstro()
+		logger := newRz()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -232,7 +230,7 @@ func BenchmarkZl(b *testing.B) {
 		})
 	})
 	b.Run("bloom42/rz", func(b *testing.B) {
-		logger := newAstro()
+		logger := newRz()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -259,7 +257,7 @@ func BenchmarkZlNoFields(b *testing.B) {
 		})
 	})
 	b.Run("bloom42/rz", func(b *testing.B) {
-		logger := newAstro()
+		logger := newRz()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -281,7 +279,7 @@ func BenchmarkZlNoFieldsNoMessage(b *testing.B) {
 		})
 	})
 	b.Run("bloom42/rz", func(b *testing.B) {
-		logger := newAstro()
+		logger := newRz()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -313,7 +311,7 @@ func BenchmarkZlLotOfFields(b *testing.B) {
 		})
 	})
 	b.Run("bloom42/rz", func(b *testing.B) {
-		logger := newAstro()
+		logger := newRz()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {

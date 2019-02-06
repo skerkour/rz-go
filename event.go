@@ -20,13 +20,15 @@ var eventPool = &sync.Pool{
 
 // Event represents a log event. It is instanced by one of the level method.
 type Event struct {
-	buf    []byte
-	w      LevelWriter
-	level  LogLevel
-	done   func(msg string)
-	stack  bool      // enable error stack trace
-	caller bool      // enable caller field
-	ch     []LogHook // hooks from context
+	buf                []byte
+	w                  LevelWriter
+	level              LogLevel
+	done               func(msg string)
+	stack              bool // enable error stack trace
+	caller             bool // enable caller field
+	timestamp          bool // enable timestamp
+	timestampFieldName string
+	ch                 []LogHook // hooks from context
 }
 
 func putEvent(e *Event) {
@@ -103,6 +105,10 @@ func (e *Event) msg(msg string) {
 				hook.Run(e, e.level, msg)
 			}
 		}
+	}
+
+	if e.timestamp {
+		e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), TimestampFunc(), TimeFieldFormat)
 	}
 	if msg != "" {
 		e.buf = enc.AppendString(enc.AppendKey(e.buf, MessageFieldName), msg)
@@ -561,16 +567,13 @@ func (e *Event) Floats64(key string, f []float64) *Event {
 	return e
 }
 
-// Timestamp adds the current local time as UNIX timestamp to the *Event context with the "time" key.
-// To customize the key name, change zerolog.TimestampFieldName.
-//
-// NOTE: It won't dedupe the "time" key if the *Event (or *Context) has one
-// already.
+// Timestamp adds the current local time as UNIX timestamp to the *Event context with the
+// rz.TimestampFieldName key.
 func (e *Event) Timestamp() *Event {
 	if e == nil {
 		return e
 	}
-	e.buf = enc.AppendTime(enc.AppendKey(e.buf, TimestampFieldName), TimestampFunc(), TimeFieldFormat)
+	e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), TimestampFunc(), TimeFieldFormat)
 	return e
 }
 
@@ -588,6 +591,7 @@ func (e *Event) Times(key string, t []time.Time) *Event {
 	if e == nil {
 		return e
 	}
+	e.timestamp = false
 	e.buf = enc.AppendTimes(enc.AppendKey(e.buf, key), t, TimeFieldFormat)
 	return e
 }

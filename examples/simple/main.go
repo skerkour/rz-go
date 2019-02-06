@@ -53,7 +53,8 @@ func main() {
 		e.String("hello", "world")
 	})
 	log2.Info("info from logger2", func(e *rz.Event) {
-		e.String("hello2", "world2")
+		e.String("hello2", "world2").
+			Timestamp()
 	})
 	// log.With("field1", "hello world", "field2", 999.99).Info("info from logger with fields")
 	// subLogger.Debug("debug from sublogger")

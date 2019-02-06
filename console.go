@@ -124,7 +124,7 @@ func (w ConsoleWriter) writeFields(evt map[string]interface{}, buf *bytes.Buffer
 	var fields = make([]string, 0, len(evt))
 	for field := range evt {
 		switch field {
-		case LevelFieldName, TimestampFieldName, MessageFieldName, CallerFieldName:
+		case LevelFieldName, DefaultTimestampFieldName, MessageFieldName, CallerFieldName: // TODO
 			continue
 		}
 		fields = append(fields, field)
@@ -217,7 +217,7 @@ func (w ConsoleWriter) writePart(buf *bytes.Buffer, evt map[string]interface{}, 
 		} else {
 			f = w.FormatLevel
 		}
-	case TimestampFieldName:
+	case DefaultTimestampFieldName: // TODO
 		if w.FormatTimestamp == nil {
 			f = consoleDefaultFormatTimestamp(w.TimeFormat, w.NoColor)
 		} else {
@@ -275,7 +275,7 @@ func colorize(s interface{}, c int, disabled bool) string {
 
 func consoleDefaultPartsOrder() []string {
 	return []string{
-		TimestampFieldName,
+		DefaultTimestampFieldName, // TODO
 		LevelFieldName,
 		CallerFieldName,
 		MessageFieldName,

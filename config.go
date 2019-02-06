@@ -59,6 +59,7 @@ func With(fields func(*Event)) Option {
 			fields(e)
 			logger.stack = e.stack
 			logger.caller = e.caller
+			logger.timestamp = e.timestamp
 			logger.context = enc.AppendObjectData(make([]byte, 0, 500), e.buf)
 		}
 	}
@@ -68,5 +69,12 @@ func With(fields func(*Event)) Option {
 func Stack(enableStack bool) Option {
 	return func(logger *Logger) {
 		logger.stack = enableStack
+	}
+}
+
+// Timestamp enable/disable timestamp logging in error messages
+func Timestamp(enableTimestamp bool) Option {
+	return func(logger *Logger) {
+		logger.timestamp = enableTimestamp
 	}
 }

@@ -5,7 +5,7 @@ import "sync/atomic"
 
 var (
 	// TimestampFieldName is the field name used for the timestamp field.
-	TimestampFieldName = "timestamp"
+	DefaultTimestampFieldName = "timestamp"
 
 	// LevelFieldName is the field name used for the level field.
 	LevelFieldName = "level"

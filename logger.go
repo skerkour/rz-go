@@ -10,13 +10,15 @@ import (
 // serialization to the Writer. If your Writer is not thread safe,
 // you may consider a sync wrapper.
 type Logger struct {
-	writer  LevelWriter
-	stack   bool
-	caller  bool
-	level   LogLevel
-	sampler LogSampler
-	context []byte
-	hooks   []LogHook
+	writer             LevelWriter
+	stack              bool
+	caller             bool
+	timestamp          bool
+	level              LogLevel
+	sampler            LogSampler
+	context            []byte
+	hooks              []LogHook
+	timestampFieldName string
 }
 
 // New creates a root logger with given options. If the output writer implements
@@ -28,7 +30,9 @@ type Logger struct {
 // you may consider using sync wrapper.
 func New(options ...Option) Logger {
 	logger := Logger{
-		writer: levelWriterAdapter{os.Stdout},
+		writer:             levelWriterAdapter{os.Stdout},
+		timestamp:          true,
+		timestampFieldName: DefaultTimestampFieldName,
 	}
 	return logger.Config(options...)
 }
@@ -111,6 +115,8 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 	e.ch = l.hooks
 	e.caller = l.caller
 	e.stack = l.stack
+	e.timestamp = l.timestamp
+	e.timestampFieldName = l.timestampFieldName
 	if level != NoLevel {
 		e.String(LevelFieldName, level.String())
 	}
