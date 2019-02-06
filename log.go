@@ -229,7 +229,7 @@ func (l Logger) With(fields func(*Event)) Logger {
 		l.context = append(l.context, context...)
 	}
 	if fields != nil {
-		e := newEvent(l.w, NoLevel)
+		e := newEvent(nil, NoLevel)
 		l.context = enc.AppendObjectData(l.context, e.buf)
 	}
 	return l
@@ -326,7 +326,7 @@ func (l *Logger) logEvent(level Level, message string, fields func(*Event), done
 	e.done = done
 	e.ch = l.hooks
 	if level != NoLevel {
-		e.Str(LevelFieldName, level.String())
+		e.String(LevelFieldName, level.String())
 	}
 	if l.context != nil && len(l.context) > 0 {
 		e.buf = enc.AppendObjectData(e.buf, l.context)
@@ -347,7 +347,7 @@ func (l *Logger) newEvent(level Level, message string, fields func(*Event), done
 	e.done = done
 	e.ch = l.hooks
 	if level != NoLevel {
-		e.Str(LevelFieldName, level.String())
+		e.String(LevelFieldName, level.String())
 	}
 	if l.context != nil && len(l.context) > 0 {
 		e.buf = enc.AppendObjectData(e.buf, l.context)

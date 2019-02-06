@@ -4,27 +4,11 @@ import (
 	"context"
 )
 
-var disabledLogger *Logger
-
-func init() {
-	l := Nop()
-	disabledLogger = &l
-}
-
 type ctxKey struct{}
 
-// WithContext returns a copy of ctx with l associated. If an instance of Logger
+// ToCtx returns a copy of ctx with l associated. If an instance of Logger
 // is already in the context, the context is not updated.
-//
-// For instance, to add a field to an existing logger in the context, use this
-// notation:
-//
-//     ctx := r.Context()
-//     l := zerolog.Ctx(ctx)
-//     l.UpdateContext(func(c Context) Context {
-//         return c.Str("bar", "baz")
-//     })
-func (l *Logger) WithContext(ctx context.Context) context.Context {
+func (l *Logger) ToCtx(ctx context.Context) context.Context {
 	if lp, ok := ctx.Value(ctxKey{}).(*Logger); ok {
 		if lp == l {
 			// Do not store same logger.
@@ -37,11 +21,18 @@ func (l *Logger) WithContext(ctx context.Context) context.Context {
 	return context.WithValue(ctx, ctxKey{}, l)
 }
 
-// Ctx returns the Logger associated with the ctx. If no logger
-// is associated, a disabled logger is returned.
-func Ctx(ctx context.Context) *Logger {
+// FromCtx returns the Logger associated with the ctx. If no logger
+// is associated, a nilis returned.
+//
+// For example, to add a field to an existing logger in the context, use this
+// notation:
+//
+//     ctx := r.Context()
+//     l := astro.FromCtx(ctx)
+//     l.With(...)
+func FromCtx(ctx context.Context) *Logger {
 	if l, ok := ctx.Value(ctxKey{}).(*Logger); ok {
 		return l
 	}
-	return disabledLogger
+	return nil
 }

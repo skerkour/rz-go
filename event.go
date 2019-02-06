@@ -18,8 +18,7 @@ var eventPool = &sync.Pool{
 	},
 }
 
-// Event represents a log event. It is instanced by one of the level method of
-// Logger and finalized by the Msg or Msgf method.
+// Event represents a log event. It is instanced by one of the level method.
 type Event struct {
 	buf   []byte
 	w     LevelWriter
@@ -86,35 +85,13 @@ func (e *Event) Enabled() bool {
 	return e != nil && e.level != Disabled
 }
 
-// Discard disables the event so Msg(f) won't print it.
+// Discard disables the event
 func (e *Event) Discard() *Event {
 	if e == nil {
 		return e
 	}
 	e.level = Disabled
 	return nil
-}
-
-// Msg sends the *Event with msg added as the message field if not empty.
-//
-// NOTICE: once this method is called, the *Event should be disposed.
-// Calling Msg twice can have unexpected result.
-func (e *Event) Msg(msg string) {
-	if e == nil {
-		return
-	}
-	e.msg(msg)
-}
-
-// Msgf sends the event with formated msg added as the message field if not empty.
-//
-// NOTICE: once this methid is called, the *Event should be disposed.
-// Calling Msg twice can have unexpected result.
-func (e *Event) Msgf(format string, v ...interface{}) {
-	if e == nil {
-		return
-	}
-	e.msg(fmt.Sprintf(format, v...))
 }
 
 func (e *Event) msg(msg string) {
@@ -143,9 +120,6 @@ func (e *Event) msg(msg string) {
 
 // Fields is a helper function to use a map to set fields using type assertion.
 func (e *Event) Fields(fields map[string]interface{}) *Event {
-	if e == nil {
-		return e
-	}
 	e.buf = appendFields(e.buf, fields)
 	return e
 }
@@ -153,9 +127,6 @@ func (e *Event) Fields(fields map[string]interface{}) *Event {
 // Dict adds the field key with a dict to the event context.
 // Use zerolog.Dict() to create the dictionary.
 func (e *Event) Dict(key string, dict *Event) *Event {
-	if e == nil {
-		return e
-	}
 	dict.buf = enc.AppendEndMarker(dict.buf)
 	e.buf = append(enc.AppendKey(e.buf, key), dict.buf...)
 	putEvent(dict)
@@ -213,8 +184,8 @@ func (e *Event) EmbedObject(obj LogObjectMarshaler) *Event {
 	return e
 }
 
-// Str adds the field key with val as a string to the *Event context.
-func (e *Event) Str(key, val string) *Event {
+// String adds the field key with val as a string to the *Event context.
+func (e *Event) String(key, val string) *Event {
 	if e == nil {
 		return e
 	}
@@ -222,8 +193,8 @@ func (e *Event) Str(key, val string) *Event {
 	return e
 }
 
-// Strs adds the field key with vals as a []string to the *Event context.
-func (e *Event) Strs(key string, vals []string) *Event {
+// Strings adds the field key with vals as a []string to the *Event context.
+func (e *Event) Strings(key string, vals []string) *Event {
 	if e == nil {
 		return e
 	}
@@ -276,9 +247,9 @@ func (e *Event) AnErr(key string, err error) *Event {
 	case LogObjectMarshaler:
 		return e.Object(key, m)
 	case error:
-		return e.Str(key, m.Error())
+		return e.String(key, m.Error())
 	case string:
-		return e.Str(key, m)
+		return e.String(key, m)
 	default:
 		return e.Interface(key, m)
 	}
@@ -326,9 +297,9 @@ func (e *Event) Err(err error) *Event {
 		case LogObjectMarshaler:
 			e.Object(ErrorStackFieldName, m)
 		case error:
-			e.Str(ErrorStackFieldName, m.Error())
+			e.String(ErrorStackFieldName, m.Error())
 		case string:
-			e.Str(ErrorStackFieldName, m)
+			e.String(ErrorStackFieldName, m)
 		default:
 			e.Interface(ErrorStackFieldName, m)
 		}

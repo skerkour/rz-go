@@ -7,57 +7,59 @@ import (
 	"testing"
 )
 
-func TestCtx(t *testing.T) {
+func TestFromCtx(t *testing.T) {
 	log := New(ioutil.Discard)
-	ctx := log.WithContext(context.Background())
-	log2 := Ctx(ctx)
+	ctx := log.ToCtx(context.Background())
+	log2 := FromCtx(ctx)
 	if !reflect.DeepEqual(log, *log2) {
-		t.Error("Ctx did not return the expected logger")
+		t.Error("FromCtx did not return the expected logger")
 	}
 
 	// update
 	log = log.Level(InfoLevel)
-	ctx = log.WithContext(ctx)
-	log2 = Ctx(ctx)
+	ctx = log.ToCtx(ctx)
+	log2 = FromCtx(ctx)
 	if !reflect.DeepEqual(log, *log2) {
-		t.Error("Ctx did not return the expected logger")
+		t.Error("FromCtx did not return the expected logger")
 	}
 
-	log2 = Ctx(context.Background())
-	if log2 != disabledLogger {
-		t.Error("Ctx did not return the expected logger")
+	log2 = FromCtx(context.Background())
+	if log2 != nil {
+		t.Error("FromCtx did not return the expected logger")
 	}
 }
 
-func TestCtxDisabled(t *testing.T) {
+func TestFromCtxDisabled(t *testing.T) {
 	dl := New(ioutil.Discard).Level(Disabled)
-	ctx := dl.WithContext(context.Background())
+	ctx := dl.ToCtx(context.Background())
 	if ctx != context.Background() {
-		t.Error("WithContext stored a disabled logger")
+		t.Error("ToCtx stored a disabled logger")
 	}
 
-	l := New(ioutil.Discard).With().Str("foo", "bar").Logger()
-	ctx = l.WithContext(ctx)
-	if Ctx(ctx) != &l {
+	l := New(ioutil.Discard).With(func(e *Event) {
+		e.String("foo", "bar")
+	})
+	ctx = l.ToCtx(ctx)
+	if FromCtx(ctx) != &l {
 		t.Error("WithContext did not store logger")
 	}
 
-	l.UpdateContext(func(c Context) Context {
-		return c.Str("bar", "baz")
-	})
-	ctx = l.WithContext(ctx)
-	if Ctx(ctx) != &l {
-		t.Error("WithContext did not store updated logger")
-	}
+	// l.UpdateContext(func(c Context) Context {
+	// 	return c.Str("bar", "baz")
+	// })
+	// ctx = l.WithContext(ctx)
+	// if Ctx(ctx) != &l {
+	// 	t.Error("WithContext did not store updated logger")
+	// }
 
 	l = l.Level(DebugLevel)
-	ctx = l.WithContext(ctx)
-	if Ctx(ctx) != &l {
-		t.Error("WithContext did not store copied logger")
+	ctx = l.ToCtx(ctx)
+	if FromCtx(ctx) != &l {
+		t.Error("ToCtx did not store copied logger")
 	}
 
-	ctx = dl.WithContext(ctx)
-	if Ctx(ctx) != &dl {
-		t.Error("WithContext did not overide logger with a disabled logger")
+	ctx = dl.ToCtx(ctx)
+	if FromCtx(ctx) != &dl {
+		t.Error("ToCtx did not overide logger with a disabled logger")
 	}
 }
