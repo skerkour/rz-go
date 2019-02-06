@@ -660,8 +660,8 @@ func (e *Event) _caller(skip int) *Event {
 	return e
 }
 
-// IPAddr adds IPv4 or IPv6 Address to the event
-func (e *Event) IPAddr(key string, ip net.IP) *Event {
+// IP adds IPv4 or IPv6 Address to the event
+func (e *Event) IP(key string, ip net.IP) *Event {
 	if e == nil {
 		return e
 	}
@@ -669,8 +669,8 @@ func (e *Event) IPAddr(key string, ip net.IP) *Event {
 	return e
 }
 
-// IPPrefix adds IPv4 or IPv6 Prefix (address and mask) to the event
-func (e *Event) IPPrefix(key string, pfx net.IPNet) *Event {
+// IPNet adds IPv4 or IPv6 Prefix (address and mask) to the event
+func (e *Event) IPNet(key string, pfx net.IPNet) *Event {
 	if e == nil {
 		return e
 	}
