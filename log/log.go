@@ -1,4 +1,4 @@
-// Package log provides a global logger for zerolog.
+// Package log provides a global logger for  astro.
 package log
 
 import (
@@ -10,58 +10,58 @@ import (
 )
 
 // Logger is the global logger.
-var Logger = zerolog.New(os.Stderr).With().Timestamp().Logger()
+var Logger = astro.New(os.Stderr).With().Timestamp().Logger()
 
 // Output duplicates the global logger and sets w as its output.
-func Output(w io.Writer) zerolog.Logger {
+func Output(w io.Writer) astro.Logger {
 	return Logger.Output(w)
 }
 
 // With creates a child logger with the field added to its context.
-func With() zerolog.Context {
+func With() astro.Context {
 	return Logger.With()
 }
 
 // Level creates a child logger with the minimum accepted level set to level.
-func Level(level zerolog.Level) zerolog.Logger {
+func Level(level astro.Level) astro.Logger {
 	return Logger.Level(level)
 }
 
 // Sample returns a logger with the s sampler.
-func Sample(s zerolog.Sampler) zerolog.Logger {
+func Sample(s astro.Sampler) astro.Logger {
 	return Logger.Sample(s)
 }
 
 // Hook returns a logger with the h Hook.
-func Hook(h zerolog.Hook) zerolog.Logger {
+func Hook(h astro.Hook) astro.Logger {
 	return Logger.Hook(h)
 }
 
 // Debug starts a new message with debug level.
 //
 // You must call Msg on the returned event in order to send the event.
-func Debug() *zerolog.Event {
+func Debug() *astro.Event {
 	return Logger.Debug()
 }
 
 // Info starts a new message with info level.
 //
 // You must call Msg on the returned event in order to send the event.
-func Info() *zerolog.Event {
+func Info() *astro.Event {
 	return Logger.Info()
 }
 
 // Warn starts a new message with warn level.
 //
 // You must call Msg on the returned event in order to send the event.
-func Warn() *zerolog.Event {
+func Warn() *astro.Event {
 	return Logger.Warn()
 }
 
 // Error starts a new message with error level.
 //
 // You must call Msg on the returned event in order to send the event.
-func Error() *zerolog.Event {
+func Error() *astro.Event {
 	return Logger.Error()
 }
 
@@ -69,7 +69,7 @@ func Error() *zerolog.Event {
 // is called by the Msg method.
 //
 // You must call Msg on the returned event in order to send the event.
-func Fatal() *zerolog.Event {
+func Fatal() *astro.Event {
 	return Logger.Fatal()
 }
 
@@ -77,22 +77,22 @@ func Fatal() *zerolog.Event {
 // to the panic function.
 //
 // You must call Msg on the returned event in order to send the event.
-func Panic() *zerolog.Event {
+func Panic() *astro.Event {
 	return Logger.Panic()
 }
 
 // WithLevel starts a new message with level.
 //
 // You must call Msg on the returned event in order to send the event.
-func WithLevel(level zerolog.Level) *zerolog.Event {
+func WithLevel(level astro.Level) *astro.Event {
 	return Logger.WithLevel(level)
 }
 
-// Log starts a new message with no level. Setting zerolog.GlobalLevel to
-// zerolog.Disabled will still disable events produced by this method.
+// Log starts a new message with no level. Setting  astro.GlobalLevel to
+//  astro.Disabled will still disable events produced by this method.
 //
 // You must call Msg on the returned event in order to send the event.
-func Log() *zerolog.Event {
+func Log() *astro.Event {
 	return Logger.Log()
 }
 
@@ -110,6 +110,6 @@ func Printf(format string, v ...interface{}) {
 
 // Ctx returns the Logger associated with the ctx. If no logger
 // is associated, a disabled logger is returned.
-func Ctx(ctx context.Context) *zerolog.Logger {
-	return zerolog.Ctx(ctx)
+func Ctx(ctx context.Context) *astro.Logger {
+	return astro.Ctx(ctx)
 }

@@ -147,7 +147,9 @@ func (l Logger) Config(options ...Option) Logger {
 func (l Logger) With(fields func(*Event)) Logger {
 	if fields != nil {
 		e := newEvent(nil, NoLevel)
+		fields(e)
 		l.context = enc.AppendObjectData(l.context, e.buf)
+		l.stack = e.stack
 	}
 	return l
 }

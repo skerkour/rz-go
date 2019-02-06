@@ -49,3 +49,18 @@ func Hooks(hooks ...LogHook) Option {
 		logger.hooks = hooks
 	}
 }
+
+// // With replaces logger's fields
+// func With(f func(*Event)) Option {
+// 	return func(logger *Logger) {
+// 		l := logger.With(f)
+// 		*(&logger) = &l
+// 	}
+// }
+
+// Stack enable/disable stack in error messages
+func Stack(enableStack bool) Option {
+	return func(logger *Logger) {
+		logger.stack = enableStack
+	}
+}
