@@ -32,6 +32,7 @@ type Event struct {
 	errorStackFieldName  string
 	timeFieldFormat      string
 	callerSkipFrameCount int
+	formatter            LogFormatter
 }
 
 func putEvent(e *Event) {

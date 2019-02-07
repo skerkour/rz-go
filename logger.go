@@ -147,8 +147,9 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 	e.timeFieldFormat = l.timeFieldFormat
 	e.errorStackFieldName = l.errorStackFieldName
 	e.callerSkipFrameCount = l.callerSkipFrameCount
+	e.formatter = l.formatter
 	if level != NoLevel {
-		e.String(l.levelFieldName, level.String())
+		e.String(e.levelFieldName, level.String())
 	}
 	if l.context != nil && len(l.context) > 0 {
 		e.buf = enc.AppendObjectData(e.buf, l.context)
@@ -162,10 +163,10 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 		e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), TimestampFunc(), e.timeFieldFormat)
 	}
 
-	l.writeEvent(e, message, done)
+	writeEvent(e, message, done)
 }
 
-func (l *Logger) writeEvent(e *Event, msg string, done func(string)) {
+func writeEvent(e *Event, msg string, done func(string)) {
 	if len(e.ch) > 0 {
 		e.ch[0].Run(e, e.level, msg)
 		if len(e.ch) > 1 {
@@ -196,8 +197,8 @@ func (l *Logger) writeEvent(e *Event, msg string, done func(string)) {
 		// end json payload
 		e.buf = enc.AppendEndMarker(e.buf)
 		e.buf = enc.AppendLineBreak(e.buf)
-		if l.formatter != nil {
-			e.buf, err = l.formatter(e)
+		if e.formatter != nil {
+			e.buf, err = e.formatter(e)
 		}
 		if e.w != nil {
 			_, err = e.w.WriteLevel(e.level, e.buf)

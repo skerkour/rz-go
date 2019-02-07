@@ -521,11 +521,12 @@ func TestLevelWriter(t *testing.T) {
 }
 
 func TestContextTimestamp(t *testing.T) {
+	fn := TimestampFunc
 	TimestampFunc = func() time.Time {
 		return time.Date(2001, time.February, 3, 4, 5, 6, 7, time.UTC)
 	}
 	defer func() {
-		TimestampFunc = time.Now
+		TimestampFunc = fn
 	}()
 	out := &bytes.Buffer{}
 	log := New(Writer(out), With(func(e *Event) {
@@ -539,11 +540,12 @@ func TestContextTimestamp(t *testing.T) {
 }
 
 func TestEventTimestamp(t *testing.T) {
+	fn := TimestampFunc
 	TimestampFunc = func() time.Time {
 		return time.Date(2001, time.February, 3, 4, 5, 6, 7, time.UTC)
 	}
 	defer func() {
-		TimestampFunc = time.Now
+		TimestampFunc = fn
 	}()
 	out := &bytes.Buffer{}
 	log := New(Writer(out), Timestamp(false), With(func(e *Event) {
