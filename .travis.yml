@@ -17,13 +17,12 @@ git:
   depth: false
   submodules: false
 
-before_script:
+install:
   - go get -u github.com/bloom42/rocket
-  - go get
-  - make test
 
 script:
   - make build
+  - make test
 
 deploy:
   provider: script
