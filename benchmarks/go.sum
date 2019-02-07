@@ -24,6 +24,8 @@ github.com/bloom42/rz-go v0.13.16 h1:HEnxwVlX4X1LPbRg2vdpU0toKBxerL/XcHyaLTiwAx8
 github.com/bloom42/rz-go v0.13.16/go.mod h1:+8rkF5N/tFDYDPRDH2YV3aPKdeeVHUNV0CLxdJmM0EQ=
 github.com/bloom42/rz-go v1.0.2 h1:bvQ3nRCZk8tmOTn2cQUxz0xP4aWq+KNcQ+fAP+gFKM0=
 github.com/bloom42/rz-go v1.0.2/go.mod h1:+8rkF5N/tFDYDPRDH2YV3aPKdeeVHUNV0CLxdJmM0EQ=
+github.com/bloom42/rz-go v1.0.3 h1:jGZKwjkHx/i7el6yDoFQhnsMpOc4kbbfNh5ya/9qy9U=
+github.com/bloom42/rz-go v1.0.3/go.mod h1:+8rkF5N/tFDYDPRDH2YV3aPKdeeVHUNV0CLxdJmM0EQ=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=

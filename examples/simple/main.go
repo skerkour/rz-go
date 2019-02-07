@@ -18,7 +18,7 @@ func main() {
 			String("environment", env)
 	}))
 
-	subLogger := log.Config(rz.Formatter(rz.ConsoleFormatter))
+	subLogger := log.Config(rz.Formatter(rz.ConsoleFormatter()))
 
 	if env == "production" {
 		log.Logger = log.Config(rz.Level(rz.InfoLevel))

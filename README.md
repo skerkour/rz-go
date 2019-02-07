@@ -16,9 +16,12 @@
 
 The rz package provides a fast and simple logger dedicated to JSON output.
 
-Rz's API is designed to provide both a great developer experience and stunning [performance](#benchmarks). Its unique functional JSON (or CBOR) log events by avoiding allocations and reflection.
+Rz's API is designed to provide both a great developer experience and stunning [performance](#benchmarks).
+Its unique functional API allows rz to write JSON (or CBOR) log events by avoiding allocations and reflection.
 
-Uber's [zap](https://godoc.org/go.uber.org/zap) and rs's [zerolog](https://godoc.org/github.com/rs/zerolog) libraries pioneered this approach. Rz is taking this concept to the next level with a simpler to use and safer API and even better performance.
+Uber's [zap](https://godoc.org/go.uber.org/zap) and rs's [zerolog](https://godoc.org/github.com/rs/zerolog)
+libraries pioneered this approach. Rz is taking this concept to the next level with a **simpler** to use and **safer**
+API and even better performance.
 
 To keep the code base and the API simple, rz focuses on efficient structured logging only. Pretty logging on the console is made possible using the provided (but inefficient) `rz.ConsoleFormatter`.
 

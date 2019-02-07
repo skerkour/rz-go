@@ -20,6 +20,7 @@ git:
 script:
   - make build
   - make test
+  - make bench
 
 deploy:
   provider: script

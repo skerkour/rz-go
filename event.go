@@ -240,6 +240,7 @@ func (e *Event) Err(err error) *Event {
 //
 // ErrorStackMarshaler must be set for this method to do something.
 func (e *Event) Stack() *Event {
+	e.stack = true
 	return e
 }
 
