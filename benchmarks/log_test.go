@@ -57,7 +57,7 @@ func zapEncoder() zapcore.Encoder {
 	ec := zap.NewProductionEncoderConfig()
 	ec.EncodeDuration = zapMillisecondDurationEncoder
 	ec.EncodeTime = zapcore.EpochTimeEncoder
-	ec.TimeKey = ""
+	ec.TimeKey = "timestamp"
 	ec.MessageKey = "message"
 	return zapcore.NewJSONEncoder(ec)
 }
