@@ -17,8 +17,8 @@ git:
   depth: false
   submodules: false
 
-install:
-  - curl -sSf https://raw.githubusercontent.com/bloom42/rocket/master/install.sh | sh
+# install:
+#   - curl -sSf https://raw.githubusercontent.com/bloom42/rocket/master/install.sh | sh
 
 script:
   - make build
