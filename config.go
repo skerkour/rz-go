@@ -71,70 +71,77 @@ func With(fields func(*Event)) LoggerOption {
 	}
 }
 
-// Stack enable/disable stack in error messages
+// Stack enable/disable stack in error messages.
 func Stack(enableStack bool) LoggerOption {
 	return func(logger *Logger) {
 		logger.stack = enableStack
 	}
 }
 
-// Timestamp enable/disable timestamp logging in error messages
+// Timestamp enable/disable timestamp logging in error messages.
 func Timestamp(enableTimestamp bool) LoggerOption {
 	return func(logger *Logger) {
 		logger.timestamp = enableTimestamp
 	}
 }
 
-// Formatter update logger's formatter
+// Caller enable/disable caller field in message messages.
+func Caller(enableCaller bool) LoggerOption {
+	return func(logger *Logger) {
+		logger.caller = enableCaller
+	}
+}
+
+// Formatter update logger's formatter.
 func Formatter(formatter LogFormatter) LoggerOption {
 	return func(logger *Logger) {
 		logger.formatter = formatter
 	}
 }
 
-// TimestampFieldName update logger's timestampFieldName
+// TimestampFieldName update logger's timestampFieldName.
 func TimestampFieldName(timestampFieldName string) LoggerOption {
 	return func(logger *Logger) {
 		logger.timestampFieldName = timestampFieldName
 	}
 }
 
-// LevelFieldName update logger's levelFieldName
+// LevelFieldName update logger's levelFieldName.
 func LevelFieldName(levelFieldName string) LoggerOption {
 	return func(logger *Logger) {
 		logger.levelFieldName = levelFieldName
 	}
 }
 
-// MessageFieldName update logger's messageFieldName
+// MessageFieldName update logger's messageFieldName.
 func MessageFieldName(messageFieldName string) LoggerOption {
 	return func(logger *Logger) {
 		logger.messageFieldName = messageFieldName
 	}
 }
 
-// ErrorFieldName update logger's errorFieldName
+// ErrorFieldName update logger's errorFieldName.
 func ErrorFieldName(errorFieldName string) LoggerOption {
 	return func(logger *Logger) {
 		logger.errorFieldName = errorFieldName
 	}
 }
 
-// CallerFieldName update logger's callerFieldName
+// CallerFieldName update logger's callerFieldName.
 func CallerFieldName(callerFieldName string) LoggerOption {
 	return func(logger *Logger) {
 		logger.callerFieldName = callerFieldName
 	}
 }
 
-// CallerSkipFrameCount update logger's callerSkipFrameCount
+// CallerSkipFrameCount update logger's callerSkipFrameCount.
 func CallerSkipFrameCount(callerSkipFrameCount int) LoggerOption {
 	return func(logger *Logger) {
 		logger.callerSkipFrameCount = callerSkipFrameCount
 	}
 }
 
-// ErrorStackFieldName update logger's errorStackFieldName
+// ErrorStackFieldName update logger's errorStackFieldName.
 func ErrorStackFieldName(errorStackFieldName string) LoggerOption {
 	return func(logger *Logger) {
 		logger.errorStackFieldName = errorStackFieldName
