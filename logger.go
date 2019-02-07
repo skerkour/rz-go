@@ -39,9 +39,10 @@ type Logger struct {
 // Each logging operation makes a single call to the Writer's Write method. There is no
 // guaranty on access serialization to the Writer. If your Writer is not thread safe,
 // you may consider using sync wrapper.
-func New(options ...Option) Logger {
+func New(options ...LoggerOption) Logger {
 	logger := Logger{
 		writer:               levelWriterAdapter{os.Stdout},
+		level:                DebugLevel,
 		timestamp:            true,
 		timestampFieldName:   DefaultTimestampFieldName,
 		levelFieldName:       DefaultLevelFieldName,
@@ -61,7 +62,7 @@ func Nop() Logger {
 }
 
 // Config apply all the options to the logger
-func (l Logger) Config(options ...Option) Logger {
+func (l Logger) Config(options ...LoggerOption) Logger {
 	context := l.context
 	l.context = make([]byte, 0, 500)
 	if context != nil {
@@ -113,6 +114,11 @@ func (l *Logger) Log(message string, fields func(*Event)) {
 
 // Write implements the io.Writer interface. This is useful to set as a writer
 // for the standard library log.
+//
+//    log := zerolog.New()
+//    stdlog.SetFlags(0)
+//    stdlog.SetOutput(log)
+//    stdlog.Print("hello world")
 func (l Logger) Write(p []byte) (n int, err error) {
 	n = len(p)
 	if n > 0 && p[n-1] == '\n' {
@@ -138,7 +144,6 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 	e.messageFieldName = l.messageFieldName
 	e.errorFieldName = l.errorFieldName
 	e.callerFieldName = l.callerFieldName
-	e.errorStackFieldName = l.errorStackFieldName
 	e.timeFieldFormat = l.timeFieldFormat
 	if level != NoLevel {
 		e.String(l.levelFieldName, level.String())
@@ -174,7 +179,7 @@ func (l *Logger) writeEvent(e *Event, msg string, done func(string)) {
 	if e.caller {
 		_, file, line, ok := runtime.Caller(l.callerSkipFrameCount)
 		if ok {
-			e.buf = enc.AppendString(enc.AppendKey(e.buf, e.callerFieldName), file+":"+strconv.Itoa(line))
+			e.buf = enc.AppendString(enc.AppendKey(e.buf, l.callerFieldName), file+":"+strconv.Itoa(line))
 		}
 	}
 	if done != nil {

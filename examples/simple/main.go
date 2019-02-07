@@ -24,6 +24,7 @@ func main() {
 				String("host", hostname).
 				String("environment", env)
 		}),
+		rz.Timestamp(false),
 	)
 
 	// log.Logger = log.Config(
@@ -57,6 +58,9 @@ func main() {
 	log2.Info("info from logger2", func(e *rz.Event) {
 		e.String("hello2", "world2").
 			Timestamp()
+	})
+	log2.Info("info2 from logger2", func(e *rz.Event) {
+		e.String("hello4", "world4")
 	})
 	// log.With("field1", "hello world", "field2", 999.99).Info("info from logger with fields")
 	// subLogger.Debug("debug from sublogger")

@@ -16,22 +16,21 @@ var eventPool = &sync.Pool{
 
 // Event represents a log event. It is instanced by one of the level method.
 type Event struct {
-	buf                  []byte
-	w                    LevelWriter
-	level                LogLevel
-	done                 func(msg string)
-	stack                bool      // enable error stack trace
-	caller               bool      // enable caller field
-	timestamp            bool      // enable timestamp
-	ch                   []LogHook // hooks from context
-	timestampFieldName   string
-	levelFieldName       string
-	messageFieldName     string
-	errorFieldName       string
-	callerFieldName      string
-	callerSkipFrameCount int
-	errorStackFieldName  string
-	timeFieldFormat      string
+	buf                 []byte
+	w                   LevelWriter
+	level               LogLevel
+	done                func(msg string)
+	stack               bool      // enable error stack trace
+	caller              bool      // enable caller field
+	timestamp           bool      // enable timestamp
+	ch                  []LogHook // hooks from context
+	timestampFieldName  string
+	levelFieldName      string
+	messageFieldName    string
+	errorFieldName      string
+	callerFieldName     string
+	errorStackFieldName string
+	timeFieldFormat     string
 }
 
 func putEvent(e *Event) {
@@ -525,11 +524,12 @@ func (e *Event) Floats64(key string, f []float64) *Event {
 }
 
 // Timestamp adds the current local time as UNIX timestamp to the *Event context with the
-// rz.TimestampFieldName key.
+// logger.TimestampFieldName key.
 func (e *Event) Timestamp() *Event {
 	if e == nil {
 		return e
 	}
+	e.timestamp = false
 	e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), TimestampFunc(), e.timeFieldFormat)
 	return e
 }
@@ -548,7 +548,6 @@ func (e *Event) Times(key string, t []time.Time) *Event {
 	if e == nil {
 		return e
 	}
-	e.timestamp = false
 	e.buf = enc.AppendTimes(enc.AppendKey(e.buf, key), t, e.timeFieldFormat)
 	return e
 }

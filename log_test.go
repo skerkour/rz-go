@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"net"
 	"runtime"
 	"testing"
 	"time"
@@ -114,148 +115,151 @@ func TestWith(t *testing.T) {
 	}
 }
 
-// func TestFieldsMap(t *testing.T) {
-// 	out := &bytes.Buffer{}
-// 	log := New(out)
-// 	log.Log().Fields(map[string]interface{}{
-// 		"nil":     nil,
-// 		"string":  "foo",
-// 		"bytes":   []byte("bar"),
-// 		"error":   errors.New("some error"),
-// 		"bool":    true,
-// 		"int":     int(1),
-// 		"int8":    int8(2),
-// 		"int16":   int16(3),
-// 		"int32":   int32(4),
-// 		"int64":   int64(5),
-// 		"uint":    uint(6),
-// 		"uint8":   uint8(7),
-// 		"uint16":  uint16(8),
-// 		"uint32":  uint32(9),
-// 		"uint64":  uint64(10),
-// 		"float32": float32(11),
-// 		"float64": float64(12),
-// 		"ipv6":    net.IP{0x20, 0x01, 0x0d, 0xb8, 0x85, 0xa3, 0x00, 0x00, 0x00, 0x00, 0x8a, 0x2e, 0x03, 0x70, 0x73, 0x34},
-// 		"dur":     1 * time.Second,
-// 		"time":    time.Time{},
-// 		"obj":     obj{"a", "b", 1},
-// 	}).Msg("")
-// 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"bool":true,"bytes":"bar","dur":1000,"error":"some error","float32":11,"float64":12,"int":1,"int16":3,"int32":4,"int64":5,"int8":2,"ipv6":"2001:db8:85a3::8a2e:370:7334","nil":null,"obj":{"Pub":"a","Tag":"b","priv":1},"string":"foo","time":"0001-01-01T00:00:00Z","uint":6,"uint16":8,"uint32":9,"uint64":10,"uint8":7}`+"\n"; got != want {
-// 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
-// 	}
-// }
+func TestFieldsMap(t *testing.T) {
+	out := &bytes.Buffer{}
+	log := New(Writer(out), Timestamp(false))
+	log.Log("", func(e *Event) {
+		e.Fields(map[string]interface{}{
+			"nil":     nil,
+			"string":  "foo",
+			"bytes":   []byte("bar"),
+			"error":   errors.New("some error"),
+			"bool":    true,
+			"int":     int(1),
+			"int8":    int8(2),
+			"int16":   int16(3),
+			"int32":   int32(4),
+			"int64":   int64(5),
+			"uint":    uint(6),
+			"uint8":   uint8(7),
+			"uint16":  uint16(8),
+			"uint32":  uint32(9),
+			"uint64":  uint64(10),
+			"float32": float32(11),
+			"float64": float64(12),
+			"ipv6":    net.IP{0x20, 0x01, 0x0d, 0xb8, 0x85, 0xa3, 0x00, 0x00, 0x00, 0x00, 0x8a, 0x2e, 0x03, 0x70, 0x73, 0x34},
+			"dur":     1 * time.Second,
+			"time":    time.Time{},
+			"obj":     obj{"a", "b", 1},
+		})
+	})
+	if got, want := decodeIfBinaryToString(out.Bytes()), `{"bool":true,"bytes":"bar","dur":1000,"error":"some error","float32":11,"float64":12,"int":1,"int16":3,"int32":4,"int64":5,"int8":2,"ipv6":"2001:db8:85a3::8a2e:370:7334","nil":null,"obj":{"Pub":"a","Tag":"b","priv":1},"string":"foo","time":"0001-01-01T00:00:00Z","uint":6,"uint16":8,"uint32":9,"uint64":10,"uint8":7}`+"\n"; got != want {
+		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
+	}
+}
 
-// func TestFieldsMapPnt(t *testing.T) {
-// 	out := &bytes.Buffer{}
-// 	log := New(out)
-// 	log.Log().Fields(map[string]interface{}{
-// 		"string":  new(string),
-// 		"bool":    new(bool),
-// 		"int":     new(int),
-// 		"int8":    new(int8),
-// 		"int16":   new(int16),
-// 		"int32":   new(int32),
-// 		"int64":   new(int64),
-// 		"uint":    new(uint),
-// 		"uint8":   new(uint8),
-// 		"uint16":  new(uint16),
-// 		"uint32":  new(uint32),
-// 		"uint64":  new(uint64),
-// 		"float32": new(float32),
-// 		"float64": new(float64),
-// 		"dur":     new(time.Duration),
-// 		"time":    new(time.Time),
-// 	}).Msg("")
-// 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"bool":false,"dur":0,"float32":0,"float64":0,"int":0,"int16":0,"int32":0,"int64":0,"int8":0,"string":"","time":"0001-01-01T00:00:00Z","uint":0,"uint16":0,"uint32":0,"uint64":0,"uint8":0}`+"\n"; got != want {
-// 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
-// 	}
-// }
+func TestFieldsMapPnt(t *testing.T) {
+	out := &bytes.Buffer{}
+	log := New(Writer(out), Timestamp(false))
+	log.Log("", func(e *Event) {
+		e.Fields(map[string]interface{}{
+			"string":  new(string),
+			"bool":    new(bool),
+			"int":     new(int),
+			"int8":    new(int8),
+			"int16":   new(int16),
+			"int32":   new(int32),
+			"int64":   new(int64),
+			"uint":    new(uint),
+			"uint8":   new(uint8),
+			"uint16":  new(uint16),
+			"uint32":  new(uint32),
+			"uint64":  new(uint64),
+			"float32": new(float32),
+			"float64": new(float64),
+			"dur":     new(time.Duration),
+			"time":    new(time.Time),
+		})
+	})
+	if got, want := decodeIfBinaryToString(out.Bytes()), `{"bool":false,"dur":0,"float32":0,"float64":0,"int":0,"int16":0,"int32":0,"int64":0,"int8":0,"string":"","time":"0001-01-01T00:00:00Z","uint":0,"uint16":0,"uint32":0,"uint64":0,"uint8":0}`+"\n"; got != want {
+		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
+	}
+}
 
-// func TestFieldsMapNilPnt(t *testing.T) {
-// 	var (
-// 		stringPnt  *string
-// 		boolPnt    *bool
-// 		intPnt     *int
-// 		int8Pnt    *int8
-// 		int16Pnt   *int16
-// 		int32Pnt   *int32
-// 		int64Pnt   *int64
-// 		uintPnt    *uint
-// 		uint8Pnt   *uint8
-// 		uint16Pnt  *uint16
-// 		uint32Pnt  *uint32
-// 		uint64Pnt  *uint64
-// 		float32Pnt *float32
-// 		float64Pnt *float64
-// 		durPnt     *time.Duration
-// 		timePnt    *time.Time
-// 	)
-// 	out := &bytes.Buffer{}
-// 	log := New(out)
-// 	fields := map[string]interface{}{
-// 		"string":  stringPnt,
-// 		"bool":    boolPnt,
-// 		"int":     intPnt,
-// 		"int8":    int8Pnt,
-// 		"int16":   int16Pnt,
-// 		"int32":   int32Pnt,
-// 		"int64":   int64Pnt,
-// 		"uint":    uintPnt,
-// 		"uint8":   uint8Pnt,
-// 		"uint16":  uint16Pnt,
-// 		"uint32":  uint32Pnt,
-// 		"uint64":  uint64Pnt,
-// 		"float32": float32Pnt,
-// 		"float64": float64Pnt,
-// 		"dur":     durPnt,
-// 		"time":    timePnt,
-// 	}
+func TestFieldsMapNilPnt(t *testing.T) {
+	var (
+		stringPnt  *string
+		boolPnt    *bool
+		intPnt     *int
+		int8Pnt    *int8
+		int16Pnt   *int16
+		int32Pnt   *int32
+		int64Pnt   *int64
+		uintPnt    *uint
+		uint8Pnt   *uint8
+		uint16Pnt  *uint16
+		uint32Pnt  *uint32
+		uint64Pnt  *uint64
+		float32Pnt *float32
+		float64Pnt *float64
+		durPnt     *time.Duration
+		timePnt    *time.Time
+	)
+	out := &bytes.Buffer{}
+	log := New(Writer(out), Timestamp(false))
+	fields := map[string]interface{}{
+		"string":  stringPnt,
+		"bool":    boolPnt,
+		"int":     intPnt,
+		"int8":    int8Pnt,
+		"int16":   int16Pnt,
+		"int32":   int32Pnt,
+		"int64":   int64Pnt,
+		"uint":    uintPnt,
+		"uint8":   uint8Pnt,
+		"uint16":  uint16Pnt,
+		"uint32":  uint32Pnt,
+		"uint64":  uint64Pnt,
+		"float32": float32Pnt,
+		"float64": float64Pnt,
+		"dur":     durPnt,
+		"time":    timePnt,
+	}
+	log.Log("", func(e *Event) { e.Fields(fields) })
+	if got, want := decodeIfBinaryToString(out.Bytes()), `{"bool":null,"dur":null,"float32":null,"float64":null,"int":null,"int16":null,"int32":null,"int64":null,"int8":null,"string":null,"time":null,"uint":null,"uint16":null,"uint32":null,"uint64":null,"uint8":null}`+"\n"; got != want {
+		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
+	}
+}
 
-// 	log.Log().Fields(fields).Msg("")
-// 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"bool":null,"dur":null,"float32":null,"float64":null,"int":null,"int16":null,"int32":null,"int64":null,"int8":null,"string":null,"time":null,"uint":null,"uint16":null,"uint32":null,"uint64":null,"uint8":null}`+"\n"; got != want {
-// 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
-// 	}
-// }
-
-// func TestFields(t *testing.T) {
-// 	out := &bytes.Buffer{}
-// 	log := New(out)
-// 	now := time.Now()
-// 	_, file, line, _ := runtime.Caller(0)
-// 	caller := fmt.Sprintf("%s:%d", file, line+3)
-// 	log.Log().
-// 		Caller().
-// 		Str("string", "foo").
-// 		Bytes("bytes", []byte("bar")).
-// 		Hex("hex", []byte{0x12, 0xef}).
-// 		RawJSON("json", []byte(`{"some":"json"}`)).
-// 		AnErr("some_err", nil).
-// 		Err(errors.New("some error")).
-// 		Bool("bool", true).
-// 		Int("int", 1).
-// 		Int8("int8", 2).
-// 		Int16("int16", 3).
-// 		Int32("int32", 4).
-// 		Int64("int64", 5).
-// 		Uint("uint", 6).
-// 		Uint8("uint8", 7).
-// 		Uint16("uint16", 8).
-// 		Uint32("uint32", 9).
-// 		Uint64("uint64", 10).
-// 		IPAddr("IPv4", net.IP{192, 168, 0, 100}).
-// 		IPAddr("IPv6", net.IP{0x20, 0x01, 0x0d, 0xb8, 0x85, 0xa3, 0x00, 0x00, 0x00, 0x00, 0x8a, 0x2e, 0x03, 0x70, 0x73, 0x34}).
-// 		MACAddr("Mac", net.HardwareAddr{0x00, 0x14, 0x22, 0x01, 0x23, 0x45}).
-// 		IPPrefix("Prefix", net.IPNet{IP: net.IP{192, 168, 0, 100}, Mask: net.CIDRMask(24, 32)}).
-// 		Float32("float32", 11.1234).
-// 		Float64("float64", 12.321321321).
-// 		Dur("dur", 1*time.Second).
-// 		Time("time", time.Time{}).
-// 		TimeDiff("diff", now, now.Add(-10*time.Second)).
-// 		Msg("")
-// 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"caller":"`+caller+`","string":"foo","bytes":"bar","hex":"12ef","json":{"some":"json"},"error":"some error","bool":true,"int":1,"int8":2,"int16":3,"int32":4,"int64":5,"uint":6,"uint8":7,"uint16":8,"uint32":9,"uint64":10,"IPv4":"192.168.0.100","IPv6":"2001:db8:85a3::8a2e:370:7334","Mac":"00:14:22:01:23:45","Prefix":"192.168.0.100/24","float32":11.1234,"float64":12.321321321,"dur":1000,"time":"0001-01-01T00:00:00Z","diff":10000}`+"\n"; got != want {
-// 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
-// 	}
-// }
+func TestFields(t *testing.T) {
+	out := &bytes.Buffer{}
+	log := New(Writer(out), Timestamp(false))
+	now := time.Now()
+	_, file, line, _ := runtime.Caller(0)
+	caller := fmt.Sprintf("%s:%d", file, line+2)
+	log.Log("", func(e *Event) {
+		e.Caller().
+			String("string", "foo").
+			Bytes("bytes", []byte("bar")).
+			Hex("hex", []byte{0x12, 0xef}).
+			RawJSON("json", []byte(`{"some":"json"}`)).
+			Error("some_err", nil).
+			Err(errors.New("some error")).
+			Bool("bool", true).
+			Int("int", 1).
+			Int8("int8", 2).
+			Int16("int16", 3).
+			Int32("int32", 4).
+			Int64("int64", 5).
+			Uint("uint", 6).
+			Uint8("uint8", 7).
+			Uint16("uint16", 8).
+			Uint32("uint32", 9).
+			Uint64("uint64", 10).
+			IP("IPv4", net.IP{192, 168, 0, 100}).
+			IP("IPv6", net.IP{0x20, 0x01, 0x0d, 0xb8, 0x85, 0xa3, 0x00, 0x00, 0x00, 0x00, 0x8a, 0x2e, 0x03, 0x70, 0x73, 0x34}).
+			MACAddr("Mac", net.HardwareAddr{0x00, 0x14, 0x22, 0x01, 0x23, 0x45}).
+			IPNet("IPNet", net.IPNet{IP: net.IP{192, 168, 0, 100}, Mask: net.CIDRMask(24, 32)}).
+			Float32("float32", 11.1234).
+			Float64("float64", 12.321321321).
+			Dur("dur", 1*time.Second).
+			Time("time", time.Time{}).
+			TimeDiff("diff", now, now.Add(-10*time.Second))
+	})
+	if got, want := decodeIfBinaryToString(out.Bytes()), `{"string":"foo","bytes":"bar","hex":"12ef","json":{"some":"json"},"error":"some error","bool":true,"int":1,"int8":2,"int16":3,"int32":4,"int64":5,"uint":6,"uint8":7,"uint16":8,"uint32":9,"uint64":10,"IPv4":"192.168.0.100","IPv6":"2001:db8:85a3::8a2e:370:7334","Mac":"00:14:22:01:23:45","IPNet":"192.168.0.100/24","float32":11.1234,"float64":12.321321321,"dur":1000,"time":"0001-01-01T00:00:00Z","diff":10000,"caller":"`+caller+`"}`+"\n"; got != want {
+		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
+	}
+}
 
 // func TestFieldsArrayEmpty(t *testing.T) {
 // 	out := &bytes.Buffer{}

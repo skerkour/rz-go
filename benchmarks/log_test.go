@@ -29,12 +29,17 @@ func newLogrus() *logrus.Logger {
 func newRz() rz.Logger {
 	return rz.New(
 		rz.Writer(ioutil.Discard),
+		rz.Level(rz.DebugLevel),
 		rz.With(func(e *rz.Event) { e.Timestamp() }),
 	)
 }
 
+func newDisabledRz() rz.Logger {
+	return newRz().Config(rz.Level(rz.Disabled))
+}
+
 func newZerolog() zerolog.Logger {
-	return zerolog.New(ioutil.Discard).With().Timestamp().Logger()
+	return zerolog.New(ioutil.Discard).With().Timestamp().Logger().Level(zerolog.DebugLevel)
 }
 
 func newDisabledZerolog() zerolog.Logger {
@@ -119,6 +124,37 @@ func rz10Fields(e *rz.Event) {
 
 var _testMessage = "hello world"
 
+func BenchmarkDisabledWithoutFields(b *testing.B) {
+	b.Logf("Logging without any structured context and at a disabled level.")
+	b.Run("sirupsen/logrus", func(b *testing.B) {
+		logger := newDisabledLogrus()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Info(_testMessage)
+			}
+		})
+	})
+	b.Run("rs/zerolog", func(b *testing.B) {
+		logger := newDisabledZerolog()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Info().Msg(_testMessage)
+			}
+		})
+	})
+	b.Run("bloom42/rz-go", func(b *testing.B) {
+		logger := newDisabledRz()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Info(_testMessage, nil)
+			}
+		})
+	})
+}
+
 func BenchmarkWithoutFields(b *testing.B) {
 	b.Logf("Logging without any structured context.")
 	b.Run("sirupsen/logrus", func(b *testing.B) {
@@ -127,15 +163,6 @@ func BenchmarkWithoutFields(b *testing.B) {
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				logger.Info(_testMessage)
-			}
-		})
-	})
-	b.Run("bloom42/rz-go", func(b *testing.B) {
-		logger := newRz()
-		b.ResetTimer()
-		b.RunParallel(func(pb *testing.PB) {
-			for pb.Next() {
-				logger.Info(_testMessage, nil)
 			}
 		})
 	})
@@ -148,9 +175,18 @@ func BenchmarkWithoutFields(b *testing.B) {
 			}
 		})
 	})
+	b.Run("bloom42/rz-go", func(b *testing.B) {
+		logger := newRz()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Info(_testMessage, nil)
+			}
+		})
+	})
 }
 
-func Benchmark10FieldsContext(b *testing.B) {
+func Benchmark10Context(b *testing.B) {
 	b.Logf("Logging with 10 fields in context")
 	b.Run("sirupsen/logrus", func(b *testing.B) {
 		logger := newLogrus()
@@ -163,15 +199,6 @@ func Benchmark10FieldsContext(b *testing.B) {
 			}
 		})
 	})
-	b.Run("bloom42/rz-go", func(b *testing.B) {
-		logger := newRz().Config(rz.With(rz10Fields))
-		b.ResetTimer()
-		b.RunParallel(func(pb *testing.PB) {
-			for pb.Next() {
-				logger.Info(_testMessage, nil)
-			}
-		})
-	})
 	b.Run("rs/zerolog", func(b *testing.B) {
 		logger := zerolog10Context(newZerolog().With()).Logger()
 		b.ResetTimer()
@@ -181,9 +208,19 @@ func Benchmark10FieldsContext(b *testing.B) {
 			}
 		})
 	})
+	b.Run("bloom42/rz-go", func(b *testing.B) {
+		logger := newRz().Config(rz.With(rz10Fields))
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Info(_testMessage, nil)
+			}
+		})
+	})
 }
 
 func Benchmark10Fields(b *testing.B) {
+	b.Logf("Logging without context and 10 fields")
 	b.Run("sirupsen/logrus", func(b *testing.B) {
 		logger := newLogrus()
 		fields := logrus10Fields()
@@ -191,6 +228,15 @@ func Benchmark10Fields(b *testing.B) {
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				logger.WithFields(fields).Info(_testMessage)
+			}
+		})
+	})
+	b.Run("rs/zerolog", func(b *testing.B) {
+		logger := newZerolog()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				zerolog10Fields(logger.Info()).Msg(_testMessage)
 			}
 		})
 	})
@@ -203,8 +249,23 @@ func Benchmark10Fields(b *testing.B) {
 			}
 		})
 	})
+}
+
+func Benchmark10Fields10Context(b *testing.B) {
+	b.Logf("Logging without context and 10 fields")
+	b.Run("sirupsen/logrus", func(b *testing.B) {
+		logger := newLogrus()
+		fields := logrus10Fields()
+		l := logger.WithFields(fields)
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				l.WithFields(fields).Info(_testMessage)
+			}
+		})
+	})
 	b.Run("rs/zerolog", func(b *testing.B) {
-		logger := newZerolog()
+		logger := zerolog10Context(newZerolog().With()).Logger()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -212,99 +273,12 @@ func Benchmark10Fields(b *testing.B) {
 			}
 		})
 	})
-}
-
-func BenchmarkZl(b *testing.B) {
-	b.Run("rs/zerolog", func(b *testing.B) {
-		logger := newZerolog()
+	b.Run("bloom42/rz-go", func(b *testing.B) {
+		logger := newRz().Config(rz.With(rz10Fields))
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				logger.Warn().
-					Str("Hello", "world").
-					Str("Hello2", "world").
-					Str("Hello3", "world").
-					Str("Hello4", "world").
-					Msg(_testMessage)
-			}
-		})
-	})
-	b.Run("bloom42/rz", func(b *testing.B) {
-		logger := newRz()
-		b.ResetTimer()
-		b.RunParallel(func(pb *testing.PB) {
-			for pb.Next() {
-				logger.Warn(_testMessage, func(e *rz.Event) {
-					e.String("Hello", "world")
-					e.String("Hello2", "world")
-					e.String("Hello3", "world")
-					e.String("Hello4", "world")
-				})
-			}
-		})
-	})
-}
-
-func BenchmarkZlNoFields(b *testing.B) {
-	b.Run("rs/zerolog", func(b *testing.B) {
-		logger := newZerolog()
-		b.ResetTimer()
-		b.RunParallel(func(pb *testing.PB) {
-			for pb.Next() {
-				logger.Warn().
-					Msg(_testMessage)
-			}
-		})
-	})
-	b.Run("bloom42/rz", func(b *testing.B) {
-		logger := newRz()
-		b.ResetTimer()
-		b.RunParallel(func(pb *testing.PB) {
-			for pb.Next() {
-				logger.Warn(_testMessage, nil)
-			}
-		})
-	})
-}
-
-func BenchmarkZlNoFieldsNoMessage(b *testing.B) {
-	b.Run("rs/zerolog", func(b *testing.B) {
-		logger := newZerolog()
-		b.ResetTimer()
-		b.RunParallel(func(pb *testing.PB) {
-			for pb.Next() {
-				logger.Warn().
-					Msg("")
-			}
-		})
-	})
-	b.Run("bloom42/rz", func(b *testing.B) {
-		logger := newRz()
-		b.ResetTimer()
-		b.RunParallel(func(pb *testing.PB) {
-			for pb.Next() {
-				logger.Warn("", nil)
-			}
-		})
-	})
-}
-
-func BenchmarkZlLotOfFields(b *testing.B) {
-	b.Run("rs/zerolog", func(b *testing.B) {
-		logger := newZerolog()
-		b.ResetTimer()
-		b.RunParallel(func(pb *testing.PB) {
-			for pb.Next() {
-				zerolog10Fields(logger.Info()).Msg(_testMessage)
-			}
-		})
-	})
-	b.Run("bloom42/rz", func(b *testing.B) {
-		logger := newRz()
-		b.ResetTimer()
-		b.RunParallel(func(pb *testing.PB) {
-			for pb.Next() {
-				logger.Warn(_testMessage, rz10Fields)
+				logger.Info(_testMessage, rz10Fields)
 			}
 		})
 	})

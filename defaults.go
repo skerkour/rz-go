@@ -42,7 +42,7 @@ var (
 
 	// DurationFieldUnit defines the unit for time.Duration type fields added
 	// using the Dur method.
-	DurationFieldUnit = time.Microsecond
+	DurationFieldUnit = time.Millisecond
 
 	// DurationFieldInteger renders Dur fields as integer instead of float if
 	// set to true.

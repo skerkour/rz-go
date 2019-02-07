@@ -89,17 +89,17 @@ func BenchmarkLogFields(b *testing.B) {
 	})
 }
 
-// type obj struct {
-// 	Pub  string
-// 	Tag  string `json:"tag"`
-// 	priv int
-// }
+type obj struct {
+	Pub  string
+	Tag  string `json:"tag"`
+	priv int
+}
 
-// func (o obj) MarshalZerologObject(e *Event) {
-// 	e.String("Pub", o.Pub).
-// 		Str("Tag", o.Tag).
-// 		Int("priv", o.priv)
-// }
+func (o obj) MarshalZerologObject(e *Event) {
+	e.String("Pub", o.Pub).
+		String("Tag", o.Tag).
+		Int("priv", o.priv)
+}
 
 // func BenchmarkLogArrayObject(b *testing.B) {
 // 	obj1 := obj{"a", "b", 2}
