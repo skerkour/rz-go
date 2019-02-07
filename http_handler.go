@@ -1,7 +1,6 @@
 package rz
 
 import (
-	"fmt"
 	"net"
 	"net/http"
 	"time"
@@ -93,7 +92,7 @@ func HTTPHandler(logger Logger) func(next http.Handler) http.Handler {
 					Int64("duration", durationMs)
 			}
 
-			message := fmt.Sprintf("%d %s %s", status, method, uri)
+			message := "access"
 			switch {
 			case status < 400:
 				requestLogger.Info(message, fields)
