@@ -36,10 +36,9 @@ func putArray(a *Array) {
 }
 
 // Arr creates an array to be added to an Event or Context.
-func (e *Event) Arr() *Array {
+func Arr() *Array {
 	a := arrayPool.Get().(*Array)
 	a.buf = a.buf[:0]
-	a.timeFieldFormat = e.timeFieldFormat
 	return a
 }
 
@@ -188,7 +187,7 @@ func (a *Array) Float64(f float64) *Array {
 
 // Time append append t formated as string using zerolog.TimeFieldFormat.
 func (a *Array) Time(t time.Time) *Array {
-	a.buf = enc.AppendTime(enc.AppendArrayDelim(a.buf), t, a.timeFieldFormat)
+	a.buf = enc.AppendTime(enc.AppendArrayDelim(a.buf), t, DefaultTimeFieldFormat)
 	return a
 }
 

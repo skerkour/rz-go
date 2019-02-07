@@ -36,18 +36,18 @@ func ConsoleFormatter(ev *Event) ([]byte, error) {
 
 	lvlColor := cReset
 	level := "????"
-	if l, ok := event[ev.levelFieldName].(string); ok {
+	if l, ok := event[DefaultLevelFieldName].(string); ok {
 		lvlColor = levelColor(l)
 		level = strings.ToUpper(l)[0:4]
 	}
 
 	message := ""
-	if m, ok := event[ev.messageFieldName].(string); ok {
+	if m, ok := event[DefaultMessageFieldName].(string); ok {
 		message = m
 	}
 
 	timestamp := ""
-	if t, ok := event[ev.timestampFieldName].(string); ok {
+	if t, ok := event[DefaultTimestampFieldName].(string); ok {
 		timestamp = t
 	}
 
@@ -60,7 +60,7 @@ func ConsoleFormatter(ev *Event) ([]byte, error) {
 	fields := make([]string, 0, len(event))
 	for field := range event {
 		switch field {
-		case ev.timestampFieldName, ev.messageFieldName, ev.levelFieldName:
+		case DefaultTimestampFieldName, DefaultMessageFieldName, DefaultLevelFieldName:
 			continue
 		}
 

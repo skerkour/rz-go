@@ -95,7 +95,7 @@ func (e *Event) appendFields(dst []byte, fields map[string]interface{}) []byte {
 		case float64:
 			dst = enc.AppendFloat64(dst, val)
 		case time.Time:
-			dst = enc.AppendTime(dst, val, e.timeFieldFormat)
+			dst = enc.AppendTime(dst, val, DefaultTimeFieldFormat)
 		case time.Duration:
 			dst = enc.AppendDuration(dst, val, DurationFieldUnit, DurationFieldInteger)
 		case *string:
@@ -184,7 +184,7 @@ func (e *Event) appendFields(dst []byte, fields map[string]interface{}) []byte {
 			}
 		case *time.Time:
 			if val != nil {
-				dst = enc.AppendTime(dst, *val, e.timeFieldFormat)
+				dst = enc.AppendTime(dst, *val, DefaultTimeFieldFormat)
 			} else {
 				dst = enc.AppendNil(dst)
 			}
@@ -223,7 +223,7 @@ func (e *Event) appendFields(dst []byte, fields map[string]interface{}) []byte {
 		case []float64:
 			dst = enc.AppendFloats64(dst, val)
 		case []time.Time:
-			dst = enc.AppendTimes(dst, val, e.timeFieldFormat)
+			dst = enc.AppendTimes(dst, val, DefaultTimeFieldFormat)
 		case []time.Duration:
 			dst = enc.AppendDurations(dst, val, DurationFieldUnit, DurationFieldInteger)
 		case nil:

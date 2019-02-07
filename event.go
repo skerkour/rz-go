@@ -16,22 +16,22 @@ var eventPool = &sync.Pool{
 
 // Event represents a log event. It is instanced by one of the level method.
 type Event struct {
-	buf                  []byte
-	w                    LevelWriter
-	level                LogLevel
-	done                 func(msg string)
-	stack                bool      // enable error stack trace
-	caller               bool      // enable caller field
-	timestamp            bool      // enable timestamp
-	ch                   []LogHook // hooks from context
-	timestampFieldName   string
-	levelFieldName       string
-	messageFieldName     string
-	errorFieldName       string
-	callerFieldName      string
-	errorStackFieldName  string
-	timeFieldFormat      string
-	callerSkipFrameCount int
+	buf       []byte
+	w         LevelWriter
+	level     LogLevel
+	done      func(msg string)
+	stack     bool      // enable error stack trace
+	caller    bool      // enable caller field
+	timestamp bool      // enable timestamp
+	ch        []LogHook // hooks from context
+	// timestampFieldName   string
+	// levelFieldName       string
+	// messageFieldName     string
+	// errorFieldName       string
+	// callerFieldName      string
+	// errorStackFieldName  string
+	// timeFieldFormat      string
+	// callerSkipFrameCount int
 }
 
 func putEvent(e *Event) {
@@ -125,7 +125,7 @@ func (e *Event) Array(key string, arr LogArrayMarshaler) *Event {
 	if aa, ok := arr.(*Array); ok {
 		a = aa
 	} else {
-		a = e.Arr()
+		a = Arr()
 		arr.MarshalZerologArray(a)
 	}
 	e.buf = a.write(e.buf)
@@ -234,7 +234,7 @@ func (e *Event) Errors(key string, errs []error) *Event {
 	if e == nil {
 		return e
 	}
-	arr := e.Arr()
+	arr := Arr()
 	for _, err := range errs {
 		switch m := ErrorMarshalFunc(err).(type) {
 		case LogObjectMarshaler:
@@ -268,16 +268,16 @@ func (e *Event) Err(err error) *Event {
 		switch m := ErrorStackMarshaler(err).(type) {
 		case nil:
 		case LogObjectMarshaler:
-			e.Object(e.errorStackFieldName, m)
+			e.Object(DefaultErrorStackFieldName, m)
 		case error:
-			e.String(e.errorStackFieldName, m.Error())
+			e.String(DefaultErrorStackFieldName, m.Error())
 		case string:
-			e.String(e.errorStackFieldName, m)
+			e.String(DefaultErrorStackFieldName, m)
 		default:
-			e.Interface(e.errorStackFieldName, m)
+			e.Interface(DefaultErrorStackFieldName, m)
 		}
 	}
-	return e.Error(e.errorFieldName, err)
+	return e.Error(DefaultErrorFieldName, err)
 }
 
 // Stack enables stack trace printing for the error passed to Err().
@@ -531,7 +531,7 @@ func (e *Event) Timestamp() *Event {
 		return e
 	}
 	e.timestamp = false
-	e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), TimestampFunc(), e.timeFieldFormat)
+	e.buf = enc.AppendTime(enc.AppendKey(e.buf, DefaultTimestampFieldName), TimestampFunc(), DefaultTimeFieldFormat)
 	return e
 }
 
@@ -540,7 +540,7 @@ func (e *Event) Time(key string, t time.Time) *Event {
 	if e == nil {
 		return e
 	}
-	e.buf = enc.AppendTime(enc.AppendKey(e.buf, key), t, e.timeFieldFormat)
+	e.buf = enc.AppendTime(enc.AppendKey(e.buf, key), t, DefaultTimeFieldFormat)
 	return e
 }
 
@@ -549,7 +549,7 @@ func (e *Event) Times(key string, t []time.Time) *Event {
 	if e == nil {
 		return e
 	}
-	e.buf = enc.AppendTimes(enc.AppendKey(e.buf, key), t, e.timeFieldFormat)
+	e.buf = enc.AppendTimes(enc.AppendKey(e.buf, key), t, DefaultTimeFieldFormat)
 	return e
 }
 

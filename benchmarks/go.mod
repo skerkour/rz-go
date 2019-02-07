@@ -1,7 +1,7 @@
 module github.com/bloom42/rz-go/benchmarks
 
 require (
-	github.com/bloom42/rz-go v0.13.11
+	github.com/bloom42/rz-go v0.13.12
 	github.com/rs/zerolog v1.11.0
 	github.com/sirupsen/logrus v1.3.0
 	go.uber.org/atomic v1.3.2 // indirect
