@@ -1,5 +1,7 @@
 github.com/bloom42/rz-go v1.0.5 h1:myHr/h17hyhlsCzK2L67S9BccIm5V+k1cE5CxkuOOt4=
 github.com/bloom42/rz-go v1.0.5/go.mod h1:+8rkF5N/tFDYDPRDH2YV3aPKdeeVHUNV0CLxdJmM0EQ=
+github.com/bloom42/rz-go v1.0.8 h1:Rzz4/bgPDuMN46zem5A/wBSpVDtnTZkVICLQCPgQct4=
+github.com/bloom42/rz-go v1.0.8/go.mod h1:+8rkF5N/tFDYDPRDH2YV3aPKdeeVHUNV0CLxdJmM0EQ=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/json-iterator/go v1.1.5 h1:gL2yXlmiIo4+t+y32d4WGwOjKGYcGOuyrg46vadswDE=

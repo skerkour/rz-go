@@ -20,10 +20,13 @@ Rz's API is designed to provide both a great developer experience and stunning [
 Its unique functional API allows rz to write JSON (or CBOR) log events by avoiding allocations and reflection.
 
 Uber's [zap](https://godoc.org/go.uber.org/zap) and rs's [zerolog](https://godoc.org/github.com/rs/zerolog)
-libraries pioneered this approach. Rz is taking this concept to the next level with a **simpler** to use and **safer**
+libraries pioneered this approach.
+
+Rz is a fork of zerolog taking this concept to the next level with a **simpler** to use and **safer**
 API and even better performance.
 
-To keep the code base and the API simple, rz focuses on efficient structured logging only. Pretty logging on the console is made possible using the provided (but inefficient) `rz.ConsoleFormatter`.
+To keep the code base and the API simple, rz focuses on efficient structured logging only.
+Pretty logging on the console is made possible using the provided (but inefficient) `rz.ConsoleFormatter`.
 
 
 1. [Quickstart](#quickstart)
@@ -176,3 +179,5 @@ See [https://opensource.bloom.sh/contributing](https://opensource.bloom.sh/contr
 ## License
 
 See `LICENSE.txt` and [https://opensource.bloom.sh/licensing](https://opensource.bloom.sh/licensing)
+
+From an original work by [rs](https://github.com/rs): [zerolog](https://github.com/rs/zerolog) - commit aa55558e4cb2e8f05cd079342d430f77e946d00a

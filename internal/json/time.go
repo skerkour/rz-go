@@ -1,6 +1,7 @@
 package json
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 )
@@ -8,6 +9,7 @@ import (
 // AppendTime formats the input time with the given format
 // and appends the encoded string to the input byte slice.
 func (e Encoder) AppendTime(dst []byte, t time.Time, format string) []byte {
+	fmt.Printf("time format: %s\n", format)
 	if format == "" {
 		return e.AppendInt64(dst, t.Unix())
 	}

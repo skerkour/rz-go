@@ -30,18 +30,17 @@ func newLogrus() *logrus.Logger {
 }
 
 func newRz() rz.Logger {
-	rz.TimestampFunc = time.Now
 	return rz.New(
 		rz.Writer(ioutil.Discard),
 		rz.Level(rz.DebugLevel),
 		rz.Timestamp(true),
 		rz.TimeFieldFormat(""),
+		rz.TimestampFunc(time.Now),
 	)
 }
 
 func newDisabledRz() rz.Logger {
-	rz.TimestampFunc = time.Now
-	return newRz().Config(rz.Level(rz.Disabled), rz.TimeFieldFormat(""))
+	return newRz().Config(rz.Level(rz.Disabled))
 }
 
 func newZerolog() zerolog.Logger {

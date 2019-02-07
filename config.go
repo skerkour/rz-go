@@ -164,11 +164,8 @@ func TimestampFunc(timestampFunc func() time.Time) LoggerOption {
 }
 
 var (
-	// DefaultTimestampFunc defines default the function called to generate a timestamp.
-	DefaultTimestampFunc = func() time.Time { return time.Now().UTC() }
-
 	// DurationFieldUnit defines the unit for time.Duration type fields added
-	// using the Dur method.
+	// using the Duration method.
 	DurationFieldUnit = time.Millisecond
 
 	// DurationFieldInteger renders Dur fields as integer instead of float if

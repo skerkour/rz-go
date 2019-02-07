@@ -29,3 +29,8 @@ const (
 	// as integer.
 	DefaultTimeFieldFormat = time.RFC3339
 )
+
+var (
+	// DefaultTimestampFunc defines default the function called to generate a timestamp.
+	DefaultTimestampFunc func() time.Time = func() time.Time { return time.Now().UTC() }
+)
