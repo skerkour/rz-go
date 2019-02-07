@@ -41,7 +41,6 @@ func newRz() rz.Logger {
 
 func newDisabledRz() rz.Logger {
 	rz.TimestampFunc = time.Now
-	rz.DefaultTimeFieldFormat = ""
 	return newRz().Config(rz.Level(rz.Disabled), rz.TimeFieldFormat(""))
 }
 

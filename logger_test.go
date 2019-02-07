@@ -520,45 +520,45 @@ func TestLevelWriter(t *testing.T) {
 	}
 }
 
-func TestContextTimestamp(t *testing.T) {
-	fn := TimestampFunc
-	TimestampFunc = func() time.Time {
-		return time.Date(2001, time.February, 3, 4, 5, 6, 7, time.UTC)
-	}
-	defer func() {
-		TimestampFunc = fn
-	}()
-	out := &bytes.Buffer{}
-	log := New(Writer(out), With(func(e *Event) {
-		e.String("foo", "bar")
-	}))
-	log.Log("hello world", nil)
+// func TestContextTimestamp(t *testing.T) {
+// 	fn := TimestampFunc
+// 	TimestampFunc = func() time.Time {
+// 		return time.Date(2001, time.February, 3, 4, 5, 6, 7, time.UTC)
+// 	}
+// 	defer func() {
+// 		TimestampFunc = fn
+// 	}()
+// 	out := &bytes.Buffer{}
+// 	log := New(Writer(out), With(func(e *Event) {
+// 		e.String("foo", "bar")
+// 	}))
+// 	log.Log("hello world", nil)
 
-	if got, want := decodeIfBinaryToString(out.Bytes()), `{"foo":"bar","timestamp":"2001-02-03T04:05:06Z","message":"hello world"}`+"\n"; got != want {
-		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
-	}
-}
+// 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"foo":"bar","timestamp":"2001-02-03T04:05:06Z","message":"hello world"}`+"\n"; got != want {
+// 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
+// 	}
+// }
 
-func TestEventTimestamp(t *testing.T) {
-	fn := TimestampFunc
-	TimestampFunc = func() time.Time {
-		return time.Date(2001, time.February, 3, 4, 5, 6, 7, time.UTC)
-	}
-	defer func() {
-		TimestampFunc = fn
-	}()
-	out := &bytes.Buffer{}
-	log := New(Writer(out), Timestamp(false), With(func(e *Event) {
-		e.String("foo", "bar")
-	}))
-	log.Log("hello world", func(e *Event) {
-		e.Timestamp()
-	})
+// func TestEventTimestamp(t *testing.T) {
+// 	fn := TimestampFunc
+// 	TimestampFunc = func() time.Time {
+// 		return time.Date(2001, time.February, 3, 4, 5, 6, 7, time.UTC)
+// 	}
+// 	defer func() {
+// 		TimestampFunc = fn
+// 	}()
+// 	out := &bytes.Buffer{}
+// 	log := New(Writer(out), Timestamp(false), With(func(e *Event) {
+// 		e.String("foo", "bar")
+// 	}))
+// 	log.Log("hello world", func(e *Event) {
+// 		e.Timestamp()
+// 	})
 
-	if got, want := decodeIfBinaryToString(out.Bytes()), `{"foo":"bar","timestamp":"2001-02-03T04:05:06Z","message":"hello world"}`+"\n"; got != want {
-		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
-	}
-}
+// 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"foo":"bar","timestamp":"2001-02-03T04:05:06Z","message":"hello world"}`+"\n"; got != want {
+// 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
+// 	}
+// }
 
 type loggableError struct {
 	error

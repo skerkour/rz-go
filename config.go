@@ -172,4 +172,12 @@ var (
 	// output. If not set, an error is printed on the stderr. This handler must
 	// be thread safe and non-blocking.
 	ErrorHandler func(err error)
+
+	// ErrorStackMarshaler extract the stack from err if any.
+	ErrorStackMarshaler func(err error) interface{}
+
+	// ErrorMarshalFunc allows customization of global error marshaling
+	ErrorMarshalFunc = func(err error) interface{} {
+		return err
+	}
 )

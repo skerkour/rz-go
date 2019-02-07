@@ -2,7 +2,7 @@ package rz
 
 import "time"
 
-var (
+const (
 	// DefaultTimestampFieldName is the default field name used for the timestamp field.
 	DefaultTimestampFieldName = "timestamp"
 
@@ -23,14 +23,6 @@ var (
 
 	// DefaultErrorStackFieldName is the default field name used for error stacks.
 	DefaultErrorStackFieldName = "stack"
-
-	// ErrorStackMarshaler extract the stack from err if any.
-	ErrorStackMarshaler func(err error) interface{}
-
-	// ErrorMarshalFunc allows customization of global error marshaling
-	ErrorMarshalFunc = func(err error) interface{} {
-		return err
-	}
 
 	// DefaultTimeFieldFormat defines the time format of the Time field type.
 	// If set to an empty string, the time is formatted as an UNIX timestamp
