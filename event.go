@@ -423,18 +423,18 @@ func (e *Event) Times(key string, t []time.Time) *Event {
 	return e
 }
 
-// Dur adds the field key with duration d stored as rz.DurationFieldUnit.
+// Duration adds the field key with duration d stored as rz.DurationFieldUnit.
 // If rz.DurationFieldInteger is true, durations are rendered as integer
 // instead of float.
-func (e *Event) Dur(key string, d time.Duration) *Event {
+func (e *Event) Duration(key string, d time.Duration) *Event {
 	e.buf = enc.AppendDuration(enc.AppendKey(e.buf, key), d, DurationFieldUnit, DurationFieldInteger)
 	return e
 }
 
-// Durs adds the field key with duration d stored as rz.DurationFieldUnit.
+// Durations adds the field key with duration d stored as rz.DurationFieldUnit.
 // If rz.DurationFieldInteger is true, durations are rendered as integer
 // instead of float.
-func (e *Event) Durs(key string, d []time.Duration) *Event {
+func (e *Event) Durations(key string, d []time.Duration) *Event {
 	e.buf = enc.AppendDurations(enc.AppendKey(e.buf, key), d, DurationFieldUnit, DurationFieldInteger)
 	return e
 }
