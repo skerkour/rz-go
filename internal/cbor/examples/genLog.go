@@ -34,8 +34,7 @@ func writeLog(fname string, count int, useCompress bool) {
 
 	}
 
-	rz.TimestampFunc = func() time.Time { return time.Now().Round(time.Second) }
-	log := rz.New(rz.Writer(f))
+	log := rz.New(rz.Writer(f), rz.TimestampFunc(func() time.Time { return time.Now().Round(time.Second) }))
 	for i := 0; i < count; i++ {
 		log.Error("Some Message", func(e *rz.Event) {
 			e.Int("Fault", 41650+i)

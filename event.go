@@ -33,6 +33,7 @@ type Event struct {
 	timeFieldFormat      string
 	callerSkipFrameCount int
 	formatter            LogFormatter
+	timestampFunc        func() time.Time
 }
 
 func putEvent(e *Event) {
@@ -408,7 +409,7 @@ func (e *Event) Floats64(key string, f []float64) *Event {
 // logger.TimestampFieldName key.
 func (e *Event) Timestamp() *Event {
 	e.timestamp = false
-	e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), TimestampFunc(), e.timeFieldFormat)
+	e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), e.timestampFunc(), e.timeFieldFormat)
 	return e
 }
 

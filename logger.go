@@ -5,6 +5,7 @@ import (
 	"os"
 	"runtime"
 	"strconv"
+	"time"
 )
 
 // A Logger represents an active logging object that generates lines
@@ -30,6 +31,7 @@ type Logger struct {
 	errorStackFieldName  string
 	timeFieldFormat      string
 	formatter            LogFormatter
+	timestampFunc        func() time.Time
 }
 
 // New creates a root logger with given options. If the output writer implements
@@ -52,6 +54,7 @@ func New(options ...LoggerOption) Logger {
 		callerSkipFrameCount: DefaultCallerSkipFrameCount,
 		errorStackFieldName:  DefaultErrorStackFieldName,
 		timeFieldFormat:      DefaultTimeFieldFormat,
+		timestampFunc:        DefaultTimestampFunc,
 	}
 	return logger.Config(options...)
 }
@@ -148,6 +151,7 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 	e.errorStackFieldName = l.errorStackFieldName
 	e.callerSkipFrameCount = l.callerSkipFrameCount
 	e.formatter = l.formatter
+	e.timestampFunc = l.timestampFunc
 	if level != NoLevel {
 		e.String(e.levelFieldName, level.String())
 	}
@@ -160,7 +164,7 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 	}
 
 	if e.timestamp {
-		e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), TimestampFunc(), e.timeFieldFormat)
+		e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), e.timestampFunc(), e.timeFieldFormat)
 	}
 
 	writeEvent(e, message, done)

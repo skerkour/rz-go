@@ -19,10 +19,9 @@ func setup() {
 	// In order to always output a static time to stdout for these
 	// examples to pass, we need to override rz.TimestampFunc
 	// and log.Logger globals -- you would not normally need to do this
-	rz.TimestampFunc = func() time.Time {
+	log.Logger = rz.New(rz.TimeFieldFormat(""), rz.TimestampFunc(func() time.Time {
 		return time.Date(2008, 1, 8, 17, 5, 05, 0, time.UTC)
-	}
-	log.Logger = rz.New(rz.TimeFieldFormat(""))
+	}))
 }
 
 // Example of a log with no particular "level"

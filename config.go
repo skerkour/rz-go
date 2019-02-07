@@ -156,9 +156,16 @@ func TimeFieldFormat(timeFieldFormat string) LoggerOption {
 	}
 }
 
+// TimestampFunc update logger's timestampFunc.
+func TimestampFunc(timestampFunc func() time.Time) LoggerOption {
+	return func(logger *Logger) {
+		logger.timestampFunc = timestampFunc
+	}
+}
+
 var (
-	// TimestampFunc defines the function called to generate a timestamp.
-	TimestampFunc = func() time.Time { return time.Now().UTC() }
+	// DefaultTimestampFunc defines default the function called to generate a timestamp.
+	DefaultTimestampFunc = func() time.Time { return time.Now().UTC() }
 
 	// DurationFieldUnit defines the unit for time.Duration type fields added
 	// using the Dur method.
