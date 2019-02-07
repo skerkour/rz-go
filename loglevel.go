@@ -44,7 +44,7 @@ func (l LogLevel) String() string {
 	return ""
 }
 
-// ParseLevel converts a level string into a zerolog Level value.
+// ParseLevel converts a level string into a rz Level value.
 // returns an error if the input string does not match known values.
 func ParseLevel(levelStr string) (LogLevel, error) {
 	switch levelStr {

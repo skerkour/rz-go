@@ -14,14 +14,14 @@ package rz_test
 // )
 
 // func ExampleNew() {
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
 // 	log.Info().Msg("hello world")
 // 	// Output: {"level":"info","message":"hello world"}
 // }
 
 // func ExampleLogger_With() {
-// 	log := zerolog.New(os.Stdout).
+// 	log := rz.New(os.Stdout).
 // 		With().
 // 		Str("foo", "bar").
 // 		Logger()
@@ -32,7 +32,7 @@ package rz_test
 // }
 
 // func ExampleLogger_Level() {
-// 	log := zerolog.New(os.Stdout).Level(zerolog.WarnLevel)
+// 	log := rz.New(os.Stdout).Level(rz.WarnLevel)
 
 // 	log.Info().Msg("filtered out message")
 // 	log.Error().Msg("kept message")
@@ -41,7 +41,7 @@ package rz_test
 // }
 
 // func ExampleLogger_Sample() {
-// 	log := zerolog.New(os.Stdout).Sample(&zerolog.BasicSampler{N: 2})
+// 	log := rz.New(os.Stdout).Sample(&rz.BasicSampler{N: 2})
 
 // 	log.Info().Msg("message 1")
 // 	log.Info().Msg("message 2")
@@ -54,8 +54,8 @@ package rz_test
 
 // type LevelNameHook struct{}
 
-// func (h LevelNameHook) Run(e *zerolog.Event, l zerolog.Level, msg string) {
-// 	if l != zerolog.NoLevel {
+// func (h LevelNameHook) Run(e *rz.Event, l rz.Level, msg string) {
+// 	if l != rz.NoLevel {
 // 		e.Str("level_name", l.String())
 // 	} else {
 // 		e.Str("level_name", "NoLevel")
@@ -64,7 +64,7 @@ package rz_test
 
 // type MessageHook string
 
-// func (h MessageHook) Run(e *zerolog.Event, l zerolog.Level, msg string) {
+// func (h MessageHook) Run(e *rz.Event, l rz.Level, msg string) {
 // 	e.Str("the_message", msg)
 // }
 
@@ -72,7 +72,7 @@ package rz_test
 // 	var levelNameHook LevelNameHook
 // 	var messageHook MessageHook = "The message"
 
-// 	log := zerolog.New(os.Stdout).Hook(levelNameHook).Hook(messageHook)
+// 	log := rz.New(os.Stdout).Hook(levelNameHook).Hook(messageHook)
 
 // 	log.Info().Msg("hello world")
 
@@ -80,7 +80,7 @@ package rz_test
 // }
 
 // func ExampleLogger_Print() {
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
 // 	log.Print("hello world")
 
@@ -88,7 +88,7 @@ package rz_test
 // }
 
 // func ExampleLogger_Printf() {
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
 // 	log.Printf("hello %s", "world")
 
@@ -96,7 +96,7 @@ package rz_test
 // }
 
 // func ExampleLogger_Debug() {
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
 // 	log.Debug().
 // 		Str("foo", "bar").
@@ -107,7 +107,7 @@ package rz_test
 // }
 
 // func ExampleLogger_Info() {
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
 // 	log.Info().
 // 		Str("foo", "bar").
@@ -118,7 +118,7 @@ package rz_test
 // }
 
 // func ExampleLogger_Warn() {
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
 // 	log.Warn().
 // 		Str("foo", "bar").
@@ -128,7 +128,7 @@ package rz_test
 // }
 
 // func ExampleLogger_Error() {
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
 // 	log.Error().
 // 		Err(errors.New("some error")).
@@ -138,16 +138,16 @@ package rz_test
 // }
 
 // func ExampleLogger_WithLevel() {
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
-// 	log.WithLevel(zerolog.InfoLevel).
+// 	log.WithLevel(rz.InfoLevel).
 // 		Msg("hello world")
 
 // 	// Output: {"level":"info","message":"hello world"}
 // }
 
 // func ExampleLogger_Write() {
-// 	log := zerolog.New(os.Stdout).With().
+// 	log := rz.New(os.Stdout).With().
 // 		Str("foo", "bar").
 // 		Logger()
 
@@ -160,7 +160,7 @@ package rz_test
 // }
 
 // func ExampleLogger_Log() {
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
 // 	log.Log().
 // 		Str("foo", "bar").
@@ -171,11 +171,11 @@ package rz_test
 // }
 
 // func ExampleEvent_Dict() {
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
 // 	log.Log().
 // 		Str("foo", "bar").
-// 		Dict("dict", zerolog.Dict().
+// 		Dict("dict", rz.Dict().
 // 			Str("bar", "baz").
 // 			Int("n", 1),
 // 		).
@@ -190,7 +190,7 @@ package rz_test
 // 	Created time.Time
 // }
 
-// func (u User) MarshalZerologObject(e *zerolog.Event) {
+// func (u User) MarshalRzObject(e *rz.Event) {
 // 	e.Str("name", u.Name).
 // 		Int("age", u.Age).
 // 		Time("created", u.Created)
@@ -202,7 +202,7 @@ package rz_test
 // 	unit string
 // }
 
-// func (p Price) MarshalZerologObject(e *zerolog.Event) {
+// func (p Price) MarshalRzObject(e *rz.Event) {
 // 	denom := uint64(1)
 // 	for i := 0; i < p.prec; i++ {
 // 		denom *= 10
@@ -214,18 +214,18 @@ package rz_test
 
 // type Users []User
 
-// func (uu Users) MarshalZerologArray(a *zerolog.Array) {
+// func (uu Users) MarshalrzArray(a *rz.Array) {
 // 	for _, u := range uu {
 // 		a.Object(u)
 // 	}
 // }
 
 // func ExampleEvent_Array() {
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
 // 	log.Log().
 // 		Str("foo", "bar").
-// 		Array("array", zerolog.Arr().
+// 		Array("array", rz.Arr().
 // 			Str("baz").
 // 			Int(1),
 // 		).
@@ -235,9 +235,9 @@ package rz_test
 // }
 
 // func ExampleEvent_Array_object() {
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
-// 	// Users implements zerolog.LogArrayMarshaler
+// 	// Users implements rz.LogArrayMarshaler
 // 	u := Users{
 // 		User{"John", 35, time.Time{}},
 // 		User{"Bob", 55, time.Time{}},
@@ -252,9 +252,9 @@ package rz_test
 // }
 
 // func ExampleEvent_Object() {
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
-// 	// User implements zerolog.LogObjectMarshaler
+// 	// User implements rz.LogObjectMarshaler
 // 	u := User{"John", 35, time.Time{}}
 
 // 	log.Log().
@@ -266,7 +266,7 @@ package rz_test
 // }
 
 // func ExampleEvent_EmbedObject() {
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
 // 	price := Price{val: 6449, prec: 2, unit: "$"}
 
@@ -279,7 +279,7 @@ package rz_test
 // }
 
 // func ExampleEvent_Interface() {
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
 // 	obj := struct {
 // 		Name string `json:"name"`
@@ -298,7 +298,7 @@ package rz_test
 // func ExampleEvent_Dur() {
 // 	d := time.Duration(10 * time.Second)
 
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
 // 	log.Log().
 // 		Str("foo", "bar").
@@ -314,7 +314,7 @@ package rz_test
 // 		time.Duration(20 * time.Second),
 // 	}
 
-// 	log := zerolog.New(os.Stdout)
+// 	log := rz.New(os.Stdout)
 
 // 	log.Log().
 // 		Str("foo", "bar").
@@ -325,9 +325,9 @@ package rz_test
 // }
 
 // func ExampleContext_Dict() {
-// 	log := zerolog.New(os.Stdout).With().
+// 	log := rz.New(os.Stdout).With().
 // 		Str("foo", "bar").
-// 		Dict("dict", zerolog.Dict().
+// 		Dict("dict", rz.Dict().
 // 			Str("bar", "baz").
 // 			Int("n", 1),
 // 		).Logger()
@@ -338,9 +338,9 @@ package rz_test
 // }
 
 // func ExampleContext_Array() {
-// 	log := zerolog.New(os.Stdout).With().
+// 	log := rz.New(os.Stdout).With().
 // 		Str("foo", "bar").
-// 		Array("array", zerolog.Arr().
+// 		Array("array", rz.Arr().
 // 			Str("baz").
 // 			Int(1),
 // 		).Logger()
@@ -351,13 +351,13 @@ package rz_test
 // }
 
 // func ExampleContext_Array_object() {
-// 	// Users implements zerolog.LogArrayMarshaler
+// 	// Users implements rz.LogArrayMarshaler
 // 	u := Users{
 // 		User{"John", 35, time.Time{}},
 // 		User{"Bob", 55, time.Time{}},
 // 	}
 
-// 	log := zerolog.New(os.Stdout).With().
+// 	log := rz.New(os.Stdout).With().
 // 		Str("foo", "bar").
 // 		Array("users", u).
 // 		Logger()
@@ -368,10 +368,10 @@ package rz_test
 // }
 
 // func ExampleContext_Object() {
-// 	// User implements zerolog.LogObjectMarshaler
+// 	// User implements rz.LogObjectMarshaler
 // 	u := User{"John", 35, time.Time{}}
 
-// 	log := zerolog.New(os.Stdout).With().
+// 	log := rz.New(os.Stdout).With().
 // 		Str("foo", "bar").
 // 		Object("user", u).
 // 		Logger()
@@ -385,7 +385,7 @@ package rz_test
 
 // 	price := Price{val: 6449, prec: 2, unit: "$"}
 
-// 	log := zerolog.New(os.Stdout).With().
+// 	log := rz.New(os.Stdout).With().
 // 		Str("foo", "bar").
 // 		EmbedObject(price).
 // 		Logger()
@@ -402,7 +402,7 @@ package rz_test
 // 		Name: "john",
 // 	}
 
-// 	log := zerolog.New(os.Stdout).With().
+// 	log := rz.New(os.Stdout).With().
 // 		Str("foo", "bar").
 // 		Interface("obj", obj).
 // 		Logger()
@@ -415,7 +415,7 @@ package rz_test
 // func ExampleContext_Dur() {
 // 	d := time.Duration(10 * time.Second)
 
-// 	log := zerolog.New(os.Stdout).With().
+// 	log := rz.New(os.Stdout).With().
 // 		Str("foo", "bar").
 // 		Dur("dur", d).
 // 		Logger()
@@ -431,7 +431,7 @@ package rz_test
 // 		time.Duration(20 * time.Second),
 // 	}
 
-// 	log := zerolog.New(os.Stdout).With().
+// 	log := rz.New(os.Stdout).With().
 // 		Str("foo", "bar").
 // 		Durs("durs", d).
 // 		Logger()
@@ -443,7 +443,7 @@ package rz_test
 
 // func ExampleContext_IPAddr() {
 // 	hostIP := net.IP{192, 168, 0, 100}
-// 	log := zerolog.New(os.Stdout).With().
+// 	log := rz.New(os.Stdout).With().
 // 		IPAddr("HostIP", hostIP).
 // 		Logger()
 
@@ -454,7 +454,7 @@ package rz_test
 
 // func ExampleContext_IPPrefix() {
 // 	route := net.IPNet{IP: net.IP{192, 168, 0, 0}, Mask: net.CIDRMask(24, 32)}
-// 	log := zerolog.New(os.Stdout).With().
+// 	log := rz.New(os.Stdout).With().
 // 		IPPrefix("Route", route).
 // 		Logger()
 
@@ -465,7 +465,7 @@ package rz_test
 
 // func ExampleContext_MacAddr() {
 // 	mac := net.HardwareAddr{0x00, 0x14, 0x22, 0x01, 0x23, 0x45}
-// 	log := zerolog.New(os.Stdout).With().
+// 	log := rz.New(os.Stdout).With().
 // 		MACAddr("hostMAC", mac).
 // 		Logger()
 

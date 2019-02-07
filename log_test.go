@@ -562,7 +562,7 @@ type loggableError struct {
 	error
 }
 
-func (l loggableError) MarshalZerologObject(e *Event) {
+func (l loggableError) MarshalRzObject(e *Event) {
 	e.String("message", l.error.Error()+": loggableError")
 }
 

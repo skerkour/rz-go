@@ -43,9 +43,9 @@ func (e *Event) Arr() *Array {
 	return a
 }
 
-// MarshalZerologArray method here is no-op - since data is
+// MarshalRzArray method here is no-op - since data is
 // already in the needed format.
-func (*Array) MarshalZerologArray(*Array) {
+func (*Array) MarshalRzArray(*Array) {
 }
 
 func (a *Array) write(dst []byte) []byte {
@@ -62,7 +62,7 @@ func (a *Array) write(dst []byte) []byte {
 // interface and append append it to the array.
 func (a *Array) Object(obj LogObjectMarshaler) *Array {
 	e := Dict()
-	obj.MarshalZerologObject(e)
+	obj.MarshalRzObject(e)
 	e.buf = enc.AppendEndMarker(e.buf)
 	a.buf = append(enc.AppendArrayDelim(a.buf), e.buf...)
 	putEvent(e)
@@ -186,7 +186,7 @@ func (a *Array) Float64(f float64) *Array {
 	return a
 }
 
-// Time append append t formated as string using zerolog.TimeFieldFormat.
+// Time append append t formated as string using rz.TimeFieldFormat.
 func (a *Array) Time(t time.Time) *Array {
 	a.buf = enc.AppendTime(enc.AppendArrayDelim(a.buf), t, a.timeFieldFormat)
 	return a

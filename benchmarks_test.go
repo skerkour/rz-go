@@ -95,7 +95,7 @@ type obj struct {
 	priv int
 }
 
-func (o obj) MarshalZerologObject(e *Event) {
+func (o obj) MarshalRzObject(e *Event) {
 	e.String("Pub", o.Pub).
 		String("Tag", o.Tag).
 		Int("priv", o.priv)

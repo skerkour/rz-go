@@ -219,7 +219,7 @@ type User struct {
 	Created time.Time
 }
 
-func (u User) MarshalZerologObject(e *Event) {
+func (u User) MarshalRzObject(e *Event) {
 	e.Str("name", u.Name).
 		Int("age", u.Age).
 		Time("created", u.Created)
@@ -406,7 +406,7 @@ type Price struct {
 	unit string
 }
 
-func (p Price) MarshalZerologObject(e *Event) {
+func (p Price) MarshalRzObject(e *Event) {
 	denom := uint64(1)
 	for i := 0; i < p.prec; i++ {
 		denom *= 10

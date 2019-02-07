@@ -115,7 +115,7 @@ func (l *Logger) Log(message string, fields func(*Event)) {
 // Write implements the io.Writer interface. This is useful to set as a writer
 // for the standard library log.
 //
-//    log := zerolog.New()
+//    log := rz.New()
 //    stdlog.SetFlags(0)
 //    stdlog.SetOutput(log)
 //    stdlog.Print("hello world")

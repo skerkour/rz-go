@@ -51,13 +51,13 @@ func putEvent(e *Event) {
 // LogObjectMarshaler provides a strongly-typed and encoding-agnostic interface
 // to be implemented by types used with Event/Context's Object methods.
 type LogObjectMarshaler interface {
-	MarshalZerologObject(e *Event)
+	MarshalRzObject(e *Event)
 }
 
 // LogArrayMarshaler provides a strongly-typed and encoding-agnostic interface
 // to be implemented by types used with Event/Context's Array methods.
 type LogArrayMarshaler interface {
-	MarshalZerologArray(a *Array)
+	MarshalRzArray(a *Array)
 }
 
 func newEvent(w LevelWriter, level LogLevel) *Event {
@@ -95,7 +95,7 @@ func (e *Event) Fields(fields map[string]interface{}) *Event {
 }
 
 // Dict adds the field key with a dict to the event context.
-// Use zerolog.Dict() to create the dictionary.
+// Use rz.Dict() to create the dictionary.
 func (e *Event) Dict(key string, dict *Event) *Event {
 	if e == nil {
 		return e
@@ -114,7 +114,7 @@ func Dict() *Event {
 }
 
 // Array adds the field key with an array to the event context.
-// Use zerolog.Arr() to create the array or pass a type that
+// Use Event.Arr() to create the array or pass a type that
 // implement the LogArrayMarshaler interface.
 func (e *Event) Array(key string, arr LogArrayMarshaler) *Event {
 	if e == nil {
@@ -126,7 +126,7 @@ func (e *Event) Array(key string, arr LogArrayMarshaler) *Event {
 		a = aa
 	} else {
 		a = e.Arr()
-		arr.MarshalZerologArray(a)
+		arr.MarshalRzArray(a)
 	}
 	e.buf = a.write(e.buf)
 	return e
@@ -134,7 +134,7 @@ func (e *Event) Array(key string, arr LogArrayMarshaler) *Event {
 
 func (e *Event) appendObject(obj LogObjectMarshaler) {
 	e.buf = enc.AppendBeginMarker(e.buf)
-	obj.MarshalZerologObject(e)
+	obj.MarshalRzObject(e)
 	e.buf = enc.AppendEndMarker(e.buf)
 }
 
@@ -153,7 +153,7 @@ func (e *Event) EmbedObject(obj LogObjectMarshaler) *Event {
 	if e == nil {
 		return e
 	}
-	obj.MarshalZerologObject(e)
+	obj.MarshalRzObject(e)
 	return e
 }
 
@@ -253,13 +253,11 @@ func (e *Event) Errors(key string, errs []error) *Event {
 
 // Err adds the field "error" with serialized err to the *Event context.
 // If err is nil, no field is added.
-// To customize the key name, change zerolog.ErrorFieldName.
-//
-// To customize the key name, change zerolog.ErrorFieldName.
-//
-// If Stack() has been called before and zerolog.ErrorStackMarshaler is defined,
+// To customize the key name, uze rz.ErrorFieldName.
+////
+// If Stack() has been called before and rz.ErrorStackMarshaler is defined,
 // the err is passed to ErrorStackMarshaler and the result is appended to the
-// zerolog.ErrorStackFieldName.
+// rz.ErrorStackFieldName.
 func (e *Event) Err(err error) *Event {
 	if e == nil {
 		return e
@@ -535,7 +533,7 @@ func (e *Event) Timestamp() *Event {
 	return e
 }
 
-// Time adds the field key with t formated as string using zerolog.TimeFieldFormat.
+// Time adds the field key with t formated as string using rz.TimeFieldFormat.
 func (e *Event) Time(key string, t time.Time) *Event {
 	if e == nil {
 		return e
@@ -544,7 +542,7 @@ func (e *Event) Time(key string, t time.Time) *Event {
 	return e
 }
 
-// Times adds the field key with t formated as string using zerolog.TimeFieldFormat.
+// Times adds the field key with t formated as string using rz.TimeFieldFormat.
 func (e *Event) Times(key string, t []time.Time) *Event {
 	if e == nil {
 		return e
@@ -553,8 +551,8 @@ func (e *Event) Times(key string, t []time.Time) *Event {
 	return e
 }
 
-// Dur adds the field key with duration d stored as zerolog.DurationFieldUnit.
-// If zerolog.DurationFieldInteger is true, durations are rendered as integer
+// Dur adds the field key with duration d stored as rz.DurationFieldUnit.
+// If rz.DurationFieldInteger is true, durations are rendered as integer
 // instead of float.
 func (e *Event) Dur(key string, d time.Duration) *Event {
 	if e == nil {
@@ -564,8 +562,8 @@ func (e *Event) Dur(key string, d time.Duration) *Event {
 	return e
 }
 
-// Durs adds the field key with duration d stored as zerolog.DurationFieldUnit.
-// If zerolog.DurationFieldInteger is true, durations are rendered as integer
+// Durs adds the field key with duration d stored as rz.DurationFieldUnit.
+// If rz.DurationFieldInteger is true, durations are rendered as integer
 // instead of float.
 func (e *Event) Durs(key string, d []time.Duration) *Event {
 	if e == nil {
@@ -602,7 +600,7 @@ func (e *Event) Interface(key string, i interface{}) *Event {
 	return e
 }
 
-// Caller adds the file:line of the caller with the zerolog.CallerFieldName key.
+// Caller adds the file:line of the caller with the rz.CallerFieldName key.
 func (e *Event) Caller() *Event {
 	e.caller = true
 	return e
