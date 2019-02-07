@@ -38,7 +38,7 @@ var (
 	DefaultTimeFieldFormat = time.RFC3339
 
 	// TimestampFunc defines the function called to generate a timestamp.
-	TimestampFunc = time.Now
+	TimestampFunc = func() time.Time { return time.Now().UTC() }
 
 	// DurationFieldUnit defines the unit for time.Duration type fields added
 	// using the Dur method.
@@ -53,35 +53,3 @@ var (
 	// be thread safe and non-blocking.
 	ErrorHandler func(err error)
 )
-
-// var (
-// 	gLevel          = new(uint32)
-// 	disableSampling = new(uint32)
-// )
-
-// TODO: remove
-// SetGlobalLevel sets the global override for log level. If this
-// // values is raised, all Loggers will use at least this value.
-// //
-// // To globally disable logs, set GlobalLevel to Disabled.
-// func SetGlobalLevel(l LogLevel) {
-// 	atomic.StoreUint32(gLevel, uint32(l))
-// }
-
-// // GlobalLevel returns the current global log level
-// func GlobalLevel() LogLevel {
-// 	return LogLevel(atomic.LoadUint32(gLevel))
-// }
-
-// // DisableSampling will disable sampling in all Loggers if true.
-// func DisableSampling(v bool) {
-// 	var i uint32
-// 	if v {
-// 		i = 1
-// 	}
-// 	atomic.StoreUint32(disableSampling, i)
-// }
-
-// func samplingDisabled() bool {
-// 	return atomic.LoadUint32(disableSampling) == 1
-// }

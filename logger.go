@@ -13,23 +13,23 @@ import (
 // serialization to the Writer. If your Writer is not thread safe,
 // you may consider a sync wrapper.
 type Logger struct {
-	writer    LevelWriter
-	stack     bool
-	caller    bool
-	timestamp bool
-	level     LogLevel
-	sampler   LogSampler
-	context   []byte
-	hooks     []LogHook
-	// timestampFieldName   string
-	// levelFieldName       string
-	// messageFieldName     string
-	// errorFieldName       string
-	// callerFieldName      string
-	// callerSkipFrameCount int
-	// errorStackFieldName  string
-	// timeFieldFormat      string
-	// formatter            LogFormatter
+	writer               LevelWriter
+	stack                bool
+	caller               bool
+	timestamp            bool
+	level                LogLevel
+	sampler              LogSampler
+	context              []byte
+	hooks                []LogHook
+	timestampFieldName   string
+	levelFieldName       string
+	messageFieldName     string
+	errorFieldName       string
+	callerFieldName      string
+	callerSkipFrameCount int
+	errorStackFieldName  string
+	timeFieldFormat      string
+	formatter            LogFormatter
 }
 
 // New creates a root logger with given options. If the output writer implements
@@ -41,17 +41,17 @@ type Logger struct {
 // you may consider using sync wrapper.
 func New(options ...LoggerOption) Logger {
 	logger := Logger{
-		writer:    levelWriterAdapter{os.Stdout},
-		level:     DebugLevel,
-		timestamp: true,
-		// timestampFieldName:   DefaultTimestampFieldName,
-		// levelFieldName:       DefaultLevelFieldName,
-		// messageFieldName:     DefaultMessageFieldName,
-		// errorFieldName:       DefaultErrorFieldName,
-		// callerFieldName:      DefaultCallerFieldName,
-		// callerSkipFrameCount: DefaultCallerSkipFrameCount,
-		// errorStackFieldName:  DefaultErrorStackFieldName,
-		// timeFieldFormat:      DefaultTimeFieldFormat,
+		writer:               levelWriterAdapter{os.Stdout},
+		level:                DebugLevel,
+		timestamp:            true,
+		timestampFieldName:   DefaultTimestampFieldName,
+		levelFieldName:       DefaultLevelFieldName,
+		messageFieldName:     DefaultMessageFieldName,
+		errorFieldName:       DefaultErrorFieldName,
+		callerFieldName:      DefaultCallerFieldName,
+		callerSkipFrameCount: DefaultCallerSkipFrameCount,
+		errorStackFieldName:  DefaultErrorStackFieldName,
+		timeFieldFormat:      DefaultTimeFieldFormat,
 	}
 	return logger.Config(options...)
 }
@@ -139,16 +139,16 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 	e.stack = l.stack
 	e.caller = l.caller
 	e.timestamp = l.timestamp
-	// e.timestampFieldName = l.timestampFieldName
-	// e.levelFieldName = l.levelFieldName
-	// e.messageFieldName = l.messageFieldName
-	// e.errorFieldName = l.errorFieldName
-	// e.callerFieldName = l.callerFieldName
-	// e.timeFieldFormat = l.timeFieldFormat
-	// e.errorStackFieldName = l.errorStackFieldName
-	// e.callerSkipFrameCount = l.callerSkipFrameCount
+	e.timestampFieldName = l.timestampFieldName
+	e.levelFieldName = l.levelFieldName
+	e.messageFieldName = l.messageFieldName
+	e.errorFieldName = l.errorFieldName
+	e.callerFieldName = l.callerFieldName
+	e.timeFieldFormat = l.timeFieldFormat
+	e.errorStackFieldName = l.errorStackFieldName
+	e.callerSkipFrameCount = l.callerSkipFrameCount
 	if level != NoLevel {
-		e.String(DefaultLevelFieldName, level.String())
+		e.String(l.levelFieldName, level.String())
 	}
 	if l.context != nil && len(l.context) > 0 {
 		e.buf = enc.AppendObjectData(e.buf, l.context)
@@ -158,10 +158,14 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 		fields(e)
 	}
 
-	writeEvent(e, message, done)
+	if e.timestamp {
+		e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), TimestampFunc(), e.timeFieldFormat)
+	}
+
+	l.writeEvent(e, message, done)
 }
 
-func writeEvent(e *Event, msg string, done func(string)) {
+func (l *Logger) writeEvent(e *Event, msg string, done func(string)) {
 	if len(e.ch) > 0 {
 		e.ch[0].Run(e, e.level, msg)
 		if len(e.ch) > 1 {
@@ -171,45 +175,45 @@ func writeEvent(e *Event, msg string, done func(string)) {
 		}
 	}
 
-	if e.timestamp {
-		e.buf = enc.AppendTime(enc.AppendKey(e.buf, DefaultTimestampFieldName), TimestampFunc(), DefaultTimeFieldFormat)
-	}
-	if msg != "" {
-		e.buf = enc.AppendString(enc.AppendKey(e.buf, DefaultMessageFieldName), msg)
-	}
-
-	if e.caller {
-		_, file, line, ok := runtime.Caller(DefaultCallerSkipFrameCount)
-		if ok {
-			e.buf = enc.AppendString(enc.AppendKey(e.buf, DefaultCallerFieldName), file+":"+strconv.Itoa(line))
-		}
-	}
 	if done != nil {
 		defer done(msg)
 	}
 
-	var err error
-
+	// if hooks didn't disabled our event, continue
 	if e.level != Disabled {
+		var err error
+
+		if msg != "" {
+			e.buf = enc.AppendString(enc.AppendKey(e.buf, e.messageFieldName), msg)
+		}
+		if e.caller {
+			_, file, line, ok := runtime.Caller(e.callerSkipFrameCount)
+			if ok {
+				e.buf = enc.AppendString(enc.AppendKey(e.buf, e.callerFieldName), file+":"+strconv.Itoa(line))
+			}
+		}
+
+		// end json payload
 		e.buf = enc.AppendEndMarker(e.buf)
 		e.buf = enc.AppendLineBreak(e.buf)
-		// if Formatter != nil {
-		// 	e.buf, err = Formatter(e)
-		// }
+		if l.formatter != nil {
+			e.buf, err = l.formatter(e)
+		}
 		if e.w != nil {
 			_, err = e.w.WriteLevel(e.level, e.buf)
 		}
-	}
 
-	putEvent(e)
+		putEvent(e)
 
-	if err != nil {
-		if ErrorHandler != nil {
-			ErrorHandler(err)
-		} else {
-			fmt.Fprintf(os.Stderr, "rz: could not write event: %v\n", err)
+		if err != nil {
+			if ErrorHandler != nil {
+				ErrorHandler(err)
+			} else {
+				fmt.Fprintf(os.Stderr, "rz: could not write event: %v\n", err)
+			}
 		}
 	}
+
 }
 
 // should returns true if the log event should be logged.

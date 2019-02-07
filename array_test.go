@@ -7,7 +7,8 @@ import (
 )
 
 func TestArray(t *testing.T) {
-	a := Arr().
+	ev := &Event{timeFieldFormat: DefaultTimeFieldFormat}
+	a := ev.Arr().
 		Bool(true).
 		Int(1).
 		Int8(2).

@@ -33,7 +33,7 @@ func newRz() rz.Logger {
 	return rz.New(
 		rz.Writer(ioutil.Discard),
 		rz.Level(rz.DebugLevel),
-		rz.With(func(e *rz.Event) { e.Timestamp() }),
+		rz.Timestamp(true),
 	)
 }
 
