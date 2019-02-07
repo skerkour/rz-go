@@ -32,7 +32,6 @@ type Event struct {
 	callerSkipFrameCount int
 	errorStackFieldName  string
 	timeFieldFormat      string
-	timestampFunc        func() time.Time
 }
 
 func putEvent(e *Event) {
@@ -531,7 +530,7 @@ func (e *Event) Timestamp() *Event {
 	if e == nil {
 		return e
 	}
-	e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), e.timestampFunc(), e.timeFieldFormat)
+	e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), TimestampFunc(), e.timeFieldFormat)
 	return e
 }
 

@@ -38,7 +38,7 @@ var (
 	DefaultTimeFieldFormat = time.RFC3339
 
 	// TimestampFunc defines the function called to generate a timestamp.
-	DefaultTimestampFunc = time.Now
+	TimestampFunc = time.Now
 
 	// DurationFieldUnit defines the unit for time.Duration type fields added
 	// using the Dur method.
