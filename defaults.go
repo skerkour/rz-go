@@ -19,7 +19,7 @@ var (
 	DefaultCallerFieldName = "caller"
 
 	// DefaultCallerSkipFrameCount is the default number of stack frames to skip to find the caller.
-	DefaultCallerSkipFrameCount = 4
+	DefaultCallerSkipFrameCount = 3
 
 	// DefaultErrorStackFieldName is the default field name used for error stacks.
 	DefaultErrorStackFieldName = "stack"
@@ -32,17 +32,17 @@ var (
 		return err
 	}
 
-	// TimeFieldFormat defines the time format of the Time field type.
+	// DefaultTimeFieldFormat defines the time format of the Time field type.
 	// If set to an empty string, the time is formatted as an UNIX timestamp
 	// as integer.
-	TimeFieldFormat = time.RFC3339
+	DefaultTimeFieldFormat = time.RFC3339
 
 	// TimestampFunc defines the function called to generate a timestamp.
-	TimestampFunc = time.Now
+	DefaultTimestampFunc = time.Now
 
 	// DurationFieldUnit defines the unit for time.Duration type fields added
 	// using the Dur method.
-	DurationFieldUnit = time.Millisecond
+	DurationFieldUnit = time.Microsecond
 
 	// DurationFieldInteger renders Dur fields as integer instead of float if
 	// set to true.

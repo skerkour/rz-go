@@ -17,7 +17,8 @@ var arrayPool = &sync.Pool{
 // Array is used to prepopulate an array of items
 // which can be re-used to add to log messages.
 type Array struct {
-	buf []byte
+	buf             []byte
+	timeFieldFormat string
 }
 
 func putArray(a *Array) {
@@ -35,9 +36,10 @@ func putArray(a *Array) {
 }
 
 // Arr creates an array to be added to an Event or Context.
-func Arr() *Array {
+func (e *Event) Arr() *Array {
 	a := arrayPool.Get().(*Array)
 	a.buf = a.buf[:0]
+	a.timeFieldFormat = e.timeFieldFormat
 	return a
 }
 
@@ -186,7 +188,7 @@ func (a *Array) Float64(f float64) *Array {
 
 // Time append append t formated as string using zerolog.TimeFieldFormat.
 func (a *Array) Time(t time.Time) *Array {
-	a.buf = enc.AppendTime(enc.AppendArrayDelim(a.buf), t, TimeFieldFormat)
+	a.buf = enc.AppendTime(enc.AppendArrayDelim(a.buf), t, a.timeFieldFormat)
 	return a
 }
 

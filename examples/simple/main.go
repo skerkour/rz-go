@@ -18,11 +18,13 @@ func main() {
 	// 		String("environment", env)
 	// }))
 	log := rz.New()
-	log2 := log.Config(rz.With(func(e *rz.Event) {
-		e.String("service", "api").
-			String("host", hostname).
-			String("environment", env)
-	}))
+	log2 := log.Config(
+		rz.With(func(e *rz.Event) {
+			e.String("service", "api").
+				String("host", hostname).
+				String("environment", env)
+		}),
+	)
 
 	// log.Logger = log.Config(
 	// 	//   rz.SetWriter(os.Stderr),

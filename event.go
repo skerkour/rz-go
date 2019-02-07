@@ -1,11 +1,7 @@
 package rz
 
 import (
-	"fmt"
 	"net"
-	"os"
-	"runtime"
-	"strconv"
 	"sync"
 	"time"
 )
@@ -35,6 +31,8 @@ type Event struct {
 	callerFieldName      string
 	callerSkipFrameCount int
 	errorStackFieldName  string
+	timeFieldFormat      string
+	timestampFunc        func() time.Time
 }
 
 func putEvent(e *Event) {
@@ -73,21 +71,6 @@ func newEvent(w LevelWriter, level LogLevel) *Event {
 	return e
 }
 
-func (e *Event) write() (err error) {
-	if e == nil {
-		return nil
-	}
-	if e.level != Disabled {
-		e.buf = enc.AppendEndMarker(e.buf)
-		e.buf = enc.AppendLineBreak(e.buf)
-		if e.w != nil {
-			_, err = e.w.WriteLevel(e.level, e.buf)
-		}
-	}
-	putEvent(e)
-	return
-}
-
 // Enabled return false if the *Event is going to be filtered out by
 // log level or sampling.
 func (e *Event) Enabled() bool {
@@ -103,43 +86,12 @@ func (e *Event) Discard() *Event {
 	return nil
 }
 
-func (e *Event) msg(msg string) {
-	if len(e.ch) > 0 {
-		e.ch[0].Run(e, e.level, msg)
-		if len(e.ch) > 1 {
-			for _, hook := range e.ch[1:] {
-				hook.Run(e, e.level, msg)
-			}
-		}
-	}
-
-	if e.timestamp {
-		e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), TimestampFunc(), TimeFieldFormat)
-	}
-	if msg != "" {
-		e.buf = enc.AppendString(enc.AppendKey(e.buf, e.messageFieldName), msg)
-	}
-	if e.caller {
-		e._caller(e.callerSkipFrameCount)
-	}
-	if e.done != nil {
-		defer e.done(msg)
-	}
-	if err := e.write(); err != nil {
-		if ErrorHandler != nil {
-			ErrorHandler(err)
-		} else {
-			fmt.Fprintf(os.Stderr, "rz: could not write event: %v\n", err)
-		}
-	}
-}
-
 // Fields is a helper function to use a map to set fields using type assertion.
 func (e *Event) Fields(fields map[string]interface{}) *Event {
 	if e == nil {
 		return e
 	}
-	e.buf = appendFields(e.buf, fields)
+	e.buf = e.appendFields(e.buf, fields)
 	return e
 }
 
@@ -174,7 +126,7 @@ func (e *Event) Array(key string, arr LogArrayMarshaler) *Event {
 	if aa, ok := arr.(*Array); ok {
 		a = aa
 	} else {
-		a = Arr()
+		a = e.Arr()
 		arr.MarshalZerologArray(a)
 	}
 	e.buf = a.write(e.buf)
@@ -283,7 +235,7 @@ func (e *Event) Errors(key string, errs []error) *Event {
 	if e == nil {
 		return e
 	}
-	arr := Arr()
+	arr := e.Arr()
 	for _, err := range errs {
 		switch m := ErrorMarshalFunc(err).(type) {
 		case LogObjectMarshaler:
@@ -579,7 +531,7 @@ func (e *Event) Timestamp() *Event {
 	if e == nil {
 		return e
 	}
-	e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), TimestampFunc(), TimeFieldFormat)
+	e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), e.timestampFunc(), e.timeFieldFormat)
 	return e
 }
 
@@ -588,7 +540,7 @@ func (e *Event) Time(key string, t time.Time) *Event {
 	if e == nil {
 		return e
 	}
-	e.buf = enc.AppendTime(enc.AppendKey(e.buf, key), t, TimeFieldFormat)
+	e.buf = enc.AppendTime(enc.AppendKey(e.buf, key), t, e.timeFieldFormat)
 	return e
 }
 
@@ -598,7 +550,7 @@ func (e *Event) Times(key string, t []time.Time) *Event {
 		return e
 	}
 	e.timestamp = false
-	e.buf = enc.AppendTimes(enc.AppendKey(e.buf, key), t, TimeFieldFormat)
+	e.buf = enc.AppendTimes(enc.AppendKey(e.buf, key), t, e.timeFieldFormat)
 	return e
 }
 
@@ -654,19 +606,6 @@ func (e *Event) Interface(key string, i interface{}) *Event {
 // Caller adds the file:line of the caller with the zerolog.CallerFieldName key.
 func (e *Event) Caller() *Event {
 	e.caller = true
-	return e
-	// return e.caller(CallerSkipFrameCount)
-}
-
-func (e *Event) _caller(skip int) *Event {
-	if e == nil {
-		return e
-	}
-	_, file, line, ok := runtime.Caller(skip)
-	if !ok {
-		return e
-	}
-	e.buf = enc.AppendString(enc.AppendKey(e.buf, e.callerFieldName), file+":"+strconv.Itoa(line))
 	return e
 }
 

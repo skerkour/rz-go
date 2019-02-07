@@ -15,7 +15,7 @@ func TestLogStack(t *testing.T) {
 	rz.ErrorStackMarshaler = MarshalStack
 
 	out := &bytes.Buffer{}
-	log := rz.New(rz.Writer(out))
+	log := rz.New(rz.Writer(out), rz.Timestamp(false))
 
 	err := errors.Wrap(errors.New("error message"), "from error")
 	log.Log("", func(e *rz.Event) {
@@ -36,6 +36,7 @@ func TestContextStack(t *testing.T) {
 	log := rz.New(
 		rz.Writer(out),
 		rz.Stack(true),
+		rz.Timestamp(false),
 	)
 
 	err := errors.Wrap(errors.New("error message"), "from error")
@@ -44,7 +45,7 @@ func TestContextStack(t *testing.T) {
 	})
 
 	got := out.String()
-	want := `\{"stack":\[\{"func":"TestContextStack","line":"41","source":"stacktrace_test.go"\},.*\],"error":"from error: error message"\}\n`
+	want := `\{"stack":\[\{"func":"TestContextStack","line":"42","source":"stacktrace_test.go"\},.*\],"error":"from error: error message"\}\n`
 	if ok, _ := regexp.MatchString(want, got); !ok {
 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
 	}

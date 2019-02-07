@@ -295,18 +295,7 @@ func BenchmarkZlLotOfFields(b *testing.B) {
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				logger.Warn().
-					Int("int", _tenInts[0]).
-					Ints("ints", _tenInts).
-					Str("string", _tenStrings[0]).
-					Strs("strings", _tenStrings).
-					Time("time", _tenTimes[0]).
-					Times("times", _tenTimes).
-					Interface("user1", _oneUser).
-					Interface("user2", _oneUser).
-					Interface("users", _tenUsers).
-					Err(errExample).
-					Msg(_testMessage)
+				zerolog10Fields(logger.Info()).Msg(_testMessage)
 			}
 		})
 	})
@@ -315,18 +304,7 @@ func BenchmarkZlLotOfFields(b *testing.B) {
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				logger.Warn(_testMessage, func(e *rz.Event) {
-					e.Int("int", _tenInts[0])
-					e.Ints("ints", _tenInts)
-					e.String("string", _tenStrings[0])
-					e.Strings("strings", _tenStrings)
-					e.Time("time", _tenTimes[0])
-					e.Times("times", _tenTimes)
-					e.Interface("user1", _oneUser)
-					e.Interface("user2", _oneUser)
-					e.Interface("users", _tenUsers)
-					e.Err(errExample)
-				})
+				logger.Warn(_testMessage, rz10Fields)
 			}
 		})
 	})

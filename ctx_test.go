@@ -2,6 +2,7 @@ package rz
 
 import (
 	"context"
+	"fmt"
 	"io/ioutil"
 	"reflect"
 	"testing"
@@ -12,6 +13,8 @@ func TestFromCtx(t *testing.T) {
 	ctx := log.ToCtx(context.Background())
 	log2 := FromCtx(ctx)
 	if !reflect.DeepEqual(log, *log2) {
+		fmt.Printf("log: %#v\n", log)
+		fmt.Printf("log: %#v\n", *log2)
 		t.Error("FromCtx did not return the expected logger")
 	}
 
@@ -20,6 +23,8 @@ func TestFromCtx(t *testing.T) {
 	ctx = log.ToCtx(ctx)
 	log2 = FromCtx(ctx)
 	if !reflect.DeepEqual(log, *log2) {
+		fmt.Printf("log: %#v\n", log)
+		fmt.Printf("log: %#v\n", *log2)
 		t.Error("FromCtx did not return the expected logger")
 	}
 

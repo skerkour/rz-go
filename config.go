@@ -78,3 +78,59 @@ func Timestamp(enableTimestamp bool) Option {
 		logger.timestamp = enableTimestamp
 	}
 }
+
+// Formatter update logger's formatter
+func Formatter(formatter LogFormatter) Option {
+	return func(logger *Logger) {
+		logger.formatter = formatter
+	}
+}
+
+// TimestampFieldName update logger's timestampFieldName
+func TimestampFieldName(timestampFieldName string) Option {
+	return func(logger *Logger) {
+		logger.timestampFieldName = timestampFieldName
+	}
+}
+
+// LevelFieldName update logger's levelFieldName
+func LevelFieldName(levelFieldName string) Option {
+	return func(logger *Logger) {
+		logger.levelFieldName = levelFieldName
+	}
+}
+
+// MessageFieldName update logger's messageFieldName
+func MessageFieldName(messageFieldName string) Option {
+	return func(logger *Logger) {
+		logger.messageFieldName = messageFieldName
+	}
+}
+
+// ErrorFieldName update logger's errorFieldName
+func ErrorFieldName(errorFieldName string) Option {
+	return func(logger *Logger) {
+		logger.errorFieldName = errorFieldName
+	}
+}
+
+// CallerFieldName update logger's callerFieldName
+func CallerFieldName(callerFieldName string) Option {
+	return func(logger *Logger) {
+		logger.callerFieldName = callerFieldName
+	}
+}
+
+// CallerSkipFrameCount update logger's callerSkipFrameCount
+func CallerSkipFrameCount(callerSkipFrameCount int) Option {
+	return func(logger *Logger) {
+		logger.callerSkipFrameCount = callerSkipFrameCount
+	}
+}
+
+// ErrorStackFieldName update logger's errorStackFieldName
+func ErrorStackFieldName(errorStackFieldName string) Option {
+	return func(logger *Logger) {
+		logger.errorStackFieldName = errorStackFieldName
+	}
+}

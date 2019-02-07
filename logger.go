@@ -1,7 +1,11 @@
 package rz
 
 import (
+	"fmt"
 	"os"
+	"runtime"
+	"strconv"
+	"time"
 )
 
 // A Logger represents an active logging object that generates lines
@@ -25,6 +29,9 @@ type Logger struct {
 	callerFieldName      string
 	callerSkipFrameCount int
 	errorStackFieldName  string
+	timeFieldFormat      string
+	formatter            LogFormatter
+	timestampFunc        func() time.Time
 }
 
 // New creates a root logger with given options. If the output writer implements
@@ -45,6 +52,8 @@ func New(options ...Option) Logger {
 		callerFieldName:      DefaultCallerFieldName,
 		callerSkipFrameCount: DefaultCallerSkipFrameCount,
 		errorStackFieldName:  DefaultErrorStackFieldName,
+		timeFieldFormat:      DefaultTimeFieldFormat,
+		timestampFunc:        DefaultTimestampFunc,
 	}
 	return logger.Config(options...)
 }
@@ -123,18 +132,18 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 		return
 	}
 	e := newEvent(l.writer, level)
-	e.done = done
 	e.ch = l.hooks
-	e.caller = l.caller
 	e.stack = l.stack
+	e.caller = l.caller
 	e.timestamp = l.timestamp
 	e.timestampFieldName = l.timestampFieldName
 	e.levelFieldName = l.levelFieldName
 	e.messageFieldName = l.messageFieldName
 	e.errorFieldName = l.errorFieldName
 	e.callerFieldName = l.callerFieldName
-	e.callerSkipFrameCount = l.callerSkipFrameCount
 	e.errorStackFieldName = l.errorStackFieldName
+	e.timeFieldFormat = l.timeFieldFormat
+	e.timestampFunc = l.timestampFunc
 	if level != NoLevel {
 		e.String(l.levelFieldName, level.String())
 	}
@@ -145,7 +154,59 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 	if fields != nil {
 		fields(e)
 	}
-	e.msg(message)
+
+	l.writeEvent(e, message, done)
+}
+
+func (l *Logger) writeEvent(e *Event, msg string, done func(string)) {
+	if len(e.ch) > 0 {
+		e.ch[0].Run(e, e.level, msg)
+		if len(e.ch) > 1 {
+			for _, hook := range e.ch[1:] {
+				hook.Run(e, e.level, msg)
+			}
+		}
+	}
+
+	if e.timestamp {
+		e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), e.timestampFunc(), e.timeFieldFormat)
+	}
+	if msg != "" {
+		e.buf = enc.AppendString(enc.AppendKey(e.buf, e.messageFieldName), msg)
+	}
+
+	if e.caller {
+		_, file, line, ok := runtime.Caller(l.callerSkipFrameCount)
+		if ok {
+			e.buf = enc.AppendString(enc.AppendKey(e.buf, e.callerFieldName), file+":"+strconv.Itoa(line))
+		}
+	}
+	if done != nil {
+		defer done(msg)
+	}
+
+	var err error
+
+	if e.level != Disabled {
+		e.buf = enc.AppendEndMarker(e.buf)
+		e.buf = enc.AppendLineBreak(e.buf)
+		if l.formatter != nil {
+			e.buf, err = l.formatter(e)
+		}
+		if e.w != nil {
+			_, err = e.w.WriteLevel(e.level, e.buf)
+		}
+	}
+
+	putEvent(e)
+
+	if err != nil {
+		if ErrorHandler != nil {
+			ErrorHandler(err)
+		} else {
+			fmt.Fprintf(os.Stderr, "rz: could not write event: %v\n", err)
+		}
+	}
 }
 
 // should returns true if the log event should be logged.
