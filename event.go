@@ -20,15 +20,21 @@ var eventPool = &sync.Pool{
 
 // Event represents a log event. It is instanced by one of the level method.
 type Event struct {
-	buf                []byte
-	w                  LevelWriter
-	level              LogLevel
-	done               func(msg string)
-	stack              bool // enable error stack trace
-	caller             bool // enable caller field
-	timestamp          bool // enable timestamp
-	timestampFieldName string
-	ch                 []LogHook // hooks from context
+	buf                  []byte
+	w                    LevelWriter
+	level                LogLevel
+	done                 func(msg string)
+	stack                bool      // enable error stack trace
+	caller               bool      // enable caller field
+	timestamp            bool      // enable timestamp
+	ch                   []LogHook // hooks from context
+	timestampFieldName   string
+	levelFieldName       string
+	messageFieldName     string
+	errorFieldName       string
+	callerFieldName      string
+	callerSkipFrameCount int
+	errorStackFieldName  string
 }
 
 func putEvent(e *Event) {
@@ -111,10 +117,10 @@ func (e *Event) msg(msg string) {
 		e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), TimestampFunc(), TimeFieldFormat)
 	}
 	if msg != "" {
-		e.buf = enc.AppendString(enc.AppendKey(e.buf, MessageFieldName), msg)
+		e.buf = enc.AppendString(enc.AppendKey(e.buf, e.messageFieldName), msg)
 	}
 	if e.caller {
-		e._caller(CallerSkipFrameCount)
+		e._caller(e.callerSkipFrameCount)
 	}
 	if e.done != nil {
 		defer e.done(msg)
@@ -311,16 +317,16 @@ func (e *Event) Err(err error) *Event {
 		switch m := ErrorStackMarshaler(err).(type) {
 		case nil:
 		case LogObjectMarshaler:
-			e.Object(ErrorStackFieldName, m)
+			e.Object(e.errorStackFieldName, m)
 		case error:
-			e.String(ErrorStackFieldName, m.Error())
+			e.String(e.errorStackFieldName, m.Error())
 		case string:
-			e.String(ErrorStackFieldName, m)
+			e.String(e.errorStackFieldName, m)
 		default:
-			e.Interface(ErrorStackFieldName, m)
+			e.Interface(e.errorStackFieldName, m)
 		}
 	}
-	return e.Error(ErrorFieldName, err)
+	return e.Error(e.errorFieldName, err)
 }
 
 // Stack enables stack trace printing for the error passed to Err().
@@ -660,7 +666,7 @@ func (e *Event) _caller(skip int) *Event {
 	if !ok {
 		return e
 	}
-	e.buf = enc.AppendString(enc.AppendKey(e.buf, CallerFieldName), file+":"+strconv.Itoa(line))
+	e.buf = enc.AppendString(enc.AppendKey(e.buf, e.callerFieldName), file+":"+strconv.Itoa(line))
 	return e
 }
 

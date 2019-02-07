@@ -1,29 +1,28 @@
 package rz
 
 import "time"
-import "sync/atomic"
 
 var (
-	// TimestampFieldName is the field name used for the timestamp field.
+	// DefaultTimestampFieldName is the default field name used for the timestamp field.
 	DefaultTimestampFieldName = "timestamp"
 
-	// LevelFieldName is the field name used for the level field.
-	LevelFieldName = "level"
+	// DefaultLevelFieldName is the default field name used for the level field.
+	DefaultLevelFieldName = "level"
 
-	// MessageFieldName is the field name used for the message field.
-	MessageFieldName = "message"
+	// DefaultMessageFieldName is the default field name used for the message field.
+	DefaultMessageFieldName = "message"
 
-	// ErrorFieldName is the field name used for error fields.
-	ErrorFieldName = "error"
+	// DefaultErrorFieldName is the default field name used for error fields.
+	DefaultErrorFieldName = "error"
 
-	// CallerFieldName is the field name used for caller field.
-	CallerFieldName = "caller"
+	// DefaultCallerFieldName is the default field name used for caller field.
+	DefaultCallerFieldName = "caller"
 
-	// CallerSkipFrameCount is the number of stack frames to skip to find the caller.
-	CallerSkipFrameCount = 4
+	// DefaultCallerSkipFrameCount is the default number of stack frames to skip to find the caller.
+	DefaultCallerSkipFrameCount = 4
 
-	// ErrorStackFieldName is the field name used for error stacks.
-	ErrorStackFieldName = "stack"
+	// DefaultErrorStackFieldName is the default field name used for error stacks.
+	DefaultErrorStackFieldName = "stack"
 
 	// ErrorStackMarshaler extract the stack from err if any.
 	ErrorStackMarshaler func(err error) interface{}
@@ -55,33 +54,34 @@ var (
 	ErrorHandler func(err error)
 )
 
-var (
-	gLevel          = new(uint32)
-	disableSampling = new(uint32)
-)
+// var (
+// 	gLevel          = new(uint32)
+// 	disableSampling = new(uint32)
+// )
 
+// TODO: remove
 // SetGlobalLevel sets the global override for log level. If this
-// values is raised, all Loggers will use at least this value.
-//
-// To globally disable logs, set GlobalLevel to Disabled.
-func SetGlobalLevel(l LogLevel) {
-	atomic.StoreUint32(gLevel, uint32(l))
-}
+// // values is raised, all Loggers will use at least this value.
+// //
+// // To globally disable logs, set GlobalLevel to Disabled.
+// func SetGlobalLevel(l LogLevel) {
+// 	atomic.StoreUint32(gLevel, uint32(l))
+// }
 
-// GlobalLevel returns the current global log level
-func GlobalLevel() LogLevel {
-	return LogLevel(atomic.LoadUint32(gLevel))
-}
+// // GlobalLevel returns the current global log level
+// func GlobalLevel() LogLevel {
+// 	return LogLevel(atomic.LoadUint32(gLevel))
+// }
 
-// DisableSampling will disable sampling in all Loggers if true.
-func DisableSampling(v bool) {
-	var i uint32
-	if v {
-		i = 1
-	}
-	atomic.StoreUint32(disableSampling, i)
-}
+// // DisableSampling will disable sampling in all Loggers if true.
+// func DisableSampling(v bool) {
+// 	var i uint32
+// 	if v {
+// 		i = 1
+// 	}
+// 	atomic.StoreUint32(disableSampling, i)
+// }
 
-func samplingDisabled() bool {
-	return atomic.LoadUint32(disableSampling) == 1
-}
+// func samplingDisabled() bool {
+// 	return atomic.LoadUint32(disableSampling) == 1
+// }

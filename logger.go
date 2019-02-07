@@ -10,15 +10,21 @@ import (
 // serialization to the Writer. If your Writer is not thread safe,
 // you may consider a sync wrapper.
 type Logger struct {
-	writer             LevelWriter
-	stack              bool
-	caller             bool
-	timestamp          bool
-	level              LogLevel
-	sampler            LogSampler
-	context            []byte
-	hooks              []LogHook
-	timestampFieldName string
+	writer               LevelWriter
+	stack                bool
+	caller               bool
+	timestamp            bool
+	level                LogLevel
+	sampler              LogSampler
+	context              []byte
+	hooks                []LogHook
+	timestampFieldName   string
+	levelFieldName       string
+	messageFieldName     string
+	errorFieldName       string
+	callerFieldName      string
+	callerSkipFrameCount int
+	errorStackFieldName  string
 }
 
 // New creates a root logger with given options. If the output writer implements
@@ -30,9 +36,15 @@ type Logger struct {
 // you may consider using sync wrapper.
 func New(options ...Option) Logger {
 	logger := Logger{
-		writer:             levelWriterAdapter{os.Stdout},
-		timestamp:          true,
-		timestampFieldName: DefaultTimestampFieldName,
+		writer:               levelWriterAdapter{os.Stdout},
+		timestamp:            true,
+		timestampFieldName:   DefaultTimestampFieldName,
+		levelFieldName:       DefaultLevelFieldName,
+		messageFieldName:     DefaultMessageFieldName,
+		errorFieldName:       DefaultErrorFieldName,
+		callerFieldName:      DefaultCallerFieldName,
+		callerSkipFrameCount: DefaultCallerSkipFrameCount,
+		errorStackFieldName:  DefaultErrorStackFieldName,
 	}
 	return logger.Config(options...)
 }
@@ -117,8 +129,14 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 	e.stack = l.stack
 	e.timestamp = l.timestamp
 	e.timestampFieldName = l.timestampFieldName
+	e.levelFieldName = l.levelFieldName
+	e.messageFieldName = l.messageFieldName
+	e.errorFieldName = l.errorFieldName
+	e.callerFieldName = l.callerFieldName
+	e.callerSkipFrameCount = l.callerSkipFrameCount
+	e.errorStackFieldName = l.errorStackFieldName
 	if level != NoLevel {
-		e.String(LevelFieldName, level.String())
+		e.String(l.levelFieldName, level.String())
 	}
 	if l.context != nil && len(l.context) > 0 {
 		e.buf = enc.AppendObjectData(e.buf, l.context)
@@ -132,11 +150,11 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 
 // should returns true if the log event should be logged.
 func (l *Logger) should(lvl LogLevel) bool {
-	if lvl < l.level || lvl < GlobalLevel() {
+	if lvl < l.level {
 		return false
 	}
-	if l.sampler != nil && !samplingDisabled() {
-		return l.sampler.Sample(lvl)
-	}
+	// if l.sampler != nil && !samplingDisabled() {
+	// 	return l.sampler.Sample(lvl)
+	// }
 	return true
 }
