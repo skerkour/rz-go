@@ -165,6 +165,7 @@ func zap10Fields() []zap.Field {
 	}
 }
 
+
 var _testMessage = "hello world"
 
 func BenchmarkDisabledWithoutFields(b *testing.B) {
@@ -178,21 +179,21 @@ func BenchmarkDisabledWithoutFields(b *testing.B) {
 			}
 		})
 	})
-	b.Run("rs/zerolog", func(b *testing.B) {
-		logger := newDisabledZerolog()
-		b.ResetTimer()
-		b.RunParallel(func(pb *testing.PB) {
-			for pb.Next() {
-				logger.Info().Msg(_testMessage)
-			}
-		})
-	})
 	b.Run("uber-go/zap", func(b *testing.B) {
 		logger := newDisabledZap()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				logger.Info(_testMessage)
+			}
+		})
+	})
+	b.Run("rs/zerolog", func(b *testing.B) {
+		logger := newDisabledZerolog()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Info().Msg(_testMessage)
 			}
 		})
 	})
@@ -218,21 +219,21 @@ func BenchmarkWithoutFields(b *testing.B) {
 			}
 		})
 	})
-	b.Run("rs/zerolog", func(b *testing.B) {
-		logger := newZerolog()
-		b.ResetTimer()
-		b.RunParallel(func(pb *testing.PB) {
-			for pb.Next() {
-				logger.Info().Msg(_testMessage)
-			}
-		})
-	})
 	b.Run("uber-go/zap", func(b *testing.B) {
 		logger := newZap()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				logger.Info(_testMessage)
+			}
+		})
+	})
+	b.Run("rs/zerolog", func(b *testing.B) {
+		logger := newZerolog()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Info().Msg(_testMessage)
 			}
 		})
 	})
@@ -260,21 +261,21 @@ func Benchmark10Context(b *testing.B) {
 			}
 		})
 	})
-	b.Run("rs/zerolog", func(b *testing.B) {
-		logger := zerolog10Context(newZerolog().With()).Logger()
-		b.ResetTimer()
-		b.RunParallel(func(pb *testing.PB) {
-			for pb.Next() {
-				logger.Info().Msg(_testMessage)
-			}
-		})
-	})
 	b.Run("uber-go/zap", func(b *testing.B) {
 		logger := newZap().With(zap10Fields()...)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				logger.Info(_testMessage)
+			}
+		})
+	})
+	b.Run("rs/zerolog", func(b *testing.B) {
+		logger := zerolog10Context(newZerolog().With()).Logger()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Info().Msg(_testMessage)
 			}
 		})
 	})
@@ -298,6 +299,15 @@ func Benchmark10Fields(b *testing.B) {
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				logger.WithFields(fields).Info(_testMessage)
+			}
+		})
+	})
+	b.Run("uber-go/zap", func(b *testing.B) {
+		logger := newZap()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Info(_testMessage, zap10Fields()...)
 			}
 		})
 	})
@@ -331,6 +341,15 @@ func Benchmark10Fields10Context(b *testing.B) {
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				l.WithFields(fields).Info(_testMessage)
+			}
+		})
+	})
+	b.Run("uber-go/zap", func(b *testing.B) {
+		logger := newZap().With(zap10Fields()...)
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Info(_testMessage, zap10Fields()...)
 			}
 		})
 	})

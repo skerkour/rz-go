@@ -18,7 +18,7 @@ The rz package provides a fast and simple logger dedicated to JSON output.
 
 Rz's API is designed to provide both a great developer experience and stunning [performance](#benchmarks). Its unique chaining API allows zerolog to write JSON (or CBOR) log events by avoiding allocations and reflection.
 
-Uber's [zap](https://godoc.org/go.uber.org/zap) and rs's [zerolog](https://godoc.org/github.com/rs/zerolog) libraries pioneered this approach. Rz is taking this concept to the next level with a simpler to use API and even better performance.
+Uber's [zap](https://godoc.org/go.uber.org/zap) and rs's [zerolog](https://godoc.org/github.com/rs/zerolog) libraries pioneered this approach. Rz is taking this concept to the next level with a simpler to use and safer API and even better performance.
 
 To keep the code base and the API simple, rz focuses on efficient structured logging only. Pretty logging on the console is made possible using the provided (but inefficient) `rz.ConsoleFormatter`.
 
@@ -120,26 +120,28 @@ cd benchmarks && ./run.sh
 goos: linux
 goarch: amd64
 pkg: github.com/bloom42/rz-go/benchmarks
-BenchmarkDisabledWithoutFields/sirupsen/logrus-4                100000000               19.4 ns/op            16 B/op          1 allocs/op
-BenchmarkDisabledWithoutFields/rs/zerolog-4                     500000000                3.98 ns/op            0 B/op          0 allocs/op
-BenchmarkDisabledWithoutFields/uber-go/zap-4                    30000000                39.6 ns/op             0 B/op          0 allocs/op
-BenchmarkDisabledWithoutFields/bloom42/rz-go-4                  500000000                3.41 ns/op            0 B/op          0 allocs/op
-BenchmarkWithoutFields/sirupsen/logrus-4                          300000              4740 ns/op            1137 B/op         24 allocs/op
-BenchmarkWithoutFields/rs/zerolog-4                              5000000               256 ns/op               0 B/op          0 allocs/op
-BenchmarkWithoutFields/uber-go/zap-4                             5000000               335 ns/op               0 B/op          0 allocs/op
-BenchmarkWithoutFields/bloom42/rz-go-4                           5000000               246 ns/op               0 B/op          0 allocs/op
-Benchmark10Context/sirupsen/logrus-4                              100000             21579 ns/op            3262 B/op         50 allocs/op
-Benchmark10Context/rs/zerolog-4                                  5000000               266 ns/op               0 B/op          0 allocs/op
-Benchmark10Context/uber-go/zap-4                                 5000000               342 ns/op               0 B/op          0 allocs/op
-Benchmark10Context/bloom42/rz-go-4                               5000000               258 ns/op               0 B/op          0 allocs/op
-Benchmark10Fields/sirupsen/logrus-4                                50000             25789 ns/op            4043 B/op         54 allocs/op
-Benchmark10Fields/rs/zerolog-4                                    500000              2869 ns/op             640 B/op          6 allocs/op
-Benchmark10Fields/bloom42/rz-go-4                                 500000              2889 ns/op             640 B/op          6 allocs/op
-Benchmark10Fields10Context/sirupsen/logrus-4                       50000             26599 ns/op            4567 B/op         53 allocs/op
-Benchmark10Fields10Context/rs/zerolog-4                           500000              2874 ns/op             640 B/op          6 allocs/op
-Benchmark10Fields10Context/bloom42/rz-go-4                        500000              2907 ns/op             640 B/op          6 allocs/op
+BenchmarkDisabledWithoutFields/sirupsen/logrus-4                100000000               18.7 ns/op            16 B/op          1 allocs/op
+BenchmarkDisabledWithoutFields/uber-go/zap-4                    30000000                40.2 ns/op             0 B/op          0 allocs/op
+BenchmarkDisabledWithoutFields/rs/zerolog-4                     500000000                3.92 ns/op            0 B/op          0 allocs/op
+BenchmarkDisabledWithoutFields/bloom42/rz-go-4                  500000000                3.46 ns/op            0 B/op          0 allocs/op
+BenchmarkWithoutFields/sirupsen/logrus-4                          300000              4526 ns/op            1137 B/op         24 allocs/op
+BenchmarkWithoutFields/uber-go/zap-4                             5000000               324 ns/op               0 B/op          0 allocs/op
+BenchmarkWithoutFields/rs/zerolog-4                              5000000               255 ns/op               0 B/op          0 allocs/op
+BenchmarkWithoutFields/bloom42/rz-go-4                           5000000               245 ns/op               0 B/op          0 allocs/op
+Benchmark10Context/sirupsen/logrus-4                              100000             20059 ns/op            3261 B/op         50 allocs/op
+Benchmark10Context/uber-go/zap-4                                 5000000               333 ns/op               0 B/op          0 allocs/op
+Benchmark10Context/rs/zerolog-4                                  5000000               262 ns/op               0 B/op          0 allocs/op
+Benchmark10Context/bloom42/rz-go-4                               5000000               254 ns/op               0 B/op          0 allocs/op
+Benchmark10Fields/sirupsen/logrus-4                                50000             25208 ns/op            4043 B/op         54 allocs/op
+Benchmark10Fields/uber-go/zap-4                                   500000              3268 ns/op             946 B/op          8 allocs/op
+Benchmark10Fields/rs/zerolog-4                                    500000              2785 ns/op             640 B/op          6 allocs/op
+Benchmark10Fields/bloom42/rz-go-4                                 500000              2792 ns/op             640 B/op          6 allocs/op
+Benchmark10Fields10Context/sirupsen/logrus-4                       50000             25041 ns/op            4567 B/op         53 allocs/op
+Benchmark10Fields10Context/uber-go/zap-4                          500000              3308 ns/op             948 B/op          8 allocs/op
+Benchmark10Fields10Context/rs/zerolog-4                           500000              2896 ns/op             640 B/op          6 allocs/op
+Benchmark10Fields10Context/bloom42/rz-go-4                        500000              2839 ns/op             640 B/op          6 allocs/op
 PASS
-ok      github.com/bloom42/rz-go/benchmarks     30.882s
+ok      github.com/bloom42/rz-go/benchmarks     33.526s
 ```
 
 
