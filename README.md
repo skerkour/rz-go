@@ -14,16 +14,13 @@
 
 ![Console logging](docs/example_screenshot.png)
 
-The rz package provides a fast and simple logger dedicated to JSON output.
-
-Rz's API is designed to provide both a great developer experience and stunning [performance](#benchmarks).
-Its unique functional API allows rz to write JSON (or CBOR) log events by avoiding allocations and reflection.
+The rz package provides a fast and simple logger dedicated to JSON output avoiding allocations and reflection..
 
 Uber's [zap](https://godoc.org/go.uber.org/zap) and rs's [zerolog](https://godoc.org/github.com/rs/zerolog)
 libraries pioneered this approach.
 
 Rz is a fork of zerolog taking this concept to the next level with a **simpler** to use and **safer**
-API and even better performance.
+API and even better [performance](#benchmarks).
 
 To keep the code base and the API simple, rz focuses on efficient structured logging only.
 Pretty logging on the console is made possible using the provided (but inefficient) `rz.ConsoleFormatter`.
@@ -75,6 +72,7 @@ func main() {
 
 ## Configuration
 
+### Logger
 ```go
 // Writer update logger's writer.
 func Writer(writer io.Writer) LoggerOption {}
@@ -112,16 +110,18 @@ func CallerSkipFrameCount(callerSkipFrameCount int) LoggerOption {}
 func ErrorStackFieldName(errorStackFieldName string) LoggerOption {}
 // TimeFieldFormat update logger's timeFieldFormat.
 func TimeFieldFormat(timeFieldFormat string) LoggerOption {}
+// TimestampFunc update logger's timestampFunc.
+func TimestampFunc(timestampFunc func() time.Time) LoggerOption {
+```
 
+### Global
+```go
 var (
-	// TimestampFunc defines the function called to generate a timestamp.
-	TimestampFunc = func() time.Time { return time.Now().UTC() }
-
 	// DurationFieldUnit defines the unit for time.Duration type fields added
 	// using the Dur method.
 	DurationFieldUnit = time.Millisecond
 
-	// DurationFieldInteger renders Dur fields as integer instead of float if
+	// DurationFieldInteger renders Duration fields as integer instead of float if
 	// set to true.
 	DurationFieldInteger = false
 
