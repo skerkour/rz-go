@@ -1,4 +1,9 @@
-## Astro
+<p align="center">
+  <h3 align="center">rz</h3>
+  <p align="center">RIPZap - The fastest structured, leveled JSON logger for Go 📖</p>
+</p>
+
+--------
 
 [Make logging great again](https://kerkour.com/post/logging/)
 
@@ -57,7 +62,7 @@ func main() {
 
 ```go
 // Writer update logger's writer.
-func Writer(writer io.Writer) LoggerOption
+func Writer(writer io.Writer) LoggerOption {}
 // Level update logger's level.
 func Level(lvl LogLevel) LoggerOption
 // Sampler update logger's sampler.
