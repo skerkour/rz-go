@@ -253,7 +253,7 @@ func TestFields(t *testing.T) {
 			IPNet("IPNet", net.IPNet{IP: net.IP{192, 168, 0, 100}, Mask: net.CIDRMask(24, 32)}).
 			Float32("float32", 11.1234).
 			Float64("float64", 12.321321321).
-			Dur("dur", 1*time.Second).
+			Duration("dur", 1*time.Second).
 			Time("time", time.Time{}).
 			TimeDiff("diff", now, now.Add(-10*time.Second))
 	})
@@ -281,7 +281,7 @@ func TestFieldsArrayEmpty(t *testing.T) {
 			Uints64("uint64", []uint64{}).
 			Floats32("float32", []float32{}).
 			Floats64("float64", []float64{}).
-			Durs("dur", []time.Duration{}).
+			Durations("dur", []time.Duration{}).
 			Times("time", []time.Time{})
 	})
 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"string":[],"err":[],"bool":[],"int":[],"int8":[],"int16":[],"int32":[],"int64":[],"uint":[],"uint8":[],"uint16":[],"uint32":[],"uint64":[],"float32":[],"float64":[],"dur":[],"time":[]}`+"\n"; got != want {
@@ -308,7 +308,7 @@ func TestFieldsArraySingleElement(t *testing.T) {
 			Uints64("uint64", []uint64{10}).
 			Floats32("float32", []float32{11}).
 			Floats64("float64", []float64{12}).
-			Durs("dur", []time.Duration{1 * time.Second}).
+			Durations("dur", []time.Duration{1 * time.Second}).
 			Times("time", []time.Time{time.Time{}})
 	})
 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"string":["foo"],"err":["some error"],"bool":[true],"int":[1],"int8":[2],"int16":[3],"int32":[4],"int64":[5],"uint":[6],"uint8":[7],"uint16":[8],"uint32":[9],"uint64":[10],"float32":[11],"float64":[12],"dur":[1000],"time":["0001-01-01T00:00:00Z"]}`+"\n"; got != want {
@@ -335,7 +335,7 @@ func TestFieldsArrayMultipleElement(t *testing.T) {
 			Uints64("uint64", []uint64{10, 0}).
 			Floats32("float32", []float32{11, 0}).
 			Floats64("float64", []float64{12, 0}).
-			Durs("dur", []time.Duration{1 * time.Second, 0}).
+			Durations("dur", []time.Duration{1 * time.Second, 0}).
 			Times("time", []time.Time{time.Time{}, time.Time{}})
 	})
 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"string":["foo","bar"],"err":["some error",null],"bool":[true,false],"int":[1,0],"int8":[2,0],"int16":[3,0],"int32":[4,0],"int64":[5,0],"uint":[6,0],"uint8":[7,0],"uint16":[8,0],"uint32":[9,0],"uint64":[10,0],"float32":[11,0],"float64":[12,0],"dur":[1000,0],"time":["0001-01-01T00:00:00Z","0001-01-01T00:00:00Z"]}`+"\n"; got != want {
@@ -366,7 +366,7 @@ func TestFieldsDisabled(t *testing.T) {
 			Uint64("uint64", 10).
 			Float32("float32", 11).
 			Float64("float64", 12).
-			Dur("dur", 1*time.Second).
+			Duration("dur", 1*time.Second).
 			Time("time", time.Time{}).
 			TimeDiff("diff", now, now.Add(-10*time.Second))
 	})
