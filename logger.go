@@ -146,6 +146,7 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 	e.callerFieldName = l.callerFieldName
 	e.timeFieldFormat = l.timeFieldFormat
 	e.errorStackFieldName = l.errorStackFieldName
+	e.callerSkipFrameCount = l.callerSkipFrameCount
 	if level != NoLevel {
 		e.String(l.levelFieldName, level.String())
 	}
@@ -157,10 +158,10 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 		fields(e)
 	}
 
-	l.writeEvent(e, message, done)
+	writeEvent(e, message, done)
 }
 
-func (l *Logger) writeEvent(e *Event, msg string, done func(string)) {
+func writeEvent(e *Event, msg string, done func(string)) {
 	if len(e.ch) > 0 {
 		e.ch[0].Run(e, e.level, msg)
 		if len(e.ch) > 1 {
@@ -178,9 +179,9 @@ func (l *Logger) writeEvent(e *Event, msg string, done func(string)) {
 	}
 
 	if e.caller {
-		_, file, line, ok := runtime.Caller(l.callerSkipFrameCount)
+		_, file, line, ok := runtime.Caller(e.callerSkipFrameCount)
 		if ok {
-			e.buf = enc.AppendString(enc.AppendKey(e.buf, l.callerFieldName), file+":"+strconv.Itoa(line))
+			e.buf = enc.AppendString(enc.AppendKey(e.buf, e.callerFieldName), file+":"+strconv.Itoa(line))
 		}
 	}
 	if done != nil {
@@ -192,9 +193,9 @@ func (l *Logger) writeEvent(e *Event, msg string, done func(string)) {
 	if e.level != Disabled {
 		e.buf = enc.AppendEndMarker(e.buf)
 		e.buf = enc.AppendLineBreak(e.buf)
-		if l.formatter != nil {
-			e.buf, err = l.formatter(e)
-		}
+		// if l.formatter != nil {
+		// 	e.buf, err = l.formatter(e)
+		// }
 		if e.w != nil {
 			_, err = e.w.WriteLevel(e.level, e.buf)
 		}
@@ -216,8 +217,8 @@ func (l *Logger) should(lvl LogLevel) bool {
 	if lvl < l.level {
 		return false
 	}
-	// if l.sampler != nil {
-	// 	return l.sampler.Sample(lvl)
-	// }
+	if l.sampler != nil {
+		return l.sampler.Sample(lvl)
+	}
 	return true
 }

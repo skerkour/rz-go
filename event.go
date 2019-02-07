@@ -16,21 +16,22 @@ var eventPool = &sync.Pool{
 
 // Event represents a log event. It is instanced by one of the level method.
 type Event struct {
-	buf                 []byte
-	w                   LevelWriter
-	level               LogLevel
-	done                func(msg string)
-	stack               bool      // enable error stack trace
-	caller              bool      // enable caller field
-	timestamp           bool      // enable timestamp
-	ch                  []LogHook // hooks from context
-	timestampFieldName  string
-	levelFieldName      string
-	messageFieldName    string
-	errorFieldName      string
-	callerFieldName     string
-	errorStackFieldName string
-	timeFieldFormat     string
+	buf                  []byte
+	w                    LevelWriter
+	level                LogLevel
+	done                 func(msg string)
+	stack                bool      // enable error stack trace
+	caller               bool      // enable caller field
+	timestamp            bool      // enable timestamp
+	ch                   []LogHook // hooks from context
+	timestampFieldName   string
+	levelFieldName       string
+	messageFieldName     string
+	errorFieldName       string
+	callerFieldName      string
+	errorStackFieldName  string
+	timeFieldFormat      string
+	callerSkipFrameCount int
 }
 
 func putEvent(e *Event) {
