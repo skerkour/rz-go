@@ -57,6 +57,19 @@ func With(fields func(*Event)) LoggerOption {
 		if fields != nil {
 			e := newEvent(logger.writer, logger.level)
 			e.buf = nil
+			e.stack = logger.stack
+			e.caller = logger.caller
+			e.timestamp = logger.timestamp
+			e.timestampFieldName = logger.timestampFieldName
+			e.levelFieldName = logger.levelFieldName
+			e.messageFieldName = logger.messageFieldName
+			e.errorFieldName = logger.errorFieldName
+			e.callerFieldName = logger.callerFieldName
+			e.timeFieldFormat = logger.timeFieldFormat
+			e.errorStackFieldName = logger.errorStackFieldName
+			e.callerSkipFrameCount = logger.callerSkipFrameCount
+			e.formatter = logger.formatter
+			e.timestampFunc = logger.timestampFunc
 			fields(e)
 			if e.stack && !logger.stack {
 				logger.stack = true
