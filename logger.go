@@ -216,8 +216,8 @@ func (l *Logger) should(lvl LogLevel) bool {
 	if lvl < l.level {
 		return false
 	}
-	// if l.sampler != nil && !samplingDisabled() {
-	// 	return l.sampler.Sample(lvl)
-	// }
+	if l.sampler != nil {
+		return l.sampler.Sample(lvl)
+	}
 	return true
 }

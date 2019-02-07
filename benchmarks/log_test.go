@@ -9,6 +9,9 @@ import (
 	"github.com/bloom42/rz-go"
 	"github.com/rs/zerolog"
 	"github.com/sirupsen/logrus"
+	"go.uber.org/zap/zaptest"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 func newDisabledLogrus() *logrus.Logger {
@@ -44,6 +47,31 @@ func newZerolog() zerolog.Logger {
 
 func newDisabledZerolog() zerolog.Logger {
 	return newZerolog().Level(zerolog.Disabled)
+}
+
+func zapMillisecondDurationEncoder(d time.Duration, enc zapcore.PrimitiveArrayEncoder) {
+	enc.AppendFloat64(float64(d) / float64(time.Millisecond))
+}
+
+func zapEncoder() zapcore.Encoder {
+	ec := zap.NewProductionEncoderConfig()
+	ec.EncodeDuration = zapMillisecondDurationEncoder
+	ec.EncodeTime = zapcore.EpochTimeEncoder
+	ec.TimeKey = ""
+	ec.MessageKey = "message"
+	return zapcore.NewJSONEncoder(ec)
+}
+
+func newZap() *zap.Logger {
+	lvl := zap.DebugLevel
+	var w zapcore.WriteSyncer = &zaptest.Discarder{}
+	return zap.New(zapcore.NewCore(zapEncoder(), w, lvl))
+}
+
+func newDisabledZap() *zap.Logger {
+	lvl := zap.FatalLevel
+	var w zapcore.WriteSyncer = &zaptest.Discarder{}
+	return zap.New(zapcore.NewCore(zapEncoder(), w, lvl))
 }
 
 var _tenInts = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
@@ -122,6 +150,21 @@ func rz10Fields(e *rz.Event) {
 		Err(errExample)
 }
 
+func zap10Fields() []zap.Field {
+	return []zap.Field{
+		zap.Int("int", _tenInts[0]),
+		zap.Ints("ints", _tenInts),
+		zap.String("string", _tenStrings[0]),
+		zap.Strings("strings", _tenStrings),
+		zap.Time("time", _tenTimes[0]),
+		zap.Times("times", _tenTimes),
+		zap.Any("user1", _oneUser),
+		zap.Any("user2", _oneUser),
+		zap.Any("users", _tenUsers),
+		zap.Error(errExample),
+	}
+}
+
 var _testMessage = "hello world"
 
 func BenchmarkDisabledWithoutFields(b *testing.B) {
@@ -141,6 +184,15 @@ func BenchmarkDisabledWithoutFields(b *testing.B) {
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				logger.Info().Msg(_testMessage)
+			}
+		})
+	})
+	b.Run("uber-go/zap", func(b *testing.B) {
+		logger := newDisabledZap()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Info(_testMessage)
 			}
 		})
 	})
@@ -175,6 +227,15 @@ func BenchmarkWithoutFields(b *testing.B) {
 			}
 		})
 	})
+	b.Run("uber-go/zap", func(b *testing.B) {
+		logger := newZap()
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Info(_testMessage)
+			}
+		})
+	})
 	b.Run("bloom42/rz-go", func(b *testing.B) {
 		logger := newRz()
 		b.ResetTimer()
@@ -205,6 +266,15 @@ func Benchmark10Context(b *testing.B) {
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				logger.Info().Msg(_testMessage)
+			}
+		})
+	})
+	b.Run("uber-go/zap", func(b *testing.B) {
+		logger := newZap().With(zap10Fields()...)
+		b.ResetTimer()
+		b.RunParallel(func(pb *testing.PB) {
+			for pb.Next() {
+				logger.Info(_testMessage)
 			}
 		})
 	})
