@@ -34,13 +34,12 @@ func writeLog(fname string, count int, useCompress bool) {
 
 	}
 
-	zerolog.TimestampFunc = func() time.Time { return time.Now().Round(time.Second) }
-	log := zerolog.New(f).With().
-		Timestamp().
-		Logger()
+	rz.TimestampFunc = func() time.Time { return time.Now().Round(time.Second) }
+	log := rz.New(rz.Writer(f))
 	for i := 0; i < count; i++ {
-		log.Error().
-			Int("Fault", 41650+i).Msg("Some Message")
+		log.Error("Some Message", func(e *rz.Event) {
+			e.Int("Fault", 41650+i)
+		})
 	}
 }
 

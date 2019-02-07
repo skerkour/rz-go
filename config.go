@@ -3,6 +3,7 @@ package rz
 import (
 	"io"
 	"os"
+	"time"
 )
 
 // LoggerOption is used to configure a logger.
@@ -154,3 +155,21 @@ func TimeFieldFormat(timeFieldFormat string) LoggerOption {
 		logger.timeFieldFormat = timeFieldFormat
 	}
 }
+
+var (
+	// TimestampFunc defines the function called to generate a timestamp.
+	TimestampFunc = func() time.Time { return time.Now().UTC() }
+
+	// DurationFieldUnit defines the unit for time.Duration type fields added
+	// using the Dur method.
+	DurationFieldUnit = time.Millisecond
+
+	// DurationFieldInteger renders Dur fields as integer instead of float if
+	// set to true.
+	DurationFieldInteger = false
+
+	// ErrorHandler is called whenever rz fails to write an event on its
+	// output. If not set, an error is printed on the stderr. This handler must
+	// be thread safe and non-blocking.
+	ErrorHandler func(err error)
+)
