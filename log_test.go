@@ -558,109 +558,91 @@ func TestEventTimestamp(t *testing.T) {
 	}
 }
 
-// func TestOutputWithoutTimestamp(t *testing.T) {
-// 	ignoredOut := &bytes.Buffer{}
-// 	out := &bytes.Buffer{}
-// 	log := New(ignoredOut).Output(out).With().Str("foo", "bar").Logger()
-// 	log.Log().Msg("hello world")
+type loggableError struct {
+	error
+}
 
-// 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"foo":"bar","message":"hello world"}`+"\n"; got != want {
-// 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
-// 	}
-// }
+func (l loggableError) MarshalZerologObject(e *Event) {
+	e.String("message", l.error.Error()+": loggableError")
+}
 
-// func TestOutputWithTimestamp(t *testing.T) {
-// 	TimestampFunc = func() time.Time {
-// 		return time.Date(2001, time.February, 3, 4, 5, 6, 7, time.UTC)
-// 	}
-// 	defer func() {
-// 		TimestampFunc = time.Now
-// 	}()
-// 	ignoredOut := &bytes.Buffer{}
-// 	out := &bytes.Buffer{}
-// 	log := New(ignoredOut).Output(out).With().Timestamp().Str("foo", "bar").Logger()
-// 	log.Log().Msg("hello world")
+func TestErrorMarshalFunc(t *testing.T) {
+	out := &bytes.Buffer{}
+	log := New(Writer(out), Timestamp(false))
 
-// 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"foo":"bar","time":"2001-02-03T04:05:06Z","message":"hello world"}`+"\n"; got != want {
-// 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
-// 	}
-// }
+	// test default behavior
+	log.Log("msg", func(e *Event) {
+		e.Err(errors.New("err"))
+	})
+	if got, want := decodeIfBinaryToString(out.Bytes()), `{"error":"err","message":"msg"}`+"\n"; got != want {
+		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
+	}
+	out.Reset()
 
-// type loggableError struct {
-// 	error
-// }
+	log.Log("msg", func(e *Event) {
+		e.Err(loggableError{errors.New("err")})
+	})
+	if got, want := decodeIfBinaryToString(out.Bytes()), `{"error":{"message":"err: loggableError"},"message":"msg"}`+"\n"; got != want {
+		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
+	}
+	out.Reset()
 
-// func (l loggableError) MarshalZerologObject(e *Event) {
-// 	e.String("message", l.error.Error()+": loggableError")
-// }
+	// test overriding the ErrorMarshalFunc
+	originalErrorMarshalFunc := ErrorMarshalFunc
+	defer func() {
+		ErrorMarshalFunc = originalErrorMarshalFunc
+	}()
 
-// func TestErrorMarshalFunc(t *testing.T) {
-// 	out := &bytes.Buffer{}
-// 	log := New(out)
+	ErrorMarshalFunc = func(err error) interface{} {
+		return err.Error() + ": marshaled string"
+	}
+	log.Log("msg", func(e *Event) {
+		e.Err(errors.New("err"))
+	})
+	if got, want := decodeIfBinaryToString(out.Bytes()), `{"error":"err: marshaled string","message":"msg"}`+"\n"; got != want {
+		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
+	}
 
-// 	// test default behaviour
-// 	log.Log().Err(errors.New("err")).Msg("msg")
-// 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"error":"err","message":"msg"}`+"\n"; got != want {
-// 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
-// 	}
-// 	out.Reset()
+	out.Reset()
+	ErrorMarshalFunc = func(err error) interface{} {
+		return errors.New(err.Error() + ": new error")
+	}
+	log.Log("msg", func(e *Event) {
+		e.Err(errors.New("err"))
+	})
+	if got, want := decodeIfBinaryToString(out.Bytes()), `{"error":"err: new error","message":"msg"}`+"\n"; got != want {
+		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
+	}
 
-// 	log.Log().Err(loggableError{errors.New("err")}).Msg("msg")
-// 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"error":{"message":"err: loggableError"},"message":"msg"}`+"\n"; got != want {
-// 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
-// 	}
-// 	out.Reset()
+	out.Reset()
+	ErrorMarshalFunc = func(err error) interface{} {
+		return loggableError{err}
+	}
+	log.Log("msg", func(e *Event) {
+		e.Err(errors.New("err"))
+	})
+	if got, want := decodeIfBinaryToString(out.Bytes()), `{"error":{"message":"err: loggableError"},"message":"msg"}`+"\n"; got != want {
+		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
+	}
+}
 
-// 	// test overriding the ErrorMarshalFunc
-// 	originalErrorMarshalFunc := ErrorMarshalFunc
-// 	defer func() {
-// 		ErrorMarshalFunc = originalErrorMarshalFunc
-// 	}()
+type errWriter struct {
+	error
+}
 
-// 	ErrorMarshalFunc = func(err error) interface{} {
-// 		return err.Error() + ": marshaled string"
-// 	}
-// 	log.Log().Err(errors.New("err")).Msg("msg")
-// 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"error":"err: marshaled string","message":"msg"}`+"\n"; got != want {
-// 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
-// 	}
+func (w errWriter) Write(p []byte) (n int, err error) {
+	return 0, w.error
+}
 
-// 	out.Reset()
-// 	ErrorMarshalFunc = func(err error) interface{} {
-// 		return errors.New(err.Error() + ": new error")
-// 	}
-// 	log.Log().Err(errors.New("err")).Msg("msg")
-// 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"error":"err: new error","message":"msg"}`+"\n"; got != want {
-// 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
-// 	}
-
-// 	out.Reset()
-// 	ErrorMarshalFunc = func(err error) interface{} {
-// 		return loggableError{err}
-// 	}
-// 	log.Log().Err(errors.New("err")).Msg("msg")
-// 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"error":{"message":"err: loggableError"},"message":"msg"}`+"\n"; got != want {
-// 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
-// 	}
-// }
-
-// type errWriter struct {
-// 	error
-// }
-
-// func (w errWriter) Write(p []byte) (n int, err error) {
-// 	return 0, w.error
-// }
-
-// func TestErrorHandler(t *testing.T) {
-// 	var got error
-// 	want := errors.New("write error")
-// 	ErrorHandler = func(err error) {
-// 		got = err
-// 	}
-// 	log := New(errWriter{want})
-// 	log.Log().Msg("test")
-// 	if got != want {
-// 		t.Errorf("ErrorHandler err = %#v, want %#v", got, want)
-// 	}
-// }
+func TestErrorHandler(t *testing.T) {
+	var got error
+	want := errors.New("write error")
+	ErrorHandler = func(err error) {
+		got = err
+	}
+	log := New(Writer(errWriter{want}))
+	log.Log("test", nil)
+	if got != want {
+		t.Errorf("ErrorHandler err = %#v, want %#v", got, want)
+	}
+}
