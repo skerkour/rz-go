@@ -11,7 +11,7 @@ import (
 var Logger = rz.New()
 
 // Config duplicates the global logger and update it's configuration.
-func Config(options ...rz.Option) rz.Logger {
+func Config(options ...rz.LoggerOption) rz.Logger {
 	return Logger.Config(options...)
 }
 
