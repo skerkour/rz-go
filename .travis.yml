@@ -23,11 +23,12 @@ script:
   - make bench
 
 deploy:
-  provider: script
-  skip_cleanup: true # Important, otherwise the build output would be purged.
-  script: rocket # use rocket to deploy
+  provider: releases
+  api_key: $GITHUB_API_KEY
+  file: "FILE TO UPLOAD"
+  skip_cleanup: true
   on:
-    tags: true # The deployment happens only if the commit has a tag
+    tags: true
 
 notifications:
   email:
