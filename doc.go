@@ -5,7 +5,6 @@
 //     import "github.com/bloom42/rz-go/log"
 //
 //     log.Info("hello world", nil)
-//
 //     // Output: {"timestamp":"2019-02-07T09:30:07Z","level":"info","message":"hello world"}
 //
 // NOTE: To import the global logger, import the "log" subpackage "github.com/bloom42/rz-go/log".
