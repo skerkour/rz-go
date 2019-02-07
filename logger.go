@@ -145,6 +145,7 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 	e.errorFieldName = l.errorFieldName
 	e.callerFieldName = l.callerFieldName
 	e.timeFieldFormat = l.timeFieldFormat
+	e.errorStackFieldName = l.errorStackFieldName
 	if level != NoLevel {
 		e.String(l.levelFieldName, level.String())
 	}

@@ -42,7 +42,7 @@ func frameField(f errors.Frame, s *state, c rune) string {
 
 // MarshalStack implements pkg/errors stack trace marshaling.
 //
-//   zerolog.ErrorStackMarshaler = MarshalStack
+//   rz.ErrorStackMarshaler = MarshalStack
 func MarshalStack(err error) interface{} {
 	type stackTracer interface {
 		StackTrace() errors.StackTrace

@@ -10,14 +10,23 @@
 [![GoDoc](https://godoc.org/github.com/bloom42/rz-go?status.svg)](https://godoc.org/github.com/bloom42/rz-go)
 [![Build Status](https://travis-ci.org/bloom42/rz-go.svg?branch=master)](https://travis-ci.org/bloom42/rz-go)
 [![GitHub release](https://img.shields.io/github/release/bloom42/rz-go.svg)](https://github.com/bloom42/rz-go/releases)
+[![Coverage](http://gocover.io/_badge/github.com/rs/zerolog)](http://gocover.io/github.com/rs/zerolog)
 
 ![Console logging](docs/example_screenshot.png)
 
+The rz package provides a fast and simple logger dedicated to JSON output.
+
+Rz's API is designed to provide both a great developer experience and stunning [performance](#benchmarks). Its unique chaining API allows zerolog to write JSON (or CBOR) log events by avoiding allocations and reflection.
+
+Uber's [zap](https://godoc.org/go.uber.org/zap) and rs's [zerolog](https://godoc.org/github.com/rs/zerolog) libraries pioneered this approach. Rz is taking this concept to the next level with a simpler to use API and even better performance.
+
+To keep the code base and the API simple, rz focuses on efficient structured logging only. Pretty logging on the console is made possible using the provided (but inefficient) `rz.ConsoleFormatter`.
+
 
 1. [Quickstart](#quickstart)
-3. [Configuration](#configuration)
-4. [Examples](#examples)
-2. [Benchmarks](#benchmarks)
+2. [Configuration](#configuration)
+3. [Examples](#examples)
+4. [Benchmarks](#benchmarks)
 5. [Contributing](#contributing)
 6. [License](#license)
 
@@ -64,37 +73,37 @@ func main() {
 // Writer update logger's writer.
 func Writer(writer io.Writer) LoggerOption {}
 // Level update logger's level.
-func Level(lvl LogLevel) LoggerOption
+func Level(lvl LogLevel) LoggerOption {}
 // Sampler update logger's sampler.
-func Sampler(sampler LogSampler) LoggerOption
+func Sampler(sampler LogSampler) LoggerOption {}
 // AddHook appends hook to logger's hook
-func AddHook(hook LogHook) LoggerOption
+func AddHook(hook LogHook) LoggerOption {}
 // Hooks replaces logger's hooks
-func Hooks(hooks ...LogHook) LoggerOption
+func Hooks(hooks ...LogHook) LoggerOption {}
 // With replaces logger's context fields
-func With(fields func(*Event)) LoggerOption
+func With(fields func(*Event)) LoggerOption {}
 // Stack enable/disable stack in error messages.
-func Stack(enableStack bool) LoggerOption
+func Stack(enableStack bool) LoggerOption {}
 // Timestamp enable/disable timestamp logging in error messages.
-func Timestamp(enableTimestamp bool) LoggerOption
+func Timestamp(enableTimestamp bool) LoggerOption {}
 // Caller enable/disable caller field in message messages.
-func Caller(enableCaller bool) LoggerOption
+func Caller(enableCaller bool) LoggerOption {}
 // Formatter update logger's formatter.
-func Formatter(formatter LogFormatter) LoggerOption
+func Formatter(formatter LogFormatter) LoggerOption {}
 // TimestampFieldName update logger's timestampFieldName.
-func TimestampFieldName(timestampFieldName string) LoggerOption
+func TimestampFieldName(timestampFieldName string) LoggerOption {}
 // LevelFieldName update logger's levelFieldName.
-func LevelFieldName(levelFieldName string) LoggerOption
+func LevelFieldName(levelFieldName string) LoggerOption {}
 // MessageFieldName update logger's messageFieldName.
-func MessageFieldName(messageFieldName string) LoggerOption
+func MessageFieldName(messageFieldName string) LoggerOption {}
 // ErrorFieldName update logger's errorFieldName.
-func ErrorFieldName(errorFieldName string) LoggerOption
+func ErrorFieldName(errorFieldName string) LoggerOption {}
 // CallerFieldName update logger's callerFieldName.
-func CallerFieldName(callerFieldName string) LoggerOption
+func CallerFieldName(callerFieldName string) LoggerOption {}
 // CallerSkipFrameCount update logger's callerSkipFrameCount.
-func CallerSkipFrameCount(callerSkipFrameCount int) LoggerOption
+func CallerSkipFrameCount(callerSkipFrameCount int) LoggerOption {}
 // ErrorStackFieldName update logger's errorStackFieldName.
-func ErrorStackFieldName(errorStackFieldName string) LoggerOption
+func ErrorStackFieldName(errorStackFieldName string) LoggerOption {}
 ```
 
 

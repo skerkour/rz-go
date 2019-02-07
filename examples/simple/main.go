@@ -18,6 +18,8 @@ func main() {
 			String("environment", env)
 	}))
 
+	subLogger := log.Config(rz.Formatter(rz.ConsoleFormatter))
+
 	if env == "production" {
 		log.Logger = log.Config(rz.Level(rz.InfoLevel))
 	}
@@ -26,4 +28,7 @@ func main() {
 		e.String("hello", "world")
 	})
 	// {"level":"info","hostname":"","environment":"","hello":"world","timestamp":"2019-02-07T09:30:07Z","message":"info from logger"}
+
+	subLogger.Debug("hello world", nil)
+	subLogger.Debug("", nil)
 }
