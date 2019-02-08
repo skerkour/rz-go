@@ -6,6 +6,9 @@ import (
 	"time"
 )
 
+// HTTPCtxKeyRequestID is used to log requestID if present
+type HTTPCtxKeyRequestID struct{}
+
 type wrapper struct {
 	http.ResponseWriter
 	http.Flusher
@@ -85,11 +88,19 @@ func HTTPHandler(logger Logger) func(next http.Handler) http.Handler {
 				durationMs = 1
 			}
 
+			requestID := ""
+			if rid, ok := r.Context().Value(HTTPCtxKeyRequestID{}).(string); ok {
+				requestID = rid
+			}
+
 			status := res.status
 			fields := func(e *Event) {
 				e.Int("status", res.status).
 					Int("size", res.written).
 					Int64("duration", durationMs)
+				if len(requestID) != 0 {
+					e.String("request_id", requestID)
+				}
 			}
 
 			message := "access"
