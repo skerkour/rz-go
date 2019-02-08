@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"os"
@@ -26,11 +27,21 @@ func main() {
 
 	http.HandleFunc("/", HelloWorld)
 
-	middleware := rz.HTTPHandler(log.Logger)
-	err := http.ListenAndServe(":"+port, middleware(http.DefaultServeMux))
+	loggingMiddleware := rz.HTTPHandler(log.Logger)
+	err := http.ListenAndServe(":"+port, requestIDMiddleware(loggingMiddleware(http.DefaultServeMux)))
 	if err != nil {
 		log.Fatal("listening", func(e *rz.Event) { e.Err(err) })
 	}
+}
+
+func requestIDMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		requestID := "uuid"
+		ctx := context.WithValue(r.Context(), rz.HTTPCtxKeyRequestID{}, requestID)
+		w.Header().Set("Request-Id", requestID)
+
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
 }
 
 func HelloWorld(w http.ResponseWriter, r *http.Request) {
