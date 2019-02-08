@@ -234,9 +234,33 @@ func (l *Logger) should(lvl LogLevel) bool {
 }
 
 // updateContext updates the internal logger's context.
-func (l *Logger) updateContext(e *Event) {
-	if cap(l.context) == 0 {
-		l.context = make([]byte, 0, 500)
+func (l *Logger) updateContext(fields func(e *Event)) {
+	if fields != nil {
+		e := newEvent(l.writer, l.level)
+		e.buf = nil
+		e.stack = l.stack
+		e.caller = l.caller
+		e.timestamp = l.timestamp
+		e.timestampFieldName = l.timestampFieldName
+		e.levelFieldName = l.levelFieldName
+		e.messageFieldName = l.messageFieldName
+		e.errorFieldName = l.errorFieldName
+		e.callerFieldName = l.callerFieldName
+		e.timeFieldFormat = l.timeFieldFormat
+		e.errorStackFieldName = l.errorStackFieldName
+		e.callerSkipFrameCount = l.callerSkipFrameCount
+		e.formatter = l.formatter
+		e.timestampFunc = l.timestampFunc
+		fields(e)
+		if e.stack && !l.stack {
+			l.stack = true
+		}
+		if e.caller && !l.caller {
+			l.caller = true
+		}
+		if e.timestamp && !l.timestamp {
+			l.timestamp = true
+		}
+		l.context = enc.AppendObjectData(l.context, e.buf)
 	}
-	l.context = enc.AppendObjectData(l.context, e.buf)
 }
