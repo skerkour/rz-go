@@ -446,7 +446,7 @@ func TestLevel(t *testing.T) {
 
 func TestSampling(t *testing.T) {
 	out := &bytes.Buffer{}
-	log := New(Writer(out), Timestamp(false), Sampler(&BasicSampler{N: 2}))
+	log := New(Writer(out), Timestamp(false), Sampler(&SamplerBasic{N: 2}))
 	log.Log("", func(e *Event) { e.Int("i", 1) })
 	log.Log("", func(e *Event) { e.Int("i", 2) })
 	log.Log("", func(e *Event) { e.Int("i", 3) })

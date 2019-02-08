@@ -15,37 +15,37 @@ var samplers = []struct {
 	wantMax int
 }{
 	{
-		"BasicSampler_1",
+		"SamplerBasic_1",
 		func() LogSampler {
-			return &BasicSampler{N: 1}
+			return &SamplerBasic{N: 1}
 		},
 		100, 100, 100,
 	},
 	{
-		"BasicSampler_5",
+		"SamplerBasic_5",
 		func() LogSampler {
-			return &BasicSampler{N: 5}
+			return &SamplerBasic{N: 5}
 		},
 		100, 20, 20,
 	},
 	{
-		"RandomSampler",
+		"SamplerRandom",
 		func() LogSampler {
-			return RandomSampler(5)
+			return SamplerRandom(5)
 		},
 		100, 10, 30,
 	},
 	{
-		"BurstSampler",
+		"SamplerBurst",
 		func() LogSampler {
-			return &BurstSampler{Burst: 20, Period: time.Second}
+			return &SamplerBurst{Burst: 20, Period: time.Second}
 		},
 		100, 20, 20,
 	},
 	{
-		"BurstSamplerNext",
+		"SamplerBurstNext",
 		func() LogSampler {
-			return &BurstSampler{Burst: 20, Period: time.Second, NextSampler: &BasicSampler{N: 5}}
+			return &SamplerBurst{Burst: 20, Period: time.Second, NextSampler: &SamplerBasic{N: 5}}
 		},
 		120, 40, 40,
 	},
