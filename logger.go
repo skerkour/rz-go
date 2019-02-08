@@ -163,14 +163,11 @@ func (l *Logger) logEvent(level LogLevel, message string, fields func(*Event), d
 		fields(e)
 	}
 
-	if e.timestamp {
-		e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), e.timestampFunc(), e.timeFieldFormat)
-	}
-
 	writeEvent(e, message, done)
 }
 
 func writeEvent(e *Event, msg string, done func(string)) {
+	// run hooks
 	if len(e.ch) > 0 {
 		e.ch[0].Run(e, e.level, msg)
 		if len(e.ch) > 1 {
@@ -187,6 +184,10 @@ func writeEvent(e *Event, msg string, done func(string)) {
 	// if hooks didn't disabled our event, continue
 	if e.level != Disabled {
 		var err error
+
+		if e.timestamp {
+			e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), e.timestampFunc(), e.timeFieldFormat)
+		}
 
 		if msg != "" {
 			e.buf = enc.AppendString(enc.AppendKey(e.buf, e.messageFieldName), msg)

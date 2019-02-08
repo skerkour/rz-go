@@ -6,13 +6,13 @@ import (
 	"time"
 )
 
-var (
+const (
 	// SampleOften samples log every ~ 10 events.
 	SampleOften = SamplerRandom(10)
 	// SampleSometimes samples log every ~ 100 events.
 	SampleSometimes = SamplerRandom(100)
 	// SampleRarely samples log every ~ 1000 events.
-	Rarely = SamplerRandom(1000)
+	SampleRarely = SamplerRandom(1000)
 )
 
 // LogSampler defines an interface to a log sampler.
@@ -100,7 +100,10 @@ func (s *SamplerBurst) inc() uint32 {
 
 // SamplerLevel applies a different sampler for each level.
 type SamplerLevel struct {
-	DebugSampler, InfoSampler, WarnSampler, ErrorSampler LogSampler
+	DebugSampler LogSampler
+	InfoSampler  LogSampler
+	WarnSampler  LogSampler
+	ErrorSampler LogSampler
 }
 
 // Sample implements the Sampler interface.
