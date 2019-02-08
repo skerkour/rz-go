@@ -31,6 +31,8 @@ func main() {
 
 	// replace size field name by latency and disable userAgent logging
 	loggingMiddleware := rz.HTTPHandler(log.Logger, rz.Duration("latency"), rz.UserAgent(""))
+
+	// here the order matters, otherwise loggingMiddleware won't see the request ID
 	router.Use(requestIDMiddleware)
 	router.Use(loggingMiddleware)
 	router.Use(injectLoggerMiddleware(log.Logger))
