@@ -231,3 +231,11 @@ func (l *Logger) should(lvl LogLevel) bool {
 	}
 	return true
 }
+
+// updateContext updates the internal logger's context.
+func (l *Logger) updateContext(e *Event) {
+	if cap(l.context) == 0 {
+		l.context = make([]byte, 0, 500)
+	}
+	l.context = enc.AppendObjectData(l.context, e.buf)
+}

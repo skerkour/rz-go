@@ -22,7 +22,7 @@ func (l *Logger) ToCtx(ctx context.Context) context.Context {
 }
 
 // FromCtx returns the Logger associated with the ctx. If no logger
-// is associated, a nilis returned.
+// is associated, a Nop() logger is returned.
 //
 // For example, to add a field to an existing logger in the context, use this
 // notation:
@@ -34,5 +34,6 @@ func FromCtx(ctx context.Context) *Logger {
 	if l, ok := ctx.Value(ctxKey{}).(*Logger); ok {
 		return l
 	}
-	return nil
+	nop := Nop()
+	return &nop
 }

@@ -6,9 +6,6 @@ import (
 	"time"
 )
 
-// HTTPCtxKeyRequestID is used to log requestID if present
-type HTTPCtxKeyRequestID struct{}
-
 type wrapper struct {
 	http.ResponseWriter
 	http.Flusher
