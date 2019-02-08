@@ -19,7 +19,7 @@ The rz package provides a fast and simple logger dedicated to JSON output avoidi
 Uber's [zap](https://godoc.org/go.uber.org/zap) and rs's [zerolog](https://godoc.org/github.com/rs/zerolog)
 libraries pioneered this approach.
 
-ripzap is a fork of zerolog taking this concept to the next level with a **simpler** to use and **safer**
+ripzap is an update of zerolog taking this concept to the next level with a **simpler** to use and **safer**
 API and even better [performance](#benchmarks).
 
 To keep the code base and the API simple, ripzap focuses on efficient structured logging only.
