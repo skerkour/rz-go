@@ -6,8 +6,11 @@ import (
 	"time"
 )
 
-// HTTPCtxKeyRequestID is used to log requestID if present
-type HTTPCtxKeyRequestID struct{}
+// Key to use when setting the request ID.
+type httpCtxKeyRequestID int
+
+// HTTPCtxRequestIDKey is the key that holds the unique request ID in a request context.
+const HTTPCtxRequestIDKey httpCtxKeyRequestID = 0
 
 type statusWriter struct {
 	http.ResponseWriter
@@ -151,7 +154,7 @@ func HTTPRequestIDHandler(fieldKey string) func(next http.Handler) http.Handler 
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			ctx := r.Context()
-			if rid, ok := ctx.Value(HTTPCtxKeyRequestID{}).(string); ok {
+			if rid, ok := ctx.Value(HTTPCtxRequestIDKey).(string); ok {
 				log := FromCtx(r.Context())
 				e := &Event{}
 				e.String(fieldKey, rid)

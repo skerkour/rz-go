@@ -88,7 +88,7 @@ func HTTPHandler(logger Logger) func(next http.Handler) http.Handler {
 			}
 
 			requestID := ""
-			if rid, ok := r.Context().Value(HTTPCtxKeyRequestID{}).(string); ok {
+			if rid, ok := r.Context().Value(HTTPCtxRequestIDKey).(string); ok {
 				requestID = rid
 			}
 
