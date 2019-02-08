@@ -7,12 +7,10 @@ import (
 	"sort"
 	"strconv"
 	"time"
-
-	jsoniter "github.com/json-iterator/go"
 )
 
-// LogfmtFormatter prettify output for human cosumption
-func LogfmtFormatter() LogFormatter {
+// FormatterLogfmt prettify output for human cosumption
+func FormatterLogfmt() LogFormatter {
 	return func(ev *Event) ([]byte, error) {
 		var event map[string]interface{}
 		var ret = new(bytes.Buffer)
@@ -48,7 +46,7 @@ func LogfmtFormatter() LogFormatter {
 			case time.Time:
 				ret.WriteString(value.Format(time.RFC3339))
 			default:
-				b, err := jsoniter.Marshal(value)
+				b, err := json.Marshal(value)
 				if err != nil {
 					fmt.Fprintf(ret, "[error: %v]", err)
 				} else {

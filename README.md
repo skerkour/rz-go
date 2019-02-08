@@ -1,6 +1,6 @@
 <p align="center">
   <h3 align="center">rz</h3>
-  <p align="center">RIPZap - The fastest structured, leveled JSON logger for Go 📖</p>
+  <p align="center">ripzap - The fastest structured, leveled JSON logger for Go 📖</p>
 </p>
 
 --------
@@ -19,10 +19,10 @@ The rz package provides a fast and simple logger dedicated to JSON output avoidi
 Uber's [zap](https://godoc.org/go.uber.org/zap) and rs's [zerolog](https://godoc.org/github.com/rs/zerolog)
 libraries pioneered this approach.
 
-Rz is a fork of zerolog taking this concept to the next level with a **simpler** to use and **safer**
+ripzap is a fork of zerolog taking this concept to the next level with a **simpler** to use and **safer**
 API and even better [performance](#benchmarks).
 
-To keep the code base and the API simple, rz focuses on efficient structured logging only.
+To keep the code base and the API simple, ripzap focuses on efficient structured logging only.
 Pretty logging on the console is made possible using the provided (but inefficient) `rz.ConsoleFormatter`.
 
 
@@ -111,7 +111,7 @@ func ErrorStackFieldName(errorStackFieldName string) LoggerOption {}
 // TimeFieldFormat update logger's timeFieldFormat.
 func TimeFieldFormat(timeFieldFormat string) LoggerOption {}
 // TimestampFunc update logger's timestampFunc.
-func TimestampFunc(timestampFunc func() time.Time) LoggerOption {
+func TimestampFunc(timestampFunc func() time.Time) LoggerOption {}
 ```
 
 ### Global

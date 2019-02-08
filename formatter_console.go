@@ -22,8 +22,8 @@ const (
 	cDarkGray = 90
 )
 
-// ConsoleFormatter prettify output for human cosumption
-func ConsoleFormatter() LogFormatter {
+// FormatterConsole prettify output for human cosumption
+func FormatterConsole() LogFormatter {
 	return func(ev *Event) ([]byte, error) {
 		var event map[string]interface{}
 		var ret = new(bytes.Buffer)
