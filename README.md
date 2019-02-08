@@ -23,15 +23,17 @@ ripzap is an update of zerolog taking this concept to the next level with a **si
 API and even better [performance](#benchmarks).
 
 To keep the code base and the API simple, ripzap focuses on efficient structured logging only.
-Pretty logging on the console is made possible using the provided (but inefficient) `rz.ConsoleFormatter`.
+Pretty logging on the console is made possible using the provided (but inefficient)
+[`Formatter`s](https://godoc.org/github.com/bloom42/rz-go#LogFormatter).
 
 
 1. [Quickstart](#quickstart)
 2. [Configuration](#configuration)
-3. [Examples](#examples)
-4. [Benchmarks](#benchmarks)
-5. [Contributing](#contributing)
-6. [License](#license)
+3. [Field types](#field-type)
+4. [Examples](#examples)
+5. [Benchmarks](#benchmarks)
+6. [Contributing](#contributing)
+7. [License](#license)
 
 -------------------
 
@@ -131,6 +133,27 @@ var (
 	ErrorHandler func(err error)
 )
 ```
+
+
+## Field Types
+
+### Standard Types
+
+* `String`
+* `Bool`
+* `Int`, `Int8`, `Int16`, `Int32`, `Int64`
+* `Uint`, `Uint8`, `Uint16`, `Uint32`, `Uint64`
+* `Float32`, `Float64`
+
+### Advanced Fields
+
+* `Err`: Takes an `error` and render it as a string using the `logger.errorFieldName` field name.
+* `Error`: Adds a field with a `error`.
+* `Timestamp`: Insert a timestamp field with `logger.timestampFieldName` field name and formatted using `logger.timeFieldFormat`.
+* `Time`: Adds a field with the time formated with the `logger.timeFieldFormat`.
+* `Duration`: Adds a field with a `time.Duration`.
+* `Dict`: Adds a sub-key/value as a field of the event.
+* `Interface`: Uses reflection to marshal the type.
 
 
 ## Examples

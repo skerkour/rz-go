@@ -39,6 +39,8 @@ func (w *wrapper) Flush() {
 }
 
 // HTTPHandler is a helper middleware to log HTTP requests
+//
+// It's simple enough to be copy pasted if it's does not fit your needs (eg. you want to rename fields)
 func HTTPHandler(logger Logger) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
