@@ -27,68 +27,80 @@ type httpHandler struct {
 	requestIDField     string
 }
 
+// HTTPHandlerOption are used to configure a HTTPHandler.
 type HTTPHandlerOption func(*httpHandler)
 
+// URL is used to updated HTTPHandler's url field name. Set an empty string to disable the field.
 func URL(urlFieldName string) HTTPHandlerOption {
 	return func(handler *httpHandler) {
 		handler.urlField = urlFieldName
 	}
 }
 
+// Message is used to updated HTTPHandler's message field name. Set an empty string to disable it.
 func Message(message string) HTTPHandlerOption {
 	return func(handler *httpHandler) {
 		handler.message = message
 	}
 }
 
+// Method is used to updated HTTPHandler's method field name. Set an empty string to disable the field.
 func Method(methodFieldName string) HTTPHandlerOption {
 	return func(handler *httpHandler) {
 		handler.methodField = methodFieldName
 	}
 }
 
+// Method is used to updated HTTPHandler's method field name. Set an empty string to disable the field.
 func Scheme(schemeFieldName string) HTTPHandlerOption {
 	return func(handler *httpHandler) {
 		handler.schemeField = schemeFieldName
 	}
 }
 
+// Host is used to updated HTTPHandler's host field name. Set an empty string to disable the field.
 func Host(hostFieldName string) HTTPHandlerOption {
 	return func(handler *httpHandler) {
 		handler.hostField = hostFieldName
 	}
 }
 
+// RemoteAddress is used to updated HTTPHandler's remote address field name. Set an empty string to disable the field.
 func RemoteAddress(remoteAddressFieldName string) HTTPHandlerOption {
 	return func(handler *httpHandler) {
 		handler.remoteAddressField = remoteAddressFieldName
 	}
 }
 
+// UserAgent is used to updated HTTPHandler's user agent field name. Set an empty string to disable the field.
 func UserAgent(userAgentFieldName string) HTTPHandlerOption {
 	return func(handler *httpHandler) {
 		handler.userAgentField = userAgentFieldName
 	}
 }
 
+// Size is used to updated HTTPHandler's size field name. Set an empty string to disable the field.
 func Size(sizeFieldName string) HTTPHandlerOption {
 	return func(handler *httpHandler) {
 		handler.sizeField = sizeFieldName
 	}
 }
 
+// Status is used to updated HTTPHandler's status field name. Set an empty string to disable the field.
 func Status(statusFieldName string) HTTPHandlerOption {
 	return func(handler *httpHandler) {
 		handler.statusField = statusFieldName
 	}
 }
 
+// Duration is used to updated HTTPHandler's duration field name. Set an empty string to disable the field.
 func Duration(durationFieldName string) HTTPHandlerOption {
 	return func(handler *httpHandler) {
 		handler.durationField = durationFieldName
 	}
 }
 
+// RequestID is used to updated HTTPHandler's request ID field name. Set an empty string to disable the field.
 func RequestID(requestIDFieldName string) HTTPHandlerOption {
 	return func(handler *httpHandler) {
 		handler.requestIDField = requestIDFieldName
@@ -97,28 +109,29 @@ func RequestID(requestIDFieldName string) HTTPHandlerOption {
 
 // HTTPHandler is a helper middleware to log HTTP requests
 func HTTPHandler(logger Logger, options ...HTTPHandlerOption) func(next http.Handler) http.Handler {
-	// store a copy of the logger
-	handler := httpHandler{
-		logger:             logger.Config(),
-		message:            "access",
-		urlField:           "url",
-		methodField:        "method",
-		schemeField:        "scheme",
-		hostField:          "host",
-		remoteAddressField: "remote_address",
-		userAgentField:     "user_agent",
-		sizeField:          "size",
-		statusField:        "status",
-		durationField:      "duration",
-		requestIDField:     "request_id",
-	}
-	for _, option := range options {
-		option(&handler)
-	}
-
+	logger = logger.Config()
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			start := time.Now()
+
+			// store a copy of the logger
+			handler := httpHandler{
+				logger:             logger,
+				message:            "access",
+				urlField:           "url",
+				methodField:        "method",
+				schemeField:        "scheme",
+				hostField:          "host",
+				remoteAddressField: "remote_address",
+				userAgentField:     "user_agent",
+				sizeField:          "size",
+				statusField:        "status",
+				durationField:      "duration",
+				requestIDField:     "request_id",
+			}
+			for _, option := range options {
+				option(&handler)
+			}
 
 			resWrapper := &responseWrapper{
 				ResponseWriter: w,
@@ -195,18 +208,20 @@ func HTTPHandler(logger Logger, options ...HTTPHandlerOption) func(next http.Han
 			}
 
 			if handler.durationField != "" {
-				durationMs := time.Since(start).Nanoseconds() / 1000000
-				if durationMs < 1 {
-					durationMs = 1
+				durationUs := time.Since(start).Nanoseconds() / 1000
+				if durationUs < 1 {
+					durationUs = 1
 				}
 				handler.logger.updateContext(func(e *Event) {
-					e.Int64(handler.durationField, durationMs)
+					e.Int64(handler.durationField, durationUs)
 				})
 			}
 
 			if handler.requestIDField != "" {
+				// fmt.Println("in requestID")
 				requestID := ""
 				if rid, ok := r.Context().Value(HTTPCtxRequestIDKey).(string); ok {
+					// fmt.Println("in requestID 2")
 					requestID = rid
 				}
 				handler.logger.updateContext(func(e *Event) {

@@ -9,6 +9,7 @@ import (
 	"github.com/bloom42/rz-go"
 	"github.com/bloom42/rz-go/log"
 	"github.com/go-chi/chi"
+	"github.com/google/uuid"
 )
 
 func main() {
@@ -30,8 +31,8 @@ func main() {
 
 	// replace size field name by latency and disable userAgent logging
 	loggingMiddleware := rz.HTTPHandler(log.Logger, rz.Duration("latency"), rz.UserAgent(""))
-	router.Use(loggingMiddleware)
 	router.Use(requestIDMiddleware)
+	router.Use(loggingMiddleware)
 	router.Use(injectLoggerMiddleware(log.Logger))
 
 	router.Get("/", HelloWorld)
@@ -44,10 +45,11 @@ func main() {
 
 func requestIDMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		requestID := "uuid"
-		ctx := context.WithValue(r.Context(), rz.HTTPCtxRequestIDKey, requestID)
-		w.Header().Set("Request-Id", requestID)
+		uuidv4, _ := uuid.NewRandom()
+		requestID := uuidv4.String()
+		w.Header().Set("X-Bloom-Request-ID", requestID)
 
+		ctx := context.WithValue(r.Context(), rz.HTTPCtxRequestIDKey, requestID)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

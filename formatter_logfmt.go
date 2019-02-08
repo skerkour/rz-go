@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// FormatterLogfmt prettify output for human cosumption
+// FormatterLogfmt prettify output for human consumption, using the logfmt format.
 func FormatterLogfmt() LogFormatter {
 	return func(ev *Event) ([]byte, error) {
 		var event map[string]interface{}

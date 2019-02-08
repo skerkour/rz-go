@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// FormatterCLI prettify output for human cosumption
+// FormatterCLI prettify output suitable for command-line interfaces.
 func FormatterCLI() LogFormatter {
 	return func(ev *Event) ([]byte, error) {
 		var event map[string]interface{}
