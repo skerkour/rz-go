@@ -29,7 +29,7 @@ Pretty logging on the console is made possible using the provided (but inefficie
 
 1. [Quickstart](#quickstart)
 2. [Configuration](#configuration)
-3. [Field types](#field-type)
+3. [Field types](#field-types)
 4. [Examples](#examples)
 5. [Benchmarks](#benchmarks)
 6. [Contributing](#contributing)
