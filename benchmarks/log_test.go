@@ -94,8 +94,8 @@ var _oneUser = _testUser{
 	Phone:    "lollol",
 }
 
-var _tenUsers = []_testUser{_testUser{}, _testUser{}, _testUser{}, _testUser{}, _testUser{},
-	_testUser{}, _testUser{}, _testUser{}, _testUser{}, _testUser{}}
+var _tenUsers = []_testUser{{}, {}, {}, {}, {},
+	{}, {}, {}, {}, {}}
 var errExample = errors.New("lolerror")
 
 func logrus10Fields() logrus.Fields {
