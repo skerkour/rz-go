@@ -51,7 +51,7 @@ func ExampleWarn() {
 	setup()
 	log.Warn("hello world", nil)
 
-	// Output: {"level":"warn","timestamp":1199811905,"message":"hello world"}
+	// Output: {"level":"warning","timestamp":1199811905,"message":"hello world"}
 }
 
 // Example of a log at a particular "level" (in this case, "error")
