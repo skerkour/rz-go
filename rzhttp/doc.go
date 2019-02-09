@@ -1,81 +1,80 @@
-//	package main
 //
-//	import (
-//		"context"
-//		"fmt"
-//		"net/http"
-//		"os"
+//		import (
+//			"context"
+//			"fmt"
+//			"net/http"
+//			"os"
 //
-//		"github.com/bloom42/rz-go"
-//		"github.com/bloom42/rz-go/log"
-//		"github.com/bloom42/rz-go/rzhttp"
-//		"github.com/go-chi/chi"
-//		"github.com/google/uuid"
-//	)
-//
-//	func main() {
-//		env := os.Getenv("GO_ENV")
-//		port := os.Getenv("PORT")
-//		if port == "" {
-//			port = "9090"
-//		}
-//
-//		log.Logger = log.Config(
-//			rz.With(func(e *rz.Event) {
-//				e.String("service", "api").
-//					String("host", "abcd.local").
-//					String("environment", env)
-//			}),
+//			"github.com/bloom42/rz-go"
+//			"github.com/bloom42/rz-go/log"
+//			"github.com/bloom42/rz-go/rzhttp"
+//			"github.com/go-chi/chi"
+//			"github.com/google/uuid"
 //		)
 //
-//		router := chi.NewRouter()
+//		func main() {
+//			env := os.Getenv("GO_ENV")
+//			port := os.Getenv("PORT")
+//			if port == "" {
+//				port = "9090"
+//			}
 //
-//		// replace size field name by latency and disable userAgent logging
-//		loggingMiddleware := rzhttp.Handler(log.Logger, rzhttp.Duration("latency"), rzhttp.UserAgent(""))
+//			log.Logger = log.Config(
+//				rz.With(func(e *rz.Event) {
+//					e.String("service", "api").
+//						String("host", "abcd.local").
+//						String("environment", env)
+//				}),
+//			)
 //
-//		// here the order matters, otherwise loggingMiddleware won't see the request ID
-//		router.Use(requestIDMiddleware)
-//		router.Use(loggingMiddleware)
-//		router.Use(injectLoggerMiddleware(log.Logger))
+//			router := chi.NewRouter()
 //
-//		router.Get("/", helloWorld)
+//			// replace size field name by latency and disable userAgent logging
+//			loggingMiddleware := rzhttp.Handler(log.Logger, rzhttp.Duration("latency"), rzhttp.UserAgent(""))
 //
-//		err := http.ListenAndServe(":"+port, router)
-//		if err != nil {
-//			log.Fatal("listening", func(e *rz.Event) { e.Err(err) })
+//			// here the order matters, otherwise loggingMiddleware won't see the request ID
+//			router.Use(requestIDMiddleware)
+//			router.Use(loggingMiddleware)
+//			router.Use(injectLoggerMiddleware(log.Logger))
+//
+//			router.Get("/", helloWorld)
+//
+//			err := http.ListenAndServe(":"+port, router)
+//			if err != nil {
+//				log.Fatal("listening", func(e *rz.Event) { e.Err(err) })
+//			}
 //		}
-//	}
 //
-//	func requestIDMiddleware(next http.Handler) http.Handler {
-//		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-//			uuidv4, _ := uuid.NewRandom()
-//			requestID := uuidv4.String()
-//			w.Header().Set("X-Bloom-Request-ID", requestID)
-//
-//			ctx := context.WithValue(r.Context(), rzhttp.RequestIDCtxKey, requestID)
-//			next.ServeHTTP(w, r.WithContext(ctx))
-//		})
-//	}
-//
-//	func injectLoggerMiddleware(logger rz.Logger) func(next http.Handler) http.Handler {
-//		return func(next http.Handler) http.Handler {
+//		func requestIDMiddleware(next http.Handler) http.Handler {
 //			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-//				if rid, ok := r.Context().Value(rzhttp.RequestIDCtxKey).(string); ok {
-//					logger = logger.Config(rz.With(func(e *rz.Event) {
-//						e.String("request_id", rid)
-//					}))
-//					ctx := logger.ToCtx(r.Context())
-//					r = r.WithContext(ctx)
-//				}
+//				uuidv4, _ := uuid.NewRandom()
+//				requestID := uuidv4.String()
+//				w.Header().Set("X-Bloom-Request-ID", requestID)
 //
-//				next.ServeHTTP(w, r)
+//				ctx := context.WithValue(r.Context(), rzhttp.RequestIDCtxKey, requestID)
+//				next.ServeHTTP(w, r.WithContext(ctx))
 //			})
 //		}
-//	}
 //
-//	func helloWorld(w http.ResponseWriter, r *http.Request) {
-//		logger := rz.FromCtx(r.Context())
-//		logger.Info("hello from GET /", nil)
-//		fmt.Fprintf(w, "Hello, you've requested: %s\n", r.URL.Path)
-//	}
+//		func injectLoggerMiddleware(logger rz.Logger) func(next http.Handler) http.Handler {
+//			return func(next http.Handler) http.Handler {
+//				return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+//					if rid, ok := r.Context().Value(rzhttp.RequestIDCtxKey).(string); ok {
+//						logger = logger.Config(rz.With(func(e *rz.Event) {
+//							e.String("request_id", rid)
+//						}))
+//						ctx := logger.ToCtx(r.Context())
+//						r = r.WithContext(ctx)
+//					}
+//
+//					next.ServeHTTP(w, r)
+//				})
+//			}
+//		}
+//
+//		func helloWorld(w http.ResponseWriter, r *http.Request) {
+//			logger := rz.FromCtx(r.Context())
+//			logger.Info("hello from GET /", nil)
+//			fmt.Fprintf(w, "Hello, you've requested: %s\n", r.URL.Path)
+//		}
 package rzhttp
