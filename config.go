@@ -60,13 +60,13 @@ func With(fields func(*Event)) LoggerOption {
 			e.buf = nil
 			copyInternalLoggerFieldsToEvent(logger, e)
 			fields(e)
-			if e.stack && !logger.stack {
+			if e.stack {
 				logger.stack = true
 			}
-			if e.caller && !logger.caller {
+			if e.caller {
 				logger.caller = true
 			}
-			if e.timestamp && !logger.timestamp {
+			if e.timestamp {
 				logger.timestamp = true
 			}
 			logger.context = enc.AppendObjectData(make([]byte, 0, 500), e.buf)

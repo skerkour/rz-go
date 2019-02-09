@@ -245,13 +245,13 @@ func (l *Logger) Append(fields func(e *Event)) {
 		e.buf = nil
 		copyInternalLoggerFieldsToEvent(l, e)
 		fields(e)
-		if e.stack && !l.stack {
+		if e.stack {
 			l.stack = true
 		}
-		if e.caller && !l.caller {
+		if e.caller {
 			l.caller = true
 		}
-		if e.timestamp && !l.timestamp {
+		if e.timestamp {
 			l.timestamp = true
 		}
 		l.contextMutext.Lock()
