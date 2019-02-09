@@ -111,7 +111,7 @@ func levelColor(level string) int {
 		return cCyan
 	case "warning":
 		return cYellow
-	case "error", "fatal":
+	case "error", "fatal", "panic":
 		return cRed
 	default:
 		return cReset
