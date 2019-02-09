@@ -30,6 +30,7 @@ Pretty logging on the console is made possible using the provided (but inefficie
 1. [Quickstart](#quickstart)
 2. [Configuration](#configuration)
 3. [Field types](#field-types)
+3. [HTTP Handler](#http-handler)
 4. [Examples](#examples)
 5. [Benchmarks](#benchmarks)
 6. [Contributing](#contributing)
@@ -154,6 +155,12 @@ var (
 * `Duration`: Adds a field with a `time.Duration`.
 * `Dict`: Adds a sub-key/value as a field of the event.
 * `Interface`: Uses reflection to marshal the type.
+
+
+## HTTP Handler
+
+See the [bloom42/rz-go/rzhttp](https://godoc.org/github.com/bloom42/rz-go/rzhttp) package or the
+[example here](https://github.com/bloom42/rz-go/tree/master/examples/http).
 
 
 ## Examples
