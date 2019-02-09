@@ -1,5 +1,3 @@
-// +build !binary_log
-
 package pkgerrors
 
 import (

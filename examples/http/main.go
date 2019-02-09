@@ -7,8 +7,8 @@ import (
 	"os"
 
 	"github.com/bloom42/rz-go"
-	"github.com/bloom42/rz-go/rzhttp"
 	"github.com/bloom42/rz-go/log"
+	"github.com/bloom42/rz-go/rzhttp"
 	"github.com/go-chi/chi"
 	"github.com/google/uuid"
 )
@@ -38,7 +38,7 @@ func main() {
 	router.Use(loggingMiddleware)
 	router.Use(injectLoggerMiddleware(log.Logger))
 
-	router.Get("/", HelloWorld)
+	router.Get("/", helloWorld)
 
 	err := http.ListenAndServe(":"+port, router)
 	if err != nil {
@@ -73,7 +73,7 @@ func injectLoggerMiddleware(logger rz.Logger) func(next http.Handler) http.Handl
 	}
 }
 
-func HelloWorld(w http.ResponseWriter, r *http.Request) {
+func helloWorld(w http.ResponseWriter, r *http.Request) {
 	logger := rz.FromCtx(r.Context())
 	logger.Info("hello from GET /", nil)
 	fmt.Fprintf(w, "Hello, you've requested: %s\n", r.URL.Path)

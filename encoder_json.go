@@ -1,5 +1,3 @@
-// +build !binary_log
-
 package rz
 
 // encoder_json.go file contains bindings to generate

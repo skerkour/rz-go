@@ -1,4 +1,3 @@
-// +build !binary_log
 // +build !windows
 
 package rz

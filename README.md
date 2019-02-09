@@ -120,7 +120,7 @@ func TimestampFunc(timestampFunc func() time.Time) LoggerOption {}
 ```go
 var (
 	// DurationFieldUnit defines the unit for time.Duration type fields added
-	// using the Dur method.
+	// using the Duration method.
 	DurationFieldUnit = time.Millisecond
 
 	// DurationFieldInteger renders Duration fields as integer instead of float if

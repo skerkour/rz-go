@@ -1,35 +1,25 @@
-// +build !binary_log
-
 package rz_test
 
-// import (
-// 	"errors"
-// 	"fmt"
-// 	stdlog "log"
-// 	"net"
-// 	"os"
-// 	"time"
+import (
+	"github.com/bloom42/rz-go"
+)
 
-// 	"github.com/bloom42/rz-go"
-// )
+func ExampleNew() {
+	log := rz.New()
 
-// func ExampleNew() {
-// 	log := rz.New(os.Stdout)
+	log.Info("hello world", nil)
+	// Output: {"level":"info","timestamp":"2019-02-07T09:30:07Z","message":"hello world"}
+}
 
-// 	log.Info().Msg("hello world")
-// 	// Output: {"level":"info","message":"hello world"}
-// }
+func ExampleLogger_With() {
+	log := rz.New(rz.With(func(e *rz.Event) {
+		e.String("foo", "bar")
+	}))
 
-// func ExampleLogger_With() {
-// 	log := rz.New(os.Stdout).
-// 		With().
-// 		Str("foo", "bar").
-// 		Logger()
+	log.Info("hello world", nil)
 
-// 	log.Info().Msg("hello world")
-
-// 	// Output: {"level":"info","foo":"bar","message":"hello world"}
-// }
+	// Output: {"level":"info","foo":"bar","timestamp":"2019-02-07T09:30:07Z","message":"hello world"}
+}
 
 // func ExampleLogger_Level() {
 // 	log := rz.New(os.Stdout).Level(rz.WarnLevel)

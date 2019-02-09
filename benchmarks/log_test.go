@@ -9,9 +9,9 @@ import (
 	"github.com/bloom42/rz-go"
 	"github.com/rs/zerolog"
 	"github.com/sirupsen/logrus"
-	"go.uber.org/zap/zaptest"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"go.uber.org/zap/zaptest"
 )
 
 func newDisabledLogrus() *logrus.Logger {
@@ -168,7 +168,6 @@ func zap10Fields() []zap.Field {
 		zap.Error(errExample),
 	}
 }
-
 
 var _testMessage = "hello world"
 

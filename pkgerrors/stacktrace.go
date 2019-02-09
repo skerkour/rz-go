@@ -5,8 +5,11 @@ import (
 )
 
 var (
-	StackSourceFileName     = "source"
-	StackSourceLineName     = "line"
+	// StackSourceFileName is the source file field name in the stacktrace
+	StackSourceFileName = "source"
+	// StackSourceLineName is the source line field name in the stacktrace
+	StackSourceLineName = "line"
+	// StackSourceFunctionName is the source function field name in the stacktrace
 	StackSourceFunctionName = "func"
 )
 
