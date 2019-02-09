@@ -21,7 +21,7 @@ func TestLogStack(t *testing.T) {
 	})
 
 	got := out.String()
-	want := `\{"stack":\[\{"func":"TestLogStack","line":"20","source":"stacktrace_test.go"\},.*\],"error":"from error: error message"\}\n`
+	want := `\{"stack":\[\{"func":"TestLogStack","line":"18","source":"stacktrace_test.go"\},.*\],"error":"from error: error message"\}\n`
 	if ok, _ := regexp.MatchString(want, got); !ok {
 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
 	}
@@ -43,7 +43,7 @@ func TestContextStack(t *testing.T) {
 	})
 
 	got := out.String()
-	want := `\{"stack":\[\{"func":"TestContextStack","line":"42","source":"stacktrace_test.go"\},.*\],"error":"from error: error message"\}\n`
+	want := `\{"stack":\[\{"func":"TestContextStack","line":"40","source":"stacktrace_test.go"\},.*\],"error":"from error: error message"\}\n`
 	if ok, _ := regexp.MatchString(want, got); !ok {
 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
 	}

@@ -5,20 +5,20 @@ import (
 )
 
 func ExampleNew() {
-	log := rz.New()
+	log := rz.New(rz.Timestamp(false))
 
 	log.Info("hello world", nil)
-	// Output: {"level":"info","timestamp":"2019-02-07T09:30:07Z","message":"hello world"}
+	// Output: {"level":"info","message":"hello world"}
 }
 
-func ExampleLogger_With() {
-	log := rz.New(rz.With(func(e *rz.Event) {
+func ExampleWith() {
+	log := rz.New(rz.Timestamp(false), rz.With(func(e *rz.Event) {
 		e.String("foo", "bar")
 	}))
 
 	log.Info("hello world", nil)
 
-	// Output: {"level":"info","foo":"bar","timestamp":"2019-02-07T09:30:07Z","message":"hello world"}
+	// Output: {"level":"info","foo":"bar","message":"hello world"}
 }
 
 // func ExampleLogger_Level() {
