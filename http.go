@@ -152,25 +152,25 @@ func HTTPHandler(logger Logger, options ...HTTPHandlerOption) func(next http.Han
 				if r.TLS != nil {
 					scheme = "https"
 				}
-				handler.logger.updateContext(func(e *Event) {
+				handler.logger.Append(func(e *Event) {
 					e.String(handler.schemeField, scheme)
 				})
 			}
 
 			if handler.methodField != "" {
-				handler.logger.updateContext(func(e *Event) {
+				handler.logger.Append(func(e *Event) {
 					e.String(handler.methodField, r.Method)
 				})
 			}
 
 			if handler.urlField != "" {
-				handler.logger.updateContext(func(e *Event) {
+				handler.logger.Append(func(e *Event) {
 					e.String(handler.urlField, r.RequestURI)
 				})
 			}
 
 			if handler.hostField != "" {
-				handler.logger.updateContext(func(e *Event) {
+				handler.logger.Append(func(e *Event) {
 					e.String(handler.hostField, r.Host)
 				})
 			}
@@ -181,13 +181,13 @@ func HTTPHandler(logger Logger, options ...HTTPHandlerOption) func(next http.Han
 				if err == nil {
 					remote = host
 				}
-				handler.logger.updateContext(func(e *Event) {
+				handler.logger.Append(func(e *Event) {
 					e.String(handler.remoteAddressField, remote)
 				})
 			}
 
 			if handler.userAgentField != "" {
-				handler.logger.updateContext(func(e *Event) {
+				handler.logger.Append(func(e *Event) {
 					e.String(handler.userAgentField, r.Header.Get("user-agent"))
 				})
 			}
@@ -195,14 +195,14 @@ func HTTPHandler(logger Logger, options ...HTTPHandlerOption) func(next http.Han
 			next.ServeHTTP(resWrapper, r)
 
 			if handler.sizeField != "" {
-				handler.logger.updateContext(func(e *Event) {
+				handler.logger.Append(func(e *Event) {
 					e.Int(handler.sizeField, resWrapper.written)
 				})
 			}
 
 			status := resWrapper.status
 			if handler.statusField != "" {
-				handler.logger.updateContext(func(e *Event) {
+				handler.logger.Append(func(e *Event) {
 					e.Int(handler.statusField, status)
 				})
 			}
@@ -212,7 +212,7 @@ func HTTPHandler(logger Logger, options ...HTTPHandlerOption) func(next http.Han
 				if durationUs < 1 {
 					durationUs = 1
 				}
-				handler.logger.updateContext(func(e *Event) {
+				handler.logger.Append(func(e *Event) {
 					e.Int64(handler.durationField, durationUs)
 				})
 			}
@@ -224,7 +224,7 @@ func HTTPHandler(logger Logger, options ...HTTPHandlerOption) func(next http.Han
 					// fmt.Println("in requestID 2")
 					requestID = rid
 				}
-				handler.logger.updateContext(func(e *Event) {
+				handler.logger.Append(func(e *Event) {
 					e.String(handler.requestIDField, requestID)
 				})
 			}

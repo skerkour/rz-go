@@ -5,6 +5,7 @@ import (
 	"os"
 	"runtime"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -32,6 +33,7 @@ type Logger struct {
 	timeFieldFormat      string
 	formatter            LogFormatter
 	timestampFunc        func() time.Time
+	contextMutext        *sync.Mutex
 }
 
 // New creates a root logger with given options. If the output writer implements
@@ -55,6 +57,7 @@ func New(options ...LoggerOption) Logger {
 		errorStackFieldName:  DefaultErrorStackFieldName,
 		timeFieldFormat:      DefaultTimeFieldFormat,
 		timestampFunc:        DefaultTimestampFunc,
+		contextMutext:        &sync.Mutex{},
 	}
 	return logger.Config(options...)
 }
@@ -233,24 +236,12 @@ func (l *Logger) should(lvl LogLevel) bool {
 	return true
 }
 
-// updateContext updates the internal logger's context.
-func (l *Logger) updateContext(fields func(e *Event)) {
+// Append the fields to the internal logger's context.
+func (l *Logger) Append(fields func(e *Event)) {
 	if fields != nil {
 		e := newEvent(l.writer, l.level)
 		e.buf = nil
-		e.stack = l.stack
-		e.caller = l.caller
-		e.timestamp = l.timestamp
-		e.timestampFieldName = l.timestampFieldName
-		e.levelFieldName = l.levelFieldName
-		e.messageFieldName = l.messageFieldName
-		e.errorFieldName = l.errorFieldName
-		e.callerFieldName = l.callerFieldName
-		e.timeFieldFormat = l.timeFieldFormat
-		e.errorStackFieldName = l.errorStackFieldName
-		e.callerSkipFrameCount = l.callerSkipFrameCount
-		e.formatter = l.formatter
-		e.timestampFunc = l.timestampFunc
+		copyInternalLoggerFieldsToEvent(l, e)
 		fields(e)
 		if e.stack && !l.stack {
 			l.stack = true
@@ -261,6 +252,24 @@ func (l *Logger) updateContext(fields func(e *Event)) {
 		if e.timestamp && !l.timestamp {
 			l.timestamp = true
 		}
+		l.contextMutext.Lock()
 		l.context = enc.AppendObjectData(l.context, e.buf)
+		l.contextMutext.Unlock()
 	}
+}
+
+func copyInternalLoggerFieldsToEvent(l *Logger, e *Event) {
+	e.stack = l.stack
+	e.caller = l.caller
+	e.timestamp = l.timestamp
+	e.timestampFieldName = l.timestampFieldName
+	e.levelFieldName = l.levelFieldName
+	e.messageFieldName = l.messageFieldName
+	e.errorFieldName = l.errorFieldName
+	e.callerFieldName = l.callerFieldName
+	e.timeFieldFormat = l.timeFieldFormat
+	e.errorStackFieldName = l.errorStackFieldName
+	e.callerSkipFrameCount = l.callerSkipFrameCount
+	e.formatter = l.formatter
+	e.timestampFunc = l.timestampFunc
 }

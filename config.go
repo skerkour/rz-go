@@ -3,6 +3,7 @@ package rz
 import (
 	"io"
 	"os"
+	"sync"
 	"time"
 )
 
@@ -57,19 +58,7 @@ func With(fields func(*Event)) LoggerOption {
 		if fields != nil {
 			e := newEvent(logger.writer, logger.level)
 			e.buf = nil
-			e.stack = logger.stack
-			e.caller = logger.caller
-			e.timestamp = logger.timestamp
-			e.timestampFieldName = logger.timestampFieldName
-			e.levelFieldName = logger.levelFieldName
-			e.messageFieldName = logger.messageFieldName
-			e.errorFieldName = logger.errorFieldName
-			e.callerFieldName = logger.callerFieldName
-			e.timeFieldFormat = logger.timeFieldFormat
-			e.errorStackFieldName = logger.errorStackFieldName
-			e.callerSkipFrameCount = logger.callerSkipFrameCount
-			e.formatter = logger.formatter
-			e.timestampFunc = logger.timestampFunc
+			copyInternalLoggerFieldsToEvent(logger, e)
 			fields(e)
 			if e.stack && !logger.stack {
 				logger.stack = true
@@ -81,6 +70,7 @@ func With(fields func(*Event)) LoggerOption {
 				logger.timestamp = true
 			}
 			logger.context = enc.AppendObjectData(make([]byte, 0, 500), e.buf)
+			logger.contextMutext = &sync.Mutex{}
 		}
 	}
 }
