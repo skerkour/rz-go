@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/bloom42/rz-go"
+	"github.com/bloom42/rz-go/rzhttp"
 	"github.com/bloom42/rz-go/log"
 	"github.com/go-chi/chi"
 	"github.com/google/uuid"
@@ -30,7 +31,7 @@ func main() {
 	router := chi.NewRouter()
 
 	// replace size field name by latency and disable userAgent logging
-	loggingMiddleware := rz.HTTPHandler(log.Logger, rz.Duration("latency"), rz.UserAgent(""))
+	loggingMiddleware := rzhttp.Handler(log.Logger, rzhttp.Duration("latency"), rzhttp.UserAgent(""))
 
 	// here the order matters, otherwise loggingMiddleware won't see the request ID
 	router.Use(requestIDMiddleware)
@@ -51,7 +52,7 @@ func requestIDMiddleware(next http.Handler) http.Handler {
 		requestID := uuidv4.String()
 		w.Header().Set("X-Bloom-Request-ID", requestID)
 
-		ctx := context.WithValue(r.Context(), rz.HTTPCtxRequestIDKey, requestID)
+		ctx := context.WithValue(r.Context(), rzhttp.RequestIDCtxKey, requestID)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
@@ -59,7 +60,7 @@ func requestIDMiddleware(next http.Handler) http.Handler {
 func injectLoggerMiddleware(logger rz.Logger) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if rid, ok := r.Context().Value(rz.HTTPCtxRequestIDKey).(string); ok {
+			if rid, ok := r.Context().Value(rzhttp.RequestIDCtxKey).(string); ok {
 				logger = logger.Config(rz.With(func(e *rz.Event) {
 					e.String("request_id", rid)
 				}))

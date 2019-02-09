@@ -15,6 +15,13 @@ func Config(options ...rz.LoggerOption) rz.Logger {
 	return Logger.Config(options...)
 }
 
+// Append the fields to the internal logger's context.
+// It does not create a noew copy of the logger and rely on a mutex to enable thread safety,
+// so `With` is preferable.
+func Append(fields func(e *rz.Event)) {
+	Logger.Append(fields)
+}
+
 // Debug starts a new message with debug level.
 func Debug(message string, fields func(*rz.Event)) {
 	Logger.Debug(message, fields)

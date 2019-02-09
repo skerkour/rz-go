@@ -237,6 +237,8 @@ func (l *Logger) should(lvl LogLevel) bool {
 }
 
 // Append the fields to the internal logger's context.
+// It does not create a noew copy of the logger and rely on a mutex to enable thread safety,
+// so `With` is preferable.
 func (l *Logger) Append(fields func(e *Event)) {
 	if fields != nil {
 		e := newEvent(l.writer, l.level)
