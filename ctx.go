@@ -22,7 +22,7 @@ func (l *Logger) ToCtx(ctx context.Context) context.Context {
 }
 
 // FromCtx returns the Logger associated with the ctx. If no logger
-// is associated, a Nop() logger is returned.
+// is associated, a New() logger is returned with a addedfield "rz.FromCtx": "error".
 //
 // For example, to add a field to an existing logger in the context, use this
 // notation:
@@ -34,6 +34,8 @@ func FromCtx(ctx context.Context) *Logger {
 	if l, ok := ctx.Value(ctxKey{}).(*Logger); ok {
 		return l
 	}
-	nop := Nop()
-	return &nop
+	logger := New().Config(With(func(e *Event) {
+		e.String("rz.FromCtx", "error")
+	}))
+	return &logger
 }

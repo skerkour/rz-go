@@ -23,7 +23,7 @@ func TestFromCtx(t *testing.T) {
 	}
 
 	log2 = FromCtx(context.Background())
-	if log2.level != Disabled {
+	if log2 == nil || log2 == &log {
 		t.Error("FromCtx did not return the expected logger")
 	}
 }
