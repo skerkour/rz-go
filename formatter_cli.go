@@ -35,7 +35,7 @@ func FormatterCLI() LogFormatter {
 		}
 
 		if level != "" {
-			ret.WriteString(colorize("• ", lvlColor))
+			ret.WriteString(colorize(levelSymbol(level), lvlColor))
 		}
 		ret.WriteString(message)
 
@@ -79,5 +79,18 @@ func FormatterCLI() LogFormatter {
 		}
 
 		return ret.Bytes(), nil
+	}
+}
+
+func levelSymbol(level string) string {
+	switch level {
+	case "info":
+		return " ✔ "
+	case "warning":
+		return " ⚠ "
+	case "error", "fatal":
+		return " ✘ "
+	default:
+		return " • "
 	}
 }
