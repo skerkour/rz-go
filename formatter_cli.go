@@ -85,12 +85,12 @@ func FormatterCLI() LogFormatter {
 func levelSymbol(level string) string {
 	switch level {
 	case "info":
-		return " ✔ "
+		return "✔ "
 	case "warning":
-		return " ⚠ "
+		return "⚠ "
 	case "error", "fatal":
-		return " ✘ "
+		return "✘ "
 	default:
-		return " • "
+		return "• "
 	}
 }
