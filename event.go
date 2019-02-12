@@ -96,10 +96,10 @@ func (e *Event) Dict(key string, dict *Event) {
 	putEvent(dict)
 }
 
-// Dict creates an Event to be used with the *Event.Dict method.
+// NewDict creates an Event to be used with the *Event.Dict method.
 // Call usual field methods like Str, Int etc to add fields to this
 // event and give it as argument the *Event.Dict method.
-func Dict() *Event {
+func NewDict() *Event {
 	return newEvent(nil, 0)
 }
 
@@ -398,17 +398,6 @@ func (e *Event) Durations(key string, d []time.Duration) {
 	e.buf = enc.AppendDurations(enc.AppendKey(e.buf, key), d, DurationFieldUnit, DurationFieldInteger)
 }
 
-// TimeDiff adds the field key with positive duration between time t and start.
-// If time t is not greater than start, duration will be 0.
-// Duration format follows the same principle as Dur().
-func (e *Event) TimeDiff(key string, t time.Time, start time.Time) {
-	var d time.Duration
-	if t.After(start) {
-		d = t.Sub(start)
-	}
-	e.buf = enc.AppendDuration(enc.AppendKey(e.buf, key), d, DurationFieldUnit, DurationFieldInteger)
-}
-
 // Interface adds the field key with i marshaled using reflection.
 func (e *Event) Interface(key string, i interface{}) {
 	if obj, ok := i.(LogObjectMarshaler); ok {
@@ -418,8 +407,8 @@ func (e *Event) Interface(key string, i interface{}) {
 }
 
 // Caller adds the file:line of the caller with the rz.CallerFieldName key.
-func (e *Event) Caller() {
-	e.caller = true
+func (e *Event) Caller(enable bool) {
+	e.caller = enable
 }
 
 // IP adds IPv4 or IPv6 Address to the event
@@ -432,7 +421,7 @@ func (e *Event) IPNet(key string, pfx net.IPNet) {
 	e.buf = enc.AppendIPPrefix(enc.AppendKey(e.buf, key), pfx)
 }
 
-// MACAddr adds MAC address to the event
-func (e *Event) MACAddr(key string, ha net.HardwareAddr) {
+// HardwareAddr adds MAC address to the event
+func (e *Event) HardwareAddr(key string, ha net.HardwareAddr) {
 	e.buf = enc.AppendMACAddr(enc.AppendKey(e.buf, key), ha)
 }

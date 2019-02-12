@@ -79,27 +79,6 @@ func With(fields ...Field) LoggerOption {
 	}
 }
 
-// Stack enable/disable stack in error messages.
-// func Stack(enableStack bool) LoggerOption {
-// 	return func(logger *Logger) {
-// 		logger.stack = enableStack
-// 	}
-// }
-
-// // Timestamp enable/disable timestamp logging in error messages.
-// func Timestamp(enableTimestamp bool) LoggerOption {
-// 	return func(logger *Logger) {
-// 		logger.timestamp = enableTimestamp
-// 	}
-// }
-
-// // Caller enable/disable caller field in message messages.
-// func Caller(enableCaller bool) LoggerOption {
-// 	return func(logger *Logger) {
-// 		logger.caller = enableCaller
-// 	}
-// }
-
 // Formatter update logger's formatter.
 func Formatter(formatter LogFormatter) LoggerOption {
 	return func(logger *Logger) {

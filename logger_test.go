@@ -95,7 +95,7 @@ func TestWith(t *testing.T) {
 			Float32("float32", 11.101),
 			Float64("float64", 12.30303),
 			Time("time", time.Time{}),
-			Caller(),
+			Caller(true),
 		),
 	)
 	_, file, line, _ := runtime.Caller(0)
@@ -215,7 +215,7 @@ func TestFields(t *testing.T) {
 	log := New(Writer(out), With(Timestamp(false)))
 	_, file, line, _ := runtime.Caller(0)
 	caller := fmt.Sprintf("%s:%d", file, line+2)
-	log.Log("", Caller(),
+	log.Log("", Caller(true),
 		String("string", "foo"),
 		Bytes("bytes", []byte("bar")),
 		Hex("hex", []byte{0x12, 0xef}),
