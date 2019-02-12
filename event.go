@@ -241,8 +241,8 @@ func (e *Event) Err(err error) *Event {
 // Stack enables stack trace printing for the error passed to Err().
 //
 // ErrorStackMarshaler must be set for this method to do something.
-func (e *Event) Stack() *Event {
-	e.stack = true
+func (e *Event) Stack(enable bool) *Event {
+	e.stack = enable
 	return e
 }
 
@@ -407,9 +407,13 @@ func (e *Event) Floats64(key string, f []float64) *Event {
 
 // Timestamp adds the current local time as UNIX timestamp to the *Event context with the
 // logger.TimestampFieldName key.
-func (e *Event) Timestamp() *Event {
-	e.timestamp = false
-	e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), e.timestampFunc(), e.timeFieldFormat)
+// func (e *Event) Timestamp() *Event {
+// 	e.timestamp = false
+// 	e.buf = enc.AppendTime(enc.AppendKey(e.buf, e.timestampFieldName), e.timestampFunc(), e.timeFieldFormat)
+// 	return e
+// }
+func (e *Event) Timestamp(enable bool) *Event {
+	e.timestamp = enable
 	return e
 }
 

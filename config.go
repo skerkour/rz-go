@@ -53,48 +53,52 @@ func Hooks(hooks ...LogHook) LoggerOption {
 }
 
 // With replaces logger's context fields
-func With(fields func(*Event)) LoggerOption {
+func With(fields ...Field) LoggerOption {
 	return func(logger *Logger) {
-		if fields != nil {
-			e := newEvent(logger.writer, logger.level)
-			e.buf = nil
-			copyInternalLoggerFieldsToEvent(logger, e)
-			fields(e)
-			if e.stack {
-				logger.stack = true
-			}
-			if e.caller {
-				logger.caller = true
-			}
-			if e.timestamp {
-				logger.timestamp = true
-			}
-			logger.context = enc.AppendObjectData(make([]byte, 0, 500), e.buf)
-			logger.contextMutext = &sync.Mutex{}
+		e := newEvent(logger.writer, logger.level)
+		e.buf = nil
+		copyInternalLoggerFieldsToEvent(logger, e)
+		for i := range fields {
+			fields[i](e)
 		}
+		if e.stack != logger.stack {
+			logger.stack = e.stack
+		}
+		if e.caller != logger.caller {
+			logger.caller = e.caller
+		}
+		if e.timestamp != logger.timestamp {
+			logger.timestamp = e.timestamp
+		}
+		if e.buf != nil {
+			logger.context = enc.AppendObjectData(make([]byte, 0, 500), e.buf)
+		} else {
+			logger.context = make([]byte, 0, 500)
+		}
+		logger.contextMutext = &sync.Mutex{}
 	}
 }
 
 // Stack enable/disable stack in error messages.
-func Stack(enableStack bool) LoggerOption {
-	return func(logger *Logger) {
-		logger.stack = enableStack
-	}
-}
+// func Stack(enableStack bool) LoggerOption {
+// 	return func(logger *Logger) {
+// 		logger.stack = enableStack
+// 	}
+// }
 
-// Timestamp enable/disable timestamp logging in error messages.
-func Timestamp(enableTimestamp bool) LoggerOption {
-	return func(logger *Logger) {
-		logger.timestamp = enableTimestamp
-	}
-}
+// // Timestamp enable/disable timestamp logging in error messages.
+// func Timestamp(enableTimestamp bool) LoggerOption {
+// 	return func(logger *Logger) {
+// 		logger.timestamp = enableTimestamp
+// 	}
+// }
 
-// Caller enable/disable caller field in message messages.
-func Caller(enableCaller bool) LoggerOption {
-	return func(logger *Logger) {
-		logger.caller = enableCaller
-	}
-}
+// // Caller enable/disable caller field in message messages.
+// func Caller(enableCaller bool) LoggerOption {
+// 	return func(logger *Logger) {
+// 		logger.caller = enableCaller
+// 	}
+// }
 
 // Formatter update logger's formatter.
 func Formatter(formatter LogFormatter) LoggerOption {

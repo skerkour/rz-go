@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/bloom42/rz-go"
+	"github.com/astrolib/rz-go"
 	"github.com/pkg/errors"
 )
 
@@ -13,12 +13,10 @@ func TestLogStack(t *testing.T) {
 	rz.ErrorStackMarshaler = MarshalStack
 
 	out := &bytes.Buffer{}
-	log := rz.New(rz.Writer(out), rz.Timestamp(false))
+	log := rz.New(rz.Writer(out), rz.With(rz.Timestamp(false)))
 
 	err := errors.Wrap(errors.New("error message"), "from error")
-	log.Log("", func(e *rz.Event) {
-		e.Stack().Err(err)
-	})
+	log.Log("", rz.Stack(true), rz.Err(err))
 
 	got := out.String()
 	want := `\{"stack":\[\{"func":"TestLogStack","line":"18","source":"stacktrace_test.go"\},.*\],"error":"from error: error message"\}\n`
@@ -33,17 +31,14 @@ func TestContextStack(t *testing.T) {
 	out := &bytes.Buffer{}
 	log := rz.New(
 		rz.Writer(out),
-		rz.Stack(true),
-		rz.Timestamp(false),
+		rz.With(rz.Stack(true), rz.Timestamp(false)),
 	)
 
 	err := errors.Wrap(errors.New("error message"), "from error")
-	log.Log("", func(e *rz.Event) {
-		e.Err(err)
-	})
+	log.Log("", rz.Err(err))
 
 	got := out.String()
-	want := `\{"stack":\[\{"func":"TestContextStack","line":"40","source":"stacktrace_test.go"\},.*\],"error":"from error: error message"\}\n`
+	want := `\{"stack":\[\{"func":"TestContextStack","line":"37","source":"stacktrace_test.go"\},.*\],"error":"from error: error message"\}\n`
 	if ok, _ := regexp.MatchString(want, got); !ok {
 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
 	}
@@ -57,9 +52,7 @@ func BenchmarkLogStack(b *testing.B) {
 	b.ReportAllocs()
 
 	for i := 0; i < b.N; i++ {
-		log.Log("", func(e *rz.Event) {
-			e.Stack().Err(err)
-		})
+		log.Log("", rz.Stack(true), rz.Err(err))
 		out.Reset()
 	}
 }
