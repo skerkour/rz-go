@@ -328,30 +328,27 @@ func TestFieldsArrayMultipleElement(t *testing.T) {
 func TestFieldsDisabled(t *testing.T) {
 	out := &bytes.Buffer{}
 	log := New(Writer(out), With(Timestamp(false)), Level(InfoLevel))
-	now := time.Now()
-	log.Debug("", func(e *Event) {
-		e.String("string", "foo").
-			Bytes("bytes", []byte("bar")).
-			Hex("hex", []byte{0x12, 0xef}).
-			Error("some_err", nil).
-			Err(errors.New("some error")).
-			Bool("bool", true).
-			Int("int", 1).
-			Int8("int8", 2).
-			Int16("int16", 3).
-			Int32("int32", 4).
-			Int64("int64", 5).
-			Uint("uint", 6).
-			Uint8("uint8", 7).
-			Uint16("uint16", 8).
-			Uint32("uint32", 9).
-			Uint64("uint64", 10).
-			Float32("float32", 11).
-			Float64("float64", 12).
-			Duration("dur", 1*time.Second).
-			Time("time", time.Time{}).
-			TimeDiff("diff", now, now.Add(-10*time.Second))
-	})
+	log.Debug("", String("string", "foo"),
+		Bytes("bytes", []byte("bar")),
+		Hex("hex", []byte{0x12, 0xef}),
+		Error("some_err", nil),
+		Err(errors.New("some error")),
+		Bool("bool", true),
+		Int("int", 1),
+		Int8("int8", 2),
+		Int16("int16", 3),
+		Int32("int32", 4),
+		Int64("int64", 5),
+		Uint("uint", 6),
+		Uint8("uint8", 7),
+		Uint16("uint16", 8),
+		Uint32("uint32", 9),
+		Uint64("uint64", 10),
+		Float32("float32", 11),
+		Float64("float64", 12),
+		Duration("dur", 1*time.Second),
+		Time("time", time.Time{}),
+	)
 	if got, want := decodeIfBinaryToString(out.Bytes()), ""; got != want {
 		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
 	}
