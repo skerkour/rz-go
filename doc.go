@@ -4,7 +4,7 @@
 //
 //     import "github.com/bloom42/rz-go/log"
 //
-//     log.Info("hello world", nil)
+//     log.Info("hello world")
 //
 //     // Output: {"timestamp":"2019-02-07T09:30:07Z","level":"info","message":"hello world"}
 //
@@ -12,24 +12,20 @@
 //
 // Fields can be added to log messages:
 //
-//     log.Info("hello world", func(e *rz.Event) { e.String("foo", "bar") })
+//     log.Info("hello world", rz.String("foo", "bar"))
 //
 //     // Output: {"timestamp":"2019-02-07T09:30:07Z","level":"info","message":"hello world","foo":"bar"}
 //
 // Create logger instance to manage different outputs:
 //
 //     logger := rz.New()
-//     log.Info("hello world", func(e *rz.Event) {
-//          e.String("foo", "bar") })
-//     })
+//     log.Info("hello world",rz.String("foo", "bar"))
 //
 //     // Output: {"timestamp":"2019-02-07T09:30:07Z","level":"info","message":"hello world","foo":"bar"}
 //
 // Sub-loggers let you chain loggers with additional context:
 //
-//     sublogger := log.Config(rz.With(func(e *Event) {
-//         e.String("component": "foo")
-//     }))
+//     sublogger := log.Config(rz.With(rz.String("component": "foo")))
 //     sublogger.Info("hello world", nil)
 //
 //     // Output: {"timestamp":"2019-02-07T09:30:07Z","level":"info","message":"hello world","component":"foo"}

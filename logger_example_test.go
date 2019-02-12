@@ -1,22 +1,20 @@
 package rz_test
 
 import (
-	"github.com/bloom42/rz-go"
+	"github.com/astrolib/rz-go"
 )
 
 func ExampleNew() {
-	log := rz.New(rz.Timestamp(false))
+	log := rz.New(rz.With(rz.Timestamp(false)))
 
-	log.Info("hello world", nil)
+	log.Info("hello world")
 	// Output: {"level":"info","message":"hello world"}
 }
 
 func ExampleWith() {
-	log := rz.New(rz.Timestamp(false), rz.With(func(e *rz.Event) {
-		e.String("foo", "bar")
-	}))
+	log := rz.New(rz.With(rz.Timestamp(false), rz.String("foo", "bar")))
 
-	log.Info("hello world", nil)
+	log.Info("hello world")
 
 	// Output: {"level":"info","foo":"bar","message":"hello world"}
 }
