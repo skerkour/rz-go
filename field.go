@@ -98,6 +98,14 @@ func EmbedObject(obj LogObjectMarshaler) Field {
 	}
 }
 
+// Dict adds the field key with a dict to the event context.
+// Use rz.Dict() to create the dictionary.
+func Dict(key string, value *Event) Field {
+	return func(e *Event) {
+		e.Dict(key, value)
+	}
+}
+
 // Bytes adds the field key with val as a string to the *Event context.
 //
 // Runes outside of normal ASCII ranges will be hex-encoded in the resulting
