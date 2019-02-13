@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"sync"
 	"time"
+
+	"github.com/astrolib/rz-go/internal/json"
 )
 
 // A Logger represents an active logging object that generates lines
@@ -34,6 +36,7 @@ type Logger struct {
 	formatter            LogFormatter
 	timestampFunc        func() time.Time
 	contextMutext        *sync.Mutex
+	encoder              Encoder
 }
 
 // New creates a root logger with given options. If the output writer implements
@@ -58,6 +61,7 @@ func New(options ...LoggerOption) Logger {
 		timeFieldFormat:      DefaultTimeFieldFormat,
 		timestampFunc:        DefaultTimestampFunc,
 		contextMutext:        &sync.Mutex{},
+		encoder:              json.Encoder{},
 	}
 	return logger.Config(options...)
 }
@@ -144,7 +148,7 @@ func (l *Logger) logEvent(level LogLevel, message string, done func(string), fie
 	e.ch = l.hooks
 	copyInternalLoggerFieldsToEvent(l, e)
 	if level != NoLevel {
-		e.String(e.levelFieldName, level.String())
+		e.string(e.levelFieldName, level.String())
 	}
 	if l.context != nil && len(l.context) > 0 {
 		e.buf = enc.AppendObjectData(e.buf, l.context)
@@ -224,10 +228,10 @@ func (l *Logger) should(lvl LogLevel) bool {
 	return true
 }
 
-// Append the fields to the internal logger's context.
+// With appends the fields to the internal logger's context.
 // It does not create a noew copy of the logger and rely on a mutex to enable thread safety,
-// so `With` is preferable.
-func (l *Logger) Append(fields ...Field) {
+// so `Config(With(fields...))` often is preferable.
+func (l *Logger) With(fields ...Field) {
 	e := newEvent(l.writer, l.level)
 	e.buf = nil
 	copyInternalLoggerFieldsToEvent(l, e)
@@ -264,4 +268,5 @@ func copyInternalLoggerFieldsToEvent(l *Logger, e *Event) {
 	e.callerSkipFrameCount = l.callerSkipFrameCount
 	e.formatter = l.formatter
 	e.timestampFunc = l.timestampFunc
+	e.encoder = l.encoder
 }
