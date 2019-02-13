@@ -59,7 +59,7 @@ type LogObjectMarshaler interface {
 
 // LogArrayMarshaler provides a strongly-typed and encoding-agnostic interface
 // to be implemented by types used with Event/Context's Array methods.
-type LogArrayMarshaler interface {
+type logArrayMarshaler interface {
 	MarshalRzArray(*array)
 }
 
@@ -111,7 +111,7 @@ func NewDict() *Event {
 // Array adds the field key with an array to the event context.
 // Use Event.Arr() to create the array or pass a type that
 // implement the LogArrayMarshaler interface.
-func (e *Event) array(key string, arr LogArrayMarshaler) {
+func (e *Event) array(key string, arr logArrayMarshaler) {
 	e.buf = enc.AppendKey(e.buf, key)
 	var a *array
 	if aa, ok := arr.(*array); ok {

@@ -18,7 +18,7 @@ func Discard() Field {
 // Array adds the field key with an array to the event context.
 // Use Event.Arr() to create the array or pass a type that
 // implement the LogArrayMarshaler interface.
-func Array(key string, arr LogArrayMarshaler) Field {
+func Array(key string, arr logArrayMarshaler) Field {
 	return func(e *Event) {
 		e.array(key, arr)
 	}
