@@ -1,7 +1,7 @@
 package rz_test
 
 import (
-	"github.com/astrolib/rz-go"
+	"github.com/bloom42/rz-go"
 )
 
 func ExampleNew() {

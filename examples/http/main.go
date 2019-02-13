@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/astrolib/rz-go"
-	"github.com/astrolib/rz-go/log"
-	"github.com/astrolib/rz-go/rzhttp"
+	"github.com/bloom42/rz-go"
+	"github.com/bloom42/rz-go/log"
+	"github.com/bloom42/rz-go/rzhttp"
 	"github.com/go-chi/chi"
 	"github.com/google/uuid"
 )

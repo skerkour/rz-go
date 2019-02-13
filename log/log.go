@@ -2,7 +2,7 @@
 package log
 
 import (
-	"github.com/astrolib/rz-go"
+	"github.com/bloom42/rz-go"
 )
 
 // Logger is the global logger.

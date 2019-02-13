@@ -4,7 +4,7 @@ package rz
 // JSON encoded byte stream.
 
 import (
-	"github.com/astrolib/rz-go/internal/json"
+	"github.com/bloom42/rz-go/internal/json"
 )
 
 var (

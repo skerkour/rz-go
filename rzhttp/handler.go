@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/astrolib/rz-go"
+	"github.com/bloom42/rz-go"
 )
 
 // Key to use when setting the request ID.
