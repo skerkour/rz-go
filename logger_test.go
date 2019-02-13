@@ -500,9 +500,7 @@ func TestContextTimestamp(t *testing.T) {
 		return time.Date(2001, time.February, 3, 4, 5, 6, 7, time.UTC)
 	}
 	out := &bytes.Buffer{}
-	log := New(Writer(out), With(func(e *Event) {
-		e.String("foo", "bar")
-	}), TimestampFunc(tfn))
+	log := New(Writer(out), With(String("foo", "bar")), TimestampFunc(tfn))
 	log.Log("hello world")
 
 	if got, want := decodeIfBinaryToString(out.Bytes()), `{"foo":"bar","timestamp":"2001-02-03T04:05:06Z","message":"hello world"}`+"\n"; got != want {
@@ -528,7 +526,7 @@ type loggableError struct {
 }
 
 func (l loggableError) MarshalRzObject(e *Event) {
-	e.String("message", l.error.Error()+": loggableError")
+	e.With(String("message", l.error.Error()+": loggableError"))
 }
 
 func TestErrorMarshalFunc(t *testing.T) {

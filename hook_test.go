@@ -12,24 +12,26 @@ var (
 		if level == NoLevel {
 			levelName = "nolevel"
 		}
-		e.String("level_name", levelName)
+		e.With(String("level_name", levelName))
 	})
 	simpleHook = HookFunc(func(e *Event, level LogLevel, msg string) {
-		e.Bool("has_level", level != NoLevel)
-		e.String("test", "logged")
+		e.With(
+			Bool("has_level", level != NoLevel),
+			String("test", "logged"),
+		)
 	})
 	copyHook = HookFunc(func(e *Event, level LogLevel, msg string) {
 		hasLevel := level != NoLevel
-		e.Bool("copy_has_level", hasLevel)
+		e.With(Bool("copy_has_level", hasLevel))
 		if hasLevel {
-			e.String("copy_level", level.String())
+			e.With(String("copy_level", level.String()))
 		}
-		e.String("copy_msg", msg)
+		e.With(String("copy_msg", msg))
 	})
 	nopHook = HookFunc(func(e *Event, level LogLevel, message string) {
 	})
 	discardHook = HookFunc(func(e *Event, level LogLevel, message string) {
-		e.Discard()
+		e.With(Discard())
 	})
 )
 

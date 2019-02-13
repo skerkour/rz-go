@@ -54,13 +54,13 @@ func putEvent(e *Event) {
 // Marshaler provides a strongly-typed and encoding-agnostic interface
 // to be implemented by types used with Event/Context's Object methods.
 type LogObjectMarshaler interface {
-	MarshalRzObject(Encoder) []byte
+	MarshalRzObject(*Event)
 }
 
 // LogArrayMarshaler provides a strongly-typed and encoding-agnostic interface
 // to be implemented by types used with Event/Context's Array methods.
 type LogArrayMarshaler interface {
-	MarshalRzArray(Encoder) []byte
+	MarshalRzArray(*array)
 }
 
 func newEvent(w LevelWriter, level LogLevel) *Event {
@@ -79,6 +79,7 @@ func (e *Event) Enabled() bool {
 	return e.level != Disabled
 }
 
+// With appends the given fields to the event
 func (e *Event) With(fields ...Field) {
 	for i := range fields {
 		fields[i](e)
@@ -103,9 +104,6 @@ func (e *Event) dict(key string, dict *Event) {
 	putEvent(dict)
 }
 
-// NewDict creates an Event to be used with the *Event.Dict method.
-// Call usual field methods like Str, Int etc to add fields to this
-// event and give it as argument the *Event.Dict method.
 func NewDict() *Event {
 	return newEvent(nil, 0)
 }
@@ -114,12 +112,20 @@ func NewDict() *Event {
 // Use Event.Arr() to create the array or pass a type that
 // implement the LogArrayMarshaler interface.
 func (e *Event) array(key string, arr LogArrayMarshaler) {
-	e.buf = append(e.buf, arr.MarshalRzArray(e.encoder)...)
+	e.buf = enc.AppendKey(e.buf, key)
+	var a *array
+	if aa, ok := arr.(*array); ok {
+		a = aa
+	} else {
+		a = e.arr()
+		arr.MarshalRzArray(a)
+	}
+	e.buf = a.write(e.buf)
 }
 
 func (e *Event) appendObject(obj LogObjectMarshaler) {
 	e.buf = enc.AppendBeginMarker(e.buf)
-	e.buf = append(e.buf, obj.MarshalRzObject(e.encoder)...)
+	obj.MarshalRzObject(e)
 	e.buf = enc.AppendEndMarker(e.buf)
 }
 
@@ -131,7 +137,7 @@ func (e *Event) object(key string, obj LogObjectMarshaler) {
 
 // embedObject marshals an object that implement the LogObjectMarshaler interface.
 func (e *Event) embedObject(obj LogObjectMarshaler) {
-	e.buf = append(e.buf, obj.MarshalRzObject(e.encoder)...)
+	obj.MarshalRzObject(e)
 }
 
 // String adds the field key with val as a string to the *Event context.

@@ -122,6 +122,16 @@ func (l *Logger) Log(message string, fields ...Field) {
 	l.logEvent(NoLevel, message, nil, fields)
 }
 
+// NewDict creates an Event to be used with the Dict method.
+// Call usual field methods like Str, Int etc to add fields to this
+// event and give it as argument the *Event.Dict method.
+func (l *Logger) NewDict(fields ...Field) *Event {
+	e := newEvent(nil, 0)
+	copyInternalLoggerFieldsToEvent(l, e)
+	e.With(fields...)
+	return e
+}
+
 // Write implements the io.Writer interface. This is useful to set as a writer
 // for the standard library log.
 //

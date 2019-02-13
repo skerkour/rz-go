@@ -37,7 +37,7 @@ func TestFromCtxDisabled(t *testing.T) {
 
 	l := New(
 		Writer(ioutil.Discard),
-		With(func(e *Event) { e.String("foo", "bar") }),
+		With(String("foo", "bar")),
 	)
 	ctx = l.ToCtx(ctx)
 	if FromCtx(ctx) != &l {

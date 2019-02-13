@@ -2,8 +2,6 @@
 package log
 
 import (
-	"context"
-
 	"github.com/astrolib/rz-go"
 )
 
@@ -13,13 +11,6 @@ var Logger = rz.New()
 // Config duplicates the global logger and update it's configuration.
 func Config(options ...rz.LoggerOption) rz.Logger {
 	return Logger.Config(options...)
-}
-
-// Append the fields to the internal logger's context.
-// It does not create a noew copy of the logger and rely on a mutex to enable thread safety,
-// so `With` is preferable.
-func Append(fields ...rz.Field) {
-	Logger.Append(fields...)
 }
 
 // Debug starts a new message with debug level.
@@ -60,8 +51,13 @@ func Log(message string, fields ...rz.Field) {
 	Logger.Log(message, fields...)
 }
 
-// FromCtx returns the Logger associated with the ctx. If no logger
-// is associated, a disabled logger is returned.
-func FromCtx(ctx context.Context) *rz.Logger {
-	return rz.FromCtx(ctx)
+// With appends the fields to the internal logger's context.
+// It does not create a noew copy of the logger and rely on a mutex to enable thread safety,
+// so `Config(With(fields...))` often is preferable.
+func With(fields ...rz.Field) {
+	Logger.With(fields...)
+}
+
+func NewDict(fields ...rz.Field) *rz.Event {
+	return Logger.NewDict(fields...)
 }

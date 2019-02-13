@@ -60,9 +60,7 @@ func BenchmarkContextFields(b *testing.B) {
 }
 
 func BenchmarkContextAppend(b *testing.B) {
-	logger := New(Writer(ioutil.Discard), With(func(e *Event) {
-		e.String("foo", "bar")
-	}))
+	logger := New(Writer(ioutil.Discard), With(String("foo", "bar")))
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
@@ -93,9 +91,11 @@ type obj struct {
 }
 
 func (o obj) MarshalRzObject(e *Event) {
-	e.String("Pub", o.Pub)
-	e.String("Tag", o.Tag)
-	e.Int("priv", o.priv)
+	e.With(
+		String("Pub", o.Pub),
+		String("Tag", o.Tag),
+		Int("priv", o.priv),
+	)
 }
 
 // func BenchmarkLogArrayObject(b *testing.B) {

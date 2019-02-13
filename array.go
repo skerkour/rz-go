@@ -45,8 +45,7 @@ func (e *Event) arr() *array {
 
 // MarshalRzArray method here is no-op - since data is
 // already in the needed format.
-func (*array) MarshalRzArray(Encoder) []byte {
-	return nil
+func (*array) MarshalRzArray(*array) {
 }
 
 func (a *array) write(dst []byte) []byte {
@@ -63,7 +62,7 @@ func (a *array) write(dst []byte) []byte {
 // interface and append append it to the array.
 func (a *array) Object(obj LogObjectMarshaler) *array {
 	e := NewDict()
-	obj.MarshalRzObject(e.encoder)
+	obj.MarshalRzObject(e)
 	e.buf = enc.AppendEndMarker(e.buf)
 	a.buf = append(enc.AppendArrayDelim(a.buf), e.buf...)
 	putEvent(e)
