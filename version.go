@@ -2,5 +2,5 @@ package rz
 
 const (
 	// Version is the library's version
-	Version = "1.2.4"
+	Version = "2.0.0"
 )

@@ -17,7 +17,7 @@ func BenchmarkLogEmpty(b *testing.B) {
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			logger.Log("", nil)
+			logger.Log("")
 		}
 	})
 }
@@ -27,7 +27,7 @@ func BenchmarkDisabled(b *testing.B) {
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			logger.Info(fakeMessage, nil)
+			logger.Info(fakeMessage)
 		}
 	})
 }
@@ -37,7 +37,7 @@ func BenchmarkInfo(b *testing.B) {
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			logger.Info(fakeMessage, nil)
+			logger.Info(fakeMessage)
 		}
 	})
 }
@@ -45,12 +45,11 @@ func BenchmarkInfo(b *testing.B) {
 func BenchmarkContextFields(b *testing.B) {
 	logger := New(
 		Writer(ioutil.Discard),
-		With(func(e *Event) {
-			e.String("string", "four!")
-			e.Time("time", time.Time{})
-			e.Int("int", 123)
-			e.Float32("float", -2.203230293249593)
-		}),
+		With(String("string", "four!"),
+			Time("time", time.Time{}),
+			Int("int", 123),
+			Float32("float", -2.203230293249593),
+		),
 	)
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
@@ -61,15 +60,11 @@ func BenchmarkContextFields(b *testing.B) {
 }
 
 func BenchmarkContextAppend(b *testing.B) {
-	logger := New(Writer(ioutil.Discard), With(func(e *Event) {
-		e.String("foo", "bar")
-	}))
+	logger := New(Writer(ioutil.Discard), With(String("foo", "bar")))
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			logger.Config(With(func(e *Event) {
-				e.String("bar", "baz")
-			}))
+			logger.Config(With(String("bar", "baz")))
 		}
 	})
 }
@@ -79,12 +74,12 @@ func BenchmarkLogFields(b *testing.B) {
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			logger.Info(fakeMessage, func(e *Event) {
-				e.String("string", "four!")
-				e.Time("time", time.Time{})
-				e.Int("int", 123)
-				e.Float32("float", -2.203230293249593)
-			})
+			logger.Info(fakeMessage,
+				String("string", "four!"),
+				Time("time", time.Time{}),
+				Int("int", 123),
+				Float32("float", -2.203230293249593),
+			)
 		}
 	})
 }
@@ -96,9 +91,11 @@ type obj struct {
 }
 
 func (o obj) MarshalRzObject(e *Event) {
-	e.String("Pub", o.Pub).
-		String("Tag", o.Tag).
-		Int("priv", o.priv)
+	e.With(
+		String("Pub", o.Pub),
+		String("Tag", o.Tag),
+		Int("priv", o.priv),
+	)
 }
 
 // func BenchmarkLogArrayObject(b *testing.B) {

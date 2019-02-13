@@ -21,11 +21,9 @@ func main() {
 	}
 
 	log.Logger = log.Config(
-		rz.With(func(e *rz.Event) {
-			e.String("service", "api").
-				String("host", "abcd.local").
-				String("environment", env)
-		}),
+		rz.With(
+			rz.String("service", "api"), rz.String("host", "abcd.local"), rz.String("environment", env),
+		),
 	)
 
 	router := chi.NewRouter()
@@ -42,7 +40,7 @@ func main() {
 
 	err := http.ListenAndServe(":"+port, router)
 	if err != nil {
-		log.Fatal("listening", func(e *rz.Event) { e.Err(err) })
+		log.Fatal("listening", rz.Err(err))
 	}
 }
 
@@ -61,9 +59,7 @@ func injectLoggerMiddleware(logger rz.Logger) func(next http.Handler) http.Handl
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if rid, ok := r.Context().Value(rzhttp.RequestIDCtxKey).(string); ok {
-				logger = logger.Config(rz.With(func(e *rz.Event) {
-					e.String("request_id", rid)
-				}))
+				logger = logger.Config(rz.With(rz.String("request_id", rid)))
 				ctx := logger.ToCtx(r.Context())
 				r = r.WithContext(ctx)
 			}
@@ -75,6 +71,6 @@ func injectLoggerMiddleware(logger rz.Logger) func(next http.Handler) http.Handl
 
 func helloWorld(w http.ResponseWriter, r *http.Request) {
 	logger := rz.FromCtx(r.Context())
-	logger.Info("hello from GET /", nil)
+	logger.Info("hello from GET /")
 	fmt.Fprintf(w, "Hello, you've requested: %s\n", r.URL.Path)
 }

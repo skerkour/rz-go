@@ -12,24 +12,26 @@ var (
 		if level == NoLevel {
 			levelName = "nolevel"
 		}
-		e.String("level_name", levelName)
+		e.With(String("level_name", levelName))
 	})
 	simpleHook = HookFunc(func(e *Event, level LogLevel, msg string) {
-		e.Bool("has_level", level != NoLevel)
-		e.String("test", "logged")
+		e.With(
+			Bool("has_level", level != NoLevel),
+			String("test", "logged"),
+		)
 	})
 	copyHook = HookFunc(func(e *Event, level LogLevel, msg string) {
 		hasLevel := level != NoLevel
-		e.Bool("copy_has_level", hasLevel)
+		e.With(Bool("copy_has_level", hasLevel))
 		if hasLevel {
-			e.String("copy_level", level.String())
+			e.With(String("copy_level", level.String()))
 		}
-		e.String("copy_msg", msg)
+		e.With(String("copy_msg", msg))
 	})
 	nopHook = HookFunc(func(e *Event, level LogLevel, message string) {
 	})
 	discardHook = HookFunc(func(e *Event, level LogLevel, message string) {
-		e.Discard()
+		e.With(Discard())
 	})
 )
 
@@ -41,11 +43,11 @@ func TestHook(t *testing.T) {
 	}{
 		{"Message", `{"level_name":"nolevel","message":"test message"}` + "\n", func(log Logger) {
 			log = log.Config(Hooks(levelNameHook))
-			log.Log("test message", nil)
+			log.Log("test message")
 		}},
 		{"NoLevel", `{"level_name":"nolevel"}` + "\n", func(log Logger) {
 			log = log.Config(Hooks(levelNameHook))
-			log.Log("", nil)
+			log.Log("")
 		}},
 		// {"Print", `{"level":"debug","level_name":"debug"}` + "\n", func(log Logger) {
 		// 	log = log.Hook(levelNameHook)
@@ -128,7 +130,7 @@ func TestHook(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			out := &bytes.Buffer{}
-			log := New(Writer(out), Timestamp(false))
+			log := New(Writer(out), With(Timestamp(false)))
 			tt.test(log)
 			if got, want := decodeIfBinaryToString(out.Bytes()), tt.want; got != want {
 				t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
@@ -144,7 +146,7 @@ func BenchmarkHooks(b *testing.B) {
 		log := logger.Config(Hooks(nopHook))
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				log.Log("", nil)
+				log.Log("")
 			}
 		})
 	})
@@ -152,7 +154,7 @@ func BenchmarkHooks(b *testing.B) {
 		log := logger.Config(Hooks(nopHook, nopHook))
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				log.Log("", nil)
+				log.Log("")
 			}
 		})
 	})
@@ -160,7 +162,7 @@ func BenchmarkHooks(b *testing.B) {
 		log := logger.Config(Hooks(simpleHook))
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				log.Log("", nil)
+				log.Log("")
 			}
 		})
 	})

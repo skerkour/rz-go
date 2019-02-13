@@ -154,27 +154,19 @@ func Handler(logger rz.Logger, options ...HandlerOption) func(next http.Handler)
 				if r.TLS != nil {
 					scheme = "https"
 				}
-				handler.logger.Append(func(e *rz.Event) {
-					e.String(handler.schemeField, scheme)
-				})
+				handler.logger.With(rz.String(handler.schemeField, scheme))
 			}
 
 			if handler.methodField != "" {
-				handler.logger.Append(func(e *rz.Event) {
-					e.String(handler.methodField, r.Method)
-				})
+				handler.logger.With(rz.String(handler.methodField, r.Method))
 			}
 
 			if handler.urlField != "" {
-				handler.logger.Append(func(e *rz.Event) {
-					e.String(handler.urlField, r.RequestURI)
-				})
+				handler.logger.With(rz.String(handler.urlField, r.RequestURI))
 			}
 
 			if handler.hostField != "" {
-				handler.logger.Append(func(e *rz.Event) {
-					e.String(handler.hostField, r.Host)
-				})
+				handler.logger.With(rz.String(handler.hostField, r.Host))
 			}
 
 			if handler.remoteAddressField != "" {
@@ -183,30 +175,22 @@ func Handler(logger rz.Logger, options ...HandlerOption) func(next http.Handler)
 				if err == nil {
 					remote = host
 				}
-				handler.logger.Append(func(e *rz.Event) {
-					e.String(handler.remoteAddressField, remote)
-				})
+				handler.logger.With(rz.String(handler.remoteAddressField, remote))
 			}
 
 			if handler.userAgentField != "" {
-				handler.logger.Append(func(e *rz.Event) {
-					e.String(handler.userAgentField, r.Header.Get("user-agent"))
-				})
+				handler.logger.With(rz.String(handler.userAgentField, r.Header.Get("user-agent")))
 			}
 
 			next.ServeHTTP(resWrapper, r)
 
 			if handler.sizeField != "" {
-				handler.logger.Append(func(e *rz.Event) {
-					e.Int(handler.sizeField, resWrapper.written)
-				})
+				handler.logger.With(rz.Int(handler.sizeField, resWrapper.written))
 			}
 
 			status := resWrapper.status
 			if handler.statusField != "" {
-				handler.logger.Append(func(e *rz.Event) {
-					e.Int(handler.statusField, status)
-				})
+				handler.logger.With(rz.Int(handler.statusField, status))
 			}
 
 			if handler.durationField != "" {
@@ -214,9 +198,7 @@ func Handler(logger rz.Logger, options ...HandlerOption) func(next http.Handler)
 				if durationMs < 1 {
 					durationMs = 1
 				}
-				handler.logger.Append(func(e *rz.Event) {
-					e.Int64(handler.durationField, durationMs)
-				})
+				handler.logger.With(rz.Int64(handler.durationField, durationMs))
 			}
 
 			if handler.requestIDField != "" {
@@ -226,18 +208,16 @@ func Handler(logger rz.Logger, options ...HandlerOption) func(next http.Handler)
 					// fmt.Println("in requestID 2")
 					requestID = rid
 				}
-				handler.logger.Append(func(e *rz.Event) {
-					e.String(handler.requestIDField, requestID)
-				})
+				handler.logger.With(rz.String(handler.requestIDField, requestID))
 			}
 
 			switch {
 			case status < 400:
-				handler.logger.Info(handler.message, nil)
+				handler.logger.Info(handler.message)
 			case status < 500:
-				handler.logger.Warn(handler.message, nil)
+				handler.logger.Warn(handler.message)
 			default:
-				handler.logger.Error(handler.message, nil)
+				handler.logger.Error(handler.message)
 			}
 		})
 	}
