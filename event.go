@@ -129,8 +129,8 @@ func (e *Event) object(key string, obj LogObjectMarshaler) {
 	e.appendObject(obj)
 }
 
-// EmbedObject marshals an object that implement the LogObjectMarshaler interface.
-func (e *Event) EmbedObject(obj LogObjectMarshaler) {
+// embedObject marshals an object that implement the LogObjectMarshaler interface.
+func (e *Event) embedObject(obj LogObjectMarshaler) {
 	e.buf = append(e.buf, obj.MarshalRzObject(e.encoder)...)
 }
 
@@ -184,7 +184,7 @@ func (e *Event) error(key string, err error) {
 // Errors adds the field key with errs as an array of serialized errors to the
 // *Event context.
 func (e *Event) errors(key string, errs []error) {
-	arr := e.Arr()
+	arr := e.arr()
 	for _, err := range errs {
 		switch m := ErrorMarshalFunc(err).(type) {
 		case LogObjectMarshaler:

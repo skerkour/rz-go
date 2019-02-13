@@ -15,6 +15,15 @@ func Discard() Field {
 	}
 }
 
+// Array adds the field key with an array to the event context.
+// Use Event.Arr() to create the array or pass a type that
+// implement the LogArrayMarshaler interface.
+func Array(key string, arr LogArrayMarshaler) Field {
+	return func(e *Event) {
+		e.array(key, arr)
+	}
+}
+
 // Stack enables stack trace printing for the error passed to Err().
 //
 // logger.errorStackMarshaler must be set for this method to do something.
@@ -94,7 +103,7 @@ func Object(key string, value LogObjectMarshaler) Field {
 // EmbedObject marshals an object that implement the LogObjectMarshaler interface.
 func EmbedObject(obj LogObjectMarshaler) Field {
 	return func(e *Event) {
-		e.EmbedObject(obj)
+		e.embedObject(obj)
 	}
 }
 
