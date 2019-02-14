@@ -79,8 +79,8 @@ func (e *Event) Enabled() bool {
 	return e.level != Disabled
 }
 
-// With appends the given fields to the event
-func (e *Event) With(fields ...Field) {
+// Append the given fields to the event
+func (e *Event) Append(fields ...Field) {
 	for i := range fields {
 		fields[i](e)
 	}

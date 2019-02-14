@@ -1,6 +1,6 @@
 <p align="center">
   <h3 align="center">rz</h3>
-  <p align="center">ripzap - The fastest structured, leveled JSON logger for Go 📖. Dependency free.</p>
+  <p align="center">RipZap - The fastest structured, leveled JSON logger for Go ⚡️. Dependency free.</p>
 </p>
 
 --------

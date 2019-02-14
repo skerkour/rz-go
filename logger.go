@@ -128,7 +128,7 @@ func (l *Logger) Log(message string, fields ...Field) {
 func (l *Logger) NewDict(fields ...Field) *Event {
 	e := newEvent(nil, 0)
 	copyInternalLoggerFieldsToEvent(l, e)
-	e.With(fields...)
+	e.Append(fields...)
 	return e
 }
 
@@ -238,10 +238,10 @@ func (l *Logger) should(lvl LogLevel) bool {
 	return true
 }
 
-// With appends the fields to the internal logger's context.
+// Append the fields to the internal logger's context.
 // It does not create a noew copy of the logger and rely on a mutex to enable thread safety,
 // so `Config(With(fields...))` often is preferable.
-func (l *Logger) With(fields ...Field) {
+func (l *Logger) Append(fields ...Field) {
 	e := newEvent(l.writer, l.level)
 	e.buf = nil
 	copyInternalLoggerFieldsToEvent(l, e)

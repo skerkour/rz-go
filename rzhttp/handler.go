@@ -154,19 +154,19 @@ func Handler(logger rz.Logger, options ...HandlerOption) func(next http.Handler)
 				if r.TLS != nil {
 					scheme = "https"
 				}
-				handler.logger.With(rz.String(handler.schemeField, scheme))
+				handler.logger.Append(rz.String(handler.schemeField, scheme))
 			}
 
 			if handler.methodField != "" {
-				handler.logger.With(rz.String(handler.methodField, r.Method))
+				handler.logger.Append(rz.String(handler.methodField, r.Method))
 			}
 
 			if handler.urlField != "" {
-				handler.logger.With(rz.String(handler.urlField, r.RequestURI))
+				handler.logger.Append(rz.String(handler.urlField, r.RequestURI))
 			}
 
 			if handler.hostField != "" {
-				handler.logger.With(rz.String(handler.hostField, r.Host))
+				handler.logger.Append(rz.String(handler.hostField, r.Host))
 			}
 
 			if handler.remoteAddressField != "" {
@@ -175,22 +175,22 @@ func Handler(logger rz.Logger, options ...HandlerOption) func(next http.Handler)
 				if err == nil {
 					remote = host
 				}
-				handler.logger.With(rz.String(handler.remoteAddressField, remote))
+				handler.logger.Append(rz.String(handler.remoteAddressField, remote))
 			}
 
 			if handler.userAgentField != "" {
-				handler.logger.With(rz.String(handler.userAgentField, r.Header.Get("user-agent")))
+				handler.logger.Append(rz.String(handler.userAgentField, r.Header.Get("user-agent")))
 			}
 
 			next.ServeHTTP(resWrapper, r)
 
 			if handler.sizeField != "" {
-				handler.logger.With(rz.Int(handler.sizeField, resWrapper.written))
+				handler.logger.Append(rz.Int(handler.sizeField, resWrapper.written))
 			}
 
 			status := resWrapper.status
 			if handler.statusField != "" {
-				handler.logger.With(rz.Int(handler.statusField, status))
+				handler.logger.Append(rz.Int(handler.statusField, status))
 			}
 
 			if handler.durationField != "" {
@@ -198,7 +198,7 @@ func Handler(logger rz.Logger, options ...HandlerOption) func(next http.Handler)
 				if durationMs < 1 {
 					durationMs = 1
 				}
-				handler.logger.With(rz.Int64(handler.durationField, durationMs))
+				handler.logger.Append(rz.Int64(handler.durationField, durationMs))
 			}
 
 			if handler.requestIDField != "" {
@@ -208,7 +208,7 @@ func Handler(logger rz.Logger, options ...HandlerOption) func(next http.Handler)
 					// fmt.Println("in requestID 2")
 					requestID = rid
 				}
-				handler.logger.With(rz.String(handler.requestIDField, requestID))
+				handler.logger.Append(rz.String(handler.requestIDField, requestID))
 			}
 
 			switch {

@@ -54,7 +54,7 @@ func BenchmarkContextFields(b *testing.B) {
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			logger.Info(fakeMessage, nil)
+			logger.Info(fakeMessag)
 		}
 	})
 }
@@ -91,7 +91,7 @@ type obj struct {
 }
 
 func (o obj) MarshalRzObject(e *Event) {
-	e.With(
+	e.Append(
 		String("Pub", o.Pub),
 		String("Tag", o.Tag),
 		Int("priv", o.priv),

@@ -51,13 +51,14 @@ func Log(message string, fields ...rz.Field) {
 	Logger.Log(message, fields...)
 }
 
-// With appends the fields to the internal logger's context.
+// Append the fields to the internal logger's context.
 // It does not create a noew copy of the logger and rely on a mutex to enable thread safety,
 // so `Config(With(fields...))` often is preferable.
-func With(fields ...rz.Field) {
-	Logger.With(fields...)
+func Append(fields ...rz.Field) {
+	Logger.Append(fields...)
 }
 
+// NewDict create a new Dict with the logger's configuraiton
 func NewDict(fields ...rz.Field) *rz.Event {
 	return Logger.NewDict(fields...)
 }

@@ -526,7 +526,7 @@ type loggableError struct {
 }
 
 func (l loggableError) MarshalRzObject(e *Event) {
-	e.With(String("message", l.error.Error()+": loggableError"))
+	e.Append(String("message", l.error.Error()+": loggableError"))
 }
 
 func TestErrorMarshalFunc(t *testing.T) {
