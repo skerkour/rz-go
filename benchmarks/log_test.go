@@ -267,7 +267,8 @@ func Benchmark10Context(b *testing.B) {
 		})
 	})
 	b.Run("uber-go/zap", func(b *testing.B) {
-		logger := newZap().With(zap10Fields()...)
+		fields := zap10Fields()
+		logger := newZap().With(fields...)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
