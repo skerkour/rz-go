@@ -104,7 +104,7 @@ func (e *Event) dict(key string, dict *Event) {
 	putEvent(dict)
 }
 
-func NewDict() *Event {
+func newDict() *Event {
 	return newEvent(nil, 0)
 }
 

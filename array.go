@@ -61,7 +61,8 @@ func (a *array) write(dst []byte) []byte {
 // Object marshals an object that implement the LogObjectMarshaler
 // interface and append append it to the array.
 func (a *array) Object(obj LogObjectMarshaler) *array {
-	e := NewDict()
+	e := newDict()
+	e.timeFieldFormat = a.timeFieldFormat
 	obj.MarshalRzObject(e)
 	e.buf = enc.AppendEndMarker(e.buf)
 	a.buf = append(enc.AppendArrayDelim(a.buf), e.buf...)
