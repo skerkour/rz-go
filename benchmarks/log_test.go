@@ -33,7 +33,7 @@ func newRz() rz.Logger {
 	return rz.New(
 		rz.Writer(ioutil.Discard),
 		rz.Level(rz.DebugLevel),
-		rz.Timestamp(true),
+		rz.With(rz.Timestamp(true)),
 		rz.TimeFieldFormat(""),
 		rz.TimestampFunc(time.Now),
 	)
@@ -141,17 +141,19 @@ func zerolog10Context(c zerolog.Context) zerolog.Context {
 		Err(errExample)
 }
 
-func rz10Fields(e *rz.Event) {
-	e.Int("int", _tenInts[0]).
-		Ints("ints", _tenInts).
-		String("string", _tenStrings[0]).
-		Strings("strings", _tenStrings).
-		Time("time", _tenTimes[0]).
-		Times("times", _tenTimes).
-		Interface("user1", _oneUser).
-		Interface("user2", _oneUser).
-		Interface("users", _tenUsers).
-		Err(errExample)
+func rz10Fields() []rz.Field {
+	return []rz.Field{
+		rz.Int("int", _tenInts[0]),
+		rz.Ints("ints", _tenInts),
+		rz.String("string", _tenStrings[0]),
+		rz.Strings("strings", _tenStrings),
+		rz.Time("time", _tenTimes[0]),
+		rz.Times("times", _tenTimes),
+		rz.Interface("user1", _oneUser),
+		rz.Interface("user2", _oneUser),
+		rz.Interface("users", _tenUsers),
+		rz.Err(errExample),
+	}
 }
 
 func zap10Fields() []zap.Field {
@@ -205,7 +207,7 @@ func BenchmarkDisabledWithoutFields(b *testing.B) {
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				logger.Info(_testMessage, nil)
+				logger.Info(_testMessage)
 			}
 		})
 	})
@@ -245,7 +247,7 @@ func BenchmarkWithoutFields(b *testing.B) {
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				logger.Info(_testMessage, nil)
+				logger.Info(_testMessage)
 			}
 		})
 	})
@@ -283,11 +285,12 @@ func Benchmark10Context(b *testing.B) {
 		})
 	})
 	b.Run("bloom42/rz-go", func(b *testing.B) {
-		logger := newRz().Config(rz.With(rz10Fields))
+		fields := rz10Fields()
+		logger := newRz().Config(rz.With(fields...))
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				logger.Info(_testMessage, nil)
+				logger.Info(_testMessage)
 			}
 		})
 	})
@@ -307,10 +310,11 @@ func Benchmark10Fields(b *testing.B) {
 	})
 	b.Run("uber-go/zap", func(b *testing.B) {
 		logger := newZap()
+		fields := zap10Fields()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				logger.Info(_testMessage, zap10Fields()...)
+				logger.Info(_testMessage, fields...)
 			}
 		})
 	})
@@ -324,11 +328,12 @@ func Benchmark10Fields(b *testing.B) {
 		})
 	})
 	b.Run("bloom42/rz-go", func(b *testing.B) {
+		fields := rz10Fields()
 		logger := newRz()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				logger.Info(_testMessage, rz10Fields)
+				logger.Info(_testMessage, fields...)
 			}
 		})
 	})
@@ -348,11 +353,12 @@ func Benchmark10Fields10Context(b *testing.B) {
 		})
 	})
 	b.Run("uber-go/zap", func(b *testing.B) {
-		logger := newZap().With(zap10Fields()...)
+		fields := zap10Fields()
+		logger := newZap().With(fields...)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				logger.Info(_testMessage, zap10Fields()...)
+				logger.Info(_testMessage, fields...)
 			}
 		})
 	})
@@ -366,11 +372,12 @@ func Benchmark10Fields10Context(b *testing.B) {
 		})
 	})
 	b.Run("bloom42/rz-go", func(b *testing.B) {
-		logger := newRz().Config(rz.With(rz10Fields))
+		fields := rz10Fields()
+		logger := newRz().Config(rz.With(fields...))
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				logger.Info(_testMessage, rz10Fields)
+				logger.Info(_testMessage, fields...)
 			}
 		})
 	})
