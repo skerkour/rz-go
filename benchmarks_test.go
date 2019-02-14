@@ -54,7 +54,7 @@ func BenchmarkContextFields(b *testing.B) {
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			logger.Info(fakeMessag)
+			logger.Info(fakeMessage)
 		}
 	})
 }
