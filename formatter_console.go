@@ -52,11 +52,13 @@ func FormatterConsole() LogFormatter {
 			timestamp = t
 		}
 
-		ret.WriteString(fmt.Sprintf("%-20s |%-4s| %s",
+		ret.WriteString(fmt.Sprintf("%-20s |%-4s|",
 			timestamp,
 			colorize(level, lvlColor),
-			message,
 		))
+		if message != "" {
+			ret.WriteString(" " + message)
+		}
 
 		fields := make([]string, 0, len(event))
 		for field := range event {
