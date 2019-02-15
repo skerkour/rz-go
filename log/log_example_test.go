@@ -17,9 +17,9 @@ func setup() {
 	// In order to always output a static time to stdout for these
 	// examples to pass, we need to override rz.TimestampFunc
 	// and log.Logger globals -- you would not normally need to do this
-	log.Logger = rz.New(rz.TimeFieldFormat(""), rz.TimestampFunc(func() time.Time {
+	log.SetLogger(rz.New(rz.TimeFieldFormat(""), rz.TimestampFunc(func() time.Time {
 		return time.Date(2008, 1, 8, 17, 5, 05, 0, time.UTC)
-	}))
+	})))
 }
 
 // Example of a log with no particular "level"
@@ -86,11 +86,11 @@ func Example() {
 	// Default level for this example is info, unless debug flag is present
 
 	if *debug {
-		logger := log.Logger
+		logger := log.Logger()
 		defer func() {
-			log.Logger = logger
+			log.SetLogger(logger)
 		}()
-		log.Logger = log.Config(rz.Level(rz.DebugLevel))
+		log.SetLogger(log.With(rz.Level(rz.DebugLevel)))
 	}
 
 	log.Info("This message appears when log level set to Debug or Info")

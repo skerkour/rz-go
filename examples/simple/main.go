@@ -13,17 +13,22 @@ func main() {
 	hostname, _ := os.Hostname()
 
 	// update global logger's context fields
-	log.Logger = log.Config(rz.With(rz.String("hostname", hostname), rz.String("environment", env)))
+	log.SetLogger(log.With(rz.Fields(rz.String("hostname", hostname), rz.String("environment", env))))
 
-	subLogger := log.Config(rz.Formatter(rz.FormatterConsole()))
+	log.Info("hello from logger", rz.String("hello", "world"), rz.Caller(true))
 
 	if env == "production" {
-		log.Logger = log.Config(rz.Level(rz.InfoLevel))
+		log.SetLogger(log.With(rz.Level(rz.InfoLevel)))
 	}
 
-	log.Info("info from logger", rz.String("hello", "world"))
+	subLogger := log.With(rz.Level(rz.DebugLevel), rz.Formatter(rz.FormatterConsole()))
+	SubsubLogger := rz.New(rz.Formatter(rz.FormatterConsole()))
+
+	log.Info("info from logger", rz.String("hello", "world"), rz.Caller(true))
 	// {"level":"info","hostname":"","environment":"","hello":"world","timestamp":"2019-02-07T09:30:07Z","message":"info from logger"}
 
-	subLogger.Debug("hello world")
-	subLogger.Debug("")
+	log.Error("info from logger", rz.String("hello", "world"), rz.Caller(true))
+
+	subLogger.Debug("hello world", rz.Caller(true))
+	SubsubLogger.Debug("", rz.Caller(true))
 }

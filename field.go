@@ -40,8 +40,8 @@ func Caller(enable bool) Field {
 	}
 }
 
-// Fields is a helper function to use a map to set fields using type assertion.
-func Fields(fields map[string]interface{}) Field {
+// Map is a helper function to use a map to set fields using type assertion.
+func Map(fields map[string]interface{}) Field {
 	return func(e *Event) {
 		e.fields(fields)
 	}
@@ -139,8 +139,8 @@ func Bools(key string, value []bool) Field {
 	}
 }
 
-// Interface adds the field key with i marshaled using reflection.
-func Interface(key string, value interface{}) Field {
+// Any adds the field key with i marshaled using reflection.
+func Any(key string, value interface{}) Field {
 	return func(e *Event) {
 		e.iinterface(key, value)
 	}

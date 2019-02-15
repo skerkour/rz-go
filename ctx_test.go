@@ -15,7 +15,7 @@ func TestFromCtx(t *testing.T) {
 	}
 
 	// update
-	log = log.Config(Level(InfoLevel))
+	log = log.With(Level(InfoLevel))
 	ctx = log.ToCtx(ctx)
 	log2 = FromCtx(ctx)
 	if &log != log2 {
@@ -37,14 +37,14 @@ func TestFromCtxDisabled(t *testing.T) {
 
 	l := New(
 		Writer(ioutil.Discard),
-		With(String("foo", "bar")),
+		Fields(String("foo", "bar")),
 	)
 	ctx = l.ToCtx(ctx)
 	if FromCtx(ctx) != &l {
 		t.Error("WithContext did not store logger")
 	}
 
-	l = l.Config(Level(DebugLevel))
+	l = l.With(Level(DebugLevel))
 	ctx = l.ToCtx(ctx)
 	if FromCtx(ctx) != &l {
 		t.Error("ToCtx did not store copied logger")

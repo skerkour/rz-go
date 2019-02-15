@@ -13,7 +13,7 @@ func TestLogStack(t *testing.T) {
 	rz.ErrorStackMarshaler = MarshalStack
 
 	out := &bytes.Buffer{}
-	log := rz.New(rz.Writer(out), rz.With(rz.Timestamp(false)))
+	log := rz.New(rz.Writer(out), rz.Fields(rz.Timestamp(false)))
 
 	err := errors.Wrap(errors.New("error message"), "from error")
 	log.Log("", rz.Stack(true), rz.Err(err))
@@ -31,7 +31,7 @@ func TestContextStack(t *testing.T) {
 	out := &bytes.Buffer{}
 	log := rz.New(
 		rz.Writer(out),
-		rz.With(rz.Stack(true), rz.Timestamp(false)),
+		rz.Fields(rz.Stack(true), rz.Timestamp(false)),
 	)
 
 	err := errors.Wrap(errors.New("error message"), "from error")

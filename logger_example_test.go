@@ -5,14 +5,14 @@ import (
 )
 
 func ExampleNew() {
-	log := rz.New(rz.With(rz.Timestamp(false)))
+	log := rz.New(rz.Fields(rz.Timestamp(false)))
 
 	log.Info("hello world")
 	// Output: {"level":"info","message":"hello world"}
 }
 
-func ExampleWith() {
-	log := rz.New(rz.With(rz.Timestamp(false), rz.String("foo", "bar")))
+func ExampleFields() {
+	log := rz.New(rz.Fields(rz.Timestamp(false), rz.String("foo", "bar")))
 
 	log.Info("hello world")
 

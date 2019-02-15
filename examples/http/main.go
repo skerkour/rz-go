@@ -20,21 +20,22 @@ func main() {
 		port = "9090"
 	}
 
-	log.Logger = log.Config(
-		rz.With(
+	log.SetLogger(log.With(
+		rz.Fields(
+			rz.Caller(true),
 			rz.String("service", "api"), rz.String("host", "abcd.local"), rz.String("environment", env),
 		),
-	)
+	))
 
 	router := chi.NewRouter()
 
 	// replace size field name by latency and disable userAgent logging
-	loggingMiddleware := rzhttp.Handler(log.Logger, rzhttp.Duration("latency"), rzhttp.UserAgent(""))
+	loggingMiddleware := rzhttp.Handler(log.Logger(), rzhttp.Duration("latency"), rzhttp.UserAgent(""))
 
 	// here the order matters, otherwise loggingMiddleware won't see the request ID
 	router.Use(requestIDMiddleware)
 	router.Use(loggingMiddleware)
-	router.Use(injectLoggerMiddleware(log.Logger))
+	router.Use(injectLoggerMiddleware(log.Logger()))
 
 	router.Get("/", helloWorld)
 
@@ -59,7 +60,7 @@ func injectLoggerMiddleware(logger rz.Logger) func(next http.Handler) http.Handl
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if rid, ok := r.Context().Value(rzhttp.RequestIDCtxKey).(string); ok {
-				logger = logger.Config(rz.With(rz.String("request_id", rid)))
+				logger = logger.With(rz.Fields(rz.String("request_id", rid)))
 				ctx := logger.ToCtx(r.Context())
 				r = r.WithContext(ctx)
 			}

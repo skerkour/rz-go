@@ -45,7 +45,7 @@ func BenchmarkInfo(b *testing.B) {
 func BenchmarkContextFields(b *testing.B) {
 	logger := New(
 		Writer(ioutil.Discard),
-		With(String("string", "four!"),
+		Fields(String("string", "four!"),
 			Time("time", time.Time{}),
 			Int("int", 123),
 			Float32("float", -2.203230293249593),
@@ -60,11 +60,11 @@ func BenchmarkContextFields(b *testing.B) {
 }
 
 func BenchmarkContextAppend(b *testing.B) {
-	logger := New(Writer(ioutil.Discard), With(String("foo", "bar")))
+	logger := New(Writer(ioutil.Discard), Fields(String("foo", "bar")))
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			logger.Config(With(String("bar", "baz")))
+			logger.With(Fields(String("bar", "baz")))
 		}
 	})
 }
@@ -353,7 +353,7 @@ func (o obj) MarshalRzObject(e *Event) {
 // 		b.Run(name, func(b *testing.B) {
 // 			b.RunParallel(func(pb *testing.PB) {
 // 				for pb.Next() {
-// 					l := f(logger.With()).Logger()
+// 					l := f(logger.Fields()).Logger()
 // 					l.Info().Msg("")
 // 				}
 // 			})

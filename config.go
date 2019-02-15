@@ -52,8 +52,8 @@ func Hooks(hooks ...LogHook) LoggerOption {
 	}
 }
 
-// With replaces logger's context fields
-func With(fields ...Field) LoggerOption {
+// Fields replaces logger's context fields
+func Fields(fields ...Field) LoggerOption {
 	return func(logger *Logger) {
 		e := newEvent(logger.writer, logger.level)
 		e.buf = nil

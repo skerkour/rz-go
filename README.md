@@ -56,12 +56,12 @@ func main() {
 	hostname, _ := os.Hostname()
 
 	// update global logger's context fields
-	log.Logger = log.Config(rz.With(
+	log.SetLogger(log.With(rz.Fields(
 		rz.String("hostname", hostname), rz.String("environment", env),
-	))
+	)))
 
 	if env == "production" {
-		log.Logger = log.Config(rz.Level(rz.InfoLevel))
+		log.SetLogger(log.With(rz.Level(rz.InfoLevel)))
 	}
 
 	log.Info("info from logger", rz.String("hello", "world"))

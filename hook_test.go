@@ -42,11 +42,11 @@ func TestHook(t *testing.T) {
 		test func(log Logger)
 	}{
 		{"Message", `{"level_name":"nolevel","message":"test message"}` + "\n", func(log Logger) {
-			log = log.Config(Hooks(levelNameHook))
+			log = log.With(Hooks(levelNameHook))
 			log.Log("test message")
 		}},
 		{"NoLevel", `{"level_name":"nolevel"}` + "\n", func(log Logger) {
-			log = log.Config(Hooks(levelNameHook))
+			log = log.With(Hooks(levelNameHook))
 			log.Log("")
 		}},
 		// {"Print", `{"level":"debug","level_name":"debug"}` + "\n", func(log Logger) {
@@ -130,7 +130,7 @@ func TestHook(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			out := &bytes.Buffer{}
-			log := New(Writer(out), With(Timestamp(false)))
+			log := New(Writer(out), Fields(Timestamp(false)))
 			tt.test(log)
 			if got, want := decodeIfBinaryToString(out.Bytes()), tt.want; got != want {
 				t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
@@ -143,7 +143,7 @@ func BenchmarkHooks(b *testing.B) {
 	logger := New(Writer(ioutil.Discard))
 	b.ResetTimer()
 	b.Run("Nop/Single", func(b *testing.B) {
-		log := logger.Config(Hooks(nopHook))
+		log := logger.With(Hooks(nopHook))
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				log.Log("")
@@ -151,7 +151,7 @@ func BenchmarkHooks(b *testing.B) {
 		})
 	})
 	b.Run("Nop/Multi", func(b *testing.B) {
-		log := logger.Config(Hooks(nopHook, nopHook))
+		log := logger.With(Hooks(nopHook, nopHook))
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				log.Log("")
@@ -159,7 +159,7 @@ func BenchmarkHooks(b *testing.B) {
 		})
 	})
 	b.Run("Simple", func(b *testing.B) {
-		log := logger.Config(Hooks(simpleHook))
+		log := logger.With(Hooks(simpleHook))
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
 				log.Log("")

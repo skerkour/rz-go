@@ -63,7 +63,7 @@ func New(options ...LoggerOption) Logger {
 		contextMutext:        &sync.Mutex{},
 		encoder:              json.Encoder{},
 	}
-	return logger.Config(options...)
+	return logger.With(options...)
 }
 
 // Nop returns a disabled logger for which all operation are no-op.
@@ -71,12 +71,13 @@ func Nop() Logger {
 	return New(Writer(nil), Level(Disabled))
 }
 
-// Config apply all the options to the logger
-func (l Logger) Config(options ...LoggerOption) Logger {
-	context := l.context
+// With create a new copy of the logger and apply all the options to the new logger
+func (l Logger) With(options ...LoggerOption) Logger {
+	oldContext := l.context
 	l.context = make([]byte, 0, 500)
-	if context != nil {
-		l.context = append(l.context, context...)
+	l.contextMutext = &sync.Mutex{}
+	if oldContext != nil {
+		l.context = append(l.context, oldContext...)
 	}
 	for _, option := range options {
 		option(&l)
@@ -240,7 +241,7 @@ func (l *Logger) should(lvl LogLevel) bool {
 
 // Append the fields to the internal logger's context.
 // It does not create a noew copy of the logger and rely on a mutex to enable thread safety,
-// so `Config(With(fields...))` often is preferable.
+// so `With(Fields(fields...))` often is preferable.
 func (l *Logger) Append(fields ...Field) {
 	e := newEvent(l.writer, l.level)
 	e.buf = nil
@@ -248,6 +249,7 @@ func (l *Logger) Append(fields ...Field) {
 	for i := range fields {
 		fields[i](e)
 	}
+	l.contextMutext.Lock()
 	if e.stack != l.stack {
 		l.stack = e.stack
 	}
@@ -258,10 +260,9 @@ func (l *Logger) Append(fields ...Field) {
 		l.timestamp = e.timestamp
 	}
 	if e.buf != nil {
-		l.contextMutext.Lock()
 		l.context = enc.AppendObjectData(l.context, e.buf)
-		l.contextMutext.Unlock()
 	}
+	l.contextMutext.Unlock()
 }
 
 func copyInternalLoggerFieldsToEvent(l *Logger, e *Event) {
