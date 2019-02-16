@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bloom42/rz-go/internal/json"
+	"github.com/bloom42/rz-go/v2/internal/json"
 )
 
 // A Logger represents an active logging object that generates lines
