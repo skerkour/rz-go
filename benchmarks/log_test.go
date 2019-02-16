@@ -33,14 +33,14 @@ func newRz() rz.Logger {
 	return rz.New(
 		rz.Writer(ioutil.Discard),
 		rz.Level(rz.DebugLevel),
-		rz.With(rz.Timestamp(true)),
+		rz.Fields(rz.Timestamp(true)),
 		rz.TimeFieldFormat(""),
 		rz.TimestampFunc(time.Now),
 	)
 }
 
 func newDisabledRz() rz.Logger {
-	return newRz().Config(rz.Level(rz.Disabled))
+	return newRz().With(rz.Level(rz.Disabled))
 }
 
 func newZerolog() zerolog.Logger {
@@ -149,9 +149,9 @@ func rz10Fields() []rz.Field {
 		rz.Strings("strings", _tenStrings),
 		rz.Time("time", _tenTimes[0]),
 		rz.Times("times", _tenTimes),
-		rz.Interface("user1", _oneUser),
-		rz.Interface("user2", _oneUser),
-		rz.Interface("users", _tenUsers),
+		rz.Any("user1", _oneUser),
+		rz.Any("user2", _oneUser),
+		rz.Any("users", _tenUsers),
 		rz.Err(errExample),
 	}
 }
@@ -287,7 +287,7 @@ func Benchmark10Context(b *testing.B) {
 	})
 	b.Run("bloom42/rz-go", func(b *testing.B) {
 		fields := rz10Fields()
-		logger := newRz().Config(rz.With(fields...))
+		logger := newRz().With(rz.Fields(fields...))
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -374,7 +374,7 @@ func Benchmark10Fields10Context(b *testing.B) {
 	})
 	b.Run("bloom42/rz-go", func(b *testing.B) {
 		fields := rz10Fields()
-		logger := newRz().Config(rz.With(fields...))
+		logger := newRz().With(rz.Fields(fields...))
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
