@@ -33,8 +33,9 @@ Pretty logging on the console is made possible using the provided (but inefficie
 3. [HTTP Handler](#http-handler)
 4. [Examples](#examples)
 5. [Benchmarks](#benchmarks)
-6. [Contributing](#contributing)
-7. [License](#license)
+6. [Version](#version)
+7. [Contributing](#contributing)
+8. [License](#license)
 
 -------------------
 
@@ -196,6 +197,12 @@ Benchmark10Fields10Context/bloom42/rz-go-4                        500000        
 PASS
 ok      github.com/bloom42/rz-go/benchmarks     30.044s
 ```
+
+## Versions
+
+For v2 (current) see the [master branch](https://github.com/bloom42/rz-go).
+
+For v1 see the [v1 branch](https://github.com/bloom42/rz-go/tree/v1).
 
 
 ## Contributing
