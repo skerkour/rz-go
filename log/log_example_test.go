@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/bloom42/rz-go"
-	"github.com/bloom42/rz-go/log"
+	"github.com/bloom42/rz-go/v2"
+	"github.com/bloom42/rz-go/v2/log"
 )
 
 // setup would normally be an init() function, however, there seems

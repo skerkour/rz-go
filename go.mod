@@ -1,1 +1,1 @@
-module github.com/bloom42/rz-go
+module github.com/bloom42/rz-go/v2

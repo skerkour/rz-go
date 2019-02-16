@@ -2,13 +2,13 @@
 //
 // A global Logger can be use for simple logging:
 //
-//     import "github.com/bloom42/rz-go/log"
+//     import "github.com/bloom42/rz-go/v2/log"
 //
 //     log.Info("hello world")
 //
 //     // Output: {"timestamp":"2019-02-07T09:30:07Z","level":"info","message":"hello world"}
 //
-// NOTE: To import the global logger, import the "log" subpackage "github.com/bloom42/rz-go/log".
+// NOTE: To import the global logger, import the "log" subpackage "github.com/bloom42/rz-go/v2/log".
 //
 // Fields can be added to log messages:
 //

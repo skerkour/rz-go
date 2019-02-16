@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/bloom42/rz-go"
+	"github.com/bloom42/rz-go/v2"
 	"github.com/pkg/errors"
 )
 
