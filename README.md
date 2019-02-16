@@ -30,12 +30,12 @@ Pretty logging on the console is made possible using the provided (but inefficie
 1. [Quickstart](#quickstart)
 2. [Configuration](#configuration)
 3. [Field types](#field-types)
-3. [HTTP Handler](#http-handler)
-4. [Examples](#examples)
-5. [Benchmarks](#benchmarks)
-6. [Version](#version)
-7. [Contributing](#contributing)
-8. [License](#license)
+4. [HTTP Handler](#http-handler)
+5. [Examples](#examples)
+6. [Benchmarks](#benchmarks)
+7. [Versions](#versions)
+8. [Contributing](#contributing)
+9. [License](#license)
 
 -------------------
 
