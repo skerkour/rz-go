@@ -3,7 +3,6 @@ package rz
 import (
 	"io"
 	"os"
-	"sync"
 	"time"
 )
 
@@ -52,7 +51,7 @@ func Hooks(hooks ...LogHook) LoggerOption {
 	}
 }
 
-// Fields replaces logger's context fields
+// Fields update logger's context fields
 func Fields(fields ...Field) LoggerOption {
 	return func(logger *Logger) {
 		e := newEvent(logger.writer, logger.level)
@@ -71,11 +70,8 @@ func Fields(fields ...Field) LoggerOption {
 			logger.timestamp = e.timestamp
 		}
 		if e.buf != nil {
-			logger.context = enc.AppendObjectData(make([]byte, 0, 500), e.buf)
-		} else {
-			logger.context = make([]byte, 0, 500)
+			logger.context = enc.AppendObjectData(logger.context, e.buf)
 		}
-		logger.contextMutext = &sync.Mutex{}
 	}
 }
 
