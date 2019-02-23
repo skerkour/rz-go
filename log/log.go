@@ -69,7 +69,7 @@ func Append(fields ...rz.Field) {
 	logger.Append(fields...)
 }
 
-// NewDict create a new Dict with the logger's configuraiton
+// NewDict create a new Dict with the logger's configuration
 func NewDict(fields ...rz.Field) *rz.Event {
 	return logger.NewDict(fields...)
 }
