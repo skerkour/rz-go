@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// Encoder is used to serialize an object to be logged
 type Encoder interface {
 	AppendArrayDelim(dst []byte) []byte
 	AppendArrayEnd(dst []byte) []byte

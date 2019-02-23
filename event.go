@@ -51,7 +51,7 @@ func putEvent(e *Event) {
 	eventPool.Put(e)
 }
 
-// Marshaler provides a strongly-typed and encoding-agnostic interface
+// LogObjectMarshaler provides a strongly-typed and encoding-agnostic interface
 // to be implemented by types used with Event/Context's Object methods.
 type LogObjectMarshaler interface {
 	MarshalRzObject(*Event)
