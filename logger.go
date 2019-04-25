@@ -85,6 +85,11 @@ func (l Logger) With(options ...LoggerOption) Logger {
 	return l
 }
 
+// GetLevel returns the current log level.
+func (l *Logger) GetLevel() LogLevel {
+	return l.level
+}
+
 // Debug logs a new message with debug level.
 func (l *Logger) Debug(message string, fields ...Field) {
 	l.logEvent(DebugLevel, message, nil, fields)
