@@ -1,6 +1,9 @@
 package rz
 
 import (
+	"bytes"
+	"encoding/json"
+	"io"
 	"net"
 	"sync"
 	"time"
@@ -84,6 +87,22 @@ func (e *Event) Append(fields ...Field) {
 	for i := range fields {
 		fields[i](e)
 	}
+}
+
+// Fields returns the fields from the event.
+// Note that this call is very expensive and should be used sparingly.
+func (e *Event) Fields() (map[string]interface{}, error) {
+	var fields map[string]interface{}
+
+	r := io.MultiReader(bytes.NewReader(e.buf), bytes.NewReader([]byte{'}', '\n'}))
+
+	d := json.NewDecoder(r)
+	err := d.Decode(&fields)
+	if err != nil {
+		return nil, err
+	}
+
+	return fields, nil
 }
 
 // Discard disables the event
