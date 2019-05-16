@@ -41,6 +41,9 @@ Pretty logging on the console is made possible using the provided (but inefficie
 
 ## Quickstart
 
+`rz` requires [Go modules](https://blog.golang.org/using-go-modules) so you need a `go.mod` file at the
+root of your project.
+
 ```go
 package main
 
