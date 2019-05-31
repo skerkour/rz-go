@@ -210,11 +210,11 @@ For v1 see the [v1 branch](https://github.com/bloom42/rz-go/tree/v1).
 
 ## Contributing
 
-See [https://opensource.bloom.sh/contributing](https://opensource.bloom.sh/contributing)
+See [https://bloom.sh/contribute](https://bloom.sh/contribute)
 
 
 ## License
 
-See `LICENSE.txt` and [https://opensource.bloom.sh/licensing](https://opensource.bloom.sh/licensing)
+See `LICENSE.txt` and [https://bloom.sh/licensing](https://bloom.sh/licensing)
 
 From an original work by [rs](https://github.com/rs): [zerolog](https://github.com/rs/zerolog) - commit aa55558e4cb2e8f05cd079342d430f77e946d00a
