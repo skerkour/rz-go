@@ -599,3 +599,12 @@ func TestErrorHandler(t *testing.T) {
 		t.Errorf("ErrorHandler err = %#v, want %#v", got, want)
 	}
 }
+
+func TestWrite(t *testing.T) {
+	out := &bytes.Buffer{}
+	log := New(Writer(out), Fields(Timestamp(false)))
+	log.Write([]byte("test"))
+	if got, want := decodeIfBinaryToString(out.Bytes()), "{\"message\":\"test\"}\n"; got != want {
+		t.Errorf("invalid log output:\ngot:  %v\nwant: %v", got, want)
+	}
+}

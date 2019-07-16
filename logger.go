@@ -151,7 +151,7 @@ func (l Logger) Write(p []byte) (n int, err error) {
 		// Trim CR added by stdlog.
 		p = p[0 : n-1]
 	}
-	l.Log(string(p), nil)
+	l.Log(string(p))
 	return
 }
 
