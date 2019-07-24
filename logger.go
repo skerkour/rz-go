@@ -90,6 +90,11 @@ func (l *Logger) GetLevel() LogLevel {
 	return l.level
 }
 
+// LogWithLevel logs a new message with the given level.
+func (l *Logger) LogWithLevel(level LogLevel, message string, fields ...Field) {
+	l.logEvent(level, message, nil, fields)
+}
+
 // Debug logs a new message with debug level.
 func (l *Logger) Debug(message string, fields ...Field) {
 	l.logEvent(DebugLevel, message, nil, fields)

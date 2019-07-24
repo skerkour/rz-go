@@ -479,6 +479,7 @@ func TestLevelWriter(t *testing.T) {
 	log.Warn("3")
 	log.Error("4")
 	log.Log("nolevel-1")
+	log.LogWithLevel(DebugLevel, "5")
 
 	want := []struct {
 		l LogLevel
@@ -489,6 +490,7 @@ func TestLevelWriter(t *testing.T) {
 		{WarnLevel, `{"level":"warning","message":"3"}` + "\n"},
 		{ErrorLevel, `{"level":"error","message":"4"}` + "\n"},
 		{NoLevel, `{"message":"nolevel-1"}` + "\n"},
+		{DebugLevel, `{"level":"debug","message":"5"}` + "\n"},
 	}
 	if got := lw.ops; !reflect.DeepEqual(got, want) {
 		t.Errorf("invalid ops:\ngot:\n%v\nwant:\n%v", got, want)
