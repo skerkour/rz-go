@@ -1,7 +1,7 @@
-module github.com/bloom42/rz-go/benchmarks
+module github.com/z0mbie42/rz-go/benchmarks
 
 require (
-	github.com/bloom42/rz-go/v2 v2.4.2
+	github.com/z0mbie42/rz-go/v2 v2.4.2
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/rs/zerolog v1.11.0
 	github.com/sirupsen/logrus v1.3.0

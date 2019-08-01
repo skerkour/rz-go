@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/bloom42/rz-go/v2"
-	"github.com/bloom42/rz-go/v2/log"
-	"github.com/bloom42/rz-go/v2/rzhttp"
+	"github.com/z0mbie42/rz-go/v2"
+	"github.com/z0mbie42/rz-go/v2/log"
+	"github.com/z0mbie42/rz-go/v2/rzhttp"
 	"github.com/go-chi/chi"
 	"github.com/google/uuid"
 )

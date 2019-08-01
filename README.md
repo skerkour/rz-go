@@ -7,9 +7,9 @@
 
 [Make logging great again](https://kerkour.com/post/logging/)
 
-[![GoDoc](https://godoc.org/github.com/bloom42/rz-go?status.svg)](https://godoc.org/github.com/bloom42/rz-go)
-[![GitHub release](https://img.shields.io/github/release/bloom42/rz-go.svg)](https://github.com/bloom42/rz-go/releases)
-<!-- [![Coverage](http://gocover.io/_badge/github.com/bloom42/rz-go)](http://gocover.io/github.com/bloom42/rz-go) -->
+[![GoDoc](https://godoc.org/github.com/z0mbie42/rz-go?status.svg)](https://godoc.org/github.com/z0mbie42/rz-go)
+[![GitHub release](https://img.shields.io/github/release/z0mbie42/rz-go.svg)](https://github.com/z0mbie42/rz-go/releases)
+<!-- [![Coverage](http://gocover.io/_badge/github.com/z0mbie42/rz-go)](http://gocover.io/github.com/z0mbie42/rz-go) -->
 
 ![Console logging](docs/example_screenshot.png)
 
@@ -23,7 +23,7 @@ API and even better [performance](#benchmarks).
 
 To keep the code base and the API simple, ripzap focuses on efficient structured logging only.
 Pretty logging on the console is made possible using the provided (but inefficient)
-[`Formatter`s](https://godoc.org/github.com/bloom42/rz-go#LogFormatter).
+[`Formatter`s](https://godoc.org/github.com/z0mbie42/rz-go#LogFormatter).
 
 
 1. [Quickstart](#quickstart)
@@ -49,8 +49,8 @@ package main
 import (
 	"os"
 
-	"github.com/bloom42/rz-go/v2"
-	"github.com/bloom42/rz-go/v2/log"
+	"github.com/z0mbie42/rz-go/v2"
+	"github.com/z0mbie42/rz-go/v2/log"
 )
 
 func main() {
@@ -159,13 +159,13 @@ var (
 
 ## HTTP Handler
 
-See the [bloom42/rz-go/rzhttp](https://godoc.org/github.com/bloom42/rz-go/rzhttp) package or the
-[example here](https://github.com/bloom42/rz-go/tree/master/examples/http).
+See the [z0mbie42/rz-go/rzhttp](https://godoc.org/github.com/z0mbie42/rz-go/rzhttp) package or the
+[example here](https://github.com/z0mbie42/rz-go/tree/master/examples/http).
 
 
 ## Examples
 
-See the [examples](https://github.com/bloom42/rz-go/tree/master/examples) folder.
+See the [examples](https://github.com/z0mbie42/rz-go/tree/master/examples) folder.
 
 
 ## Benchmarks
@@ -182,9 +182,9 @@ Note that data may be biased, see http://hackemist.com/logbench/ for more detail
 
 ## Versions
 
-For v2 (current) see the [master branch](https://github.com/bloom42/rz-go).
+For v2 (current) see the [master branch](https://github.com/z0mbie42/rz-go).
 
-For v1 see the [v1 branch](https://github.com/bloom42/rz-go/tree/v1).
+For v1 see the [v1 branch](https://github.com/z0mbie42/rz-go/tree/v1).
 
 
 ## Contributing
