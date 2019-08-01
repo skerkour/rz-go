@@ -8,7 +8,6 @@
 [Make logging great again](https://kerkour.com/post/logging/)
 
 [![GoDoc](https://godoc.org/github.com/bloom42/rz-go?status.svg)](https://godoc.org/github.com/bloom42/rz-go)
-[![Build Status](https://travis-ci.org/bloom42/rz-go.svg?branch=master)](https://travis-ci.org/bloom42/rz-go)
 [![GitHub release](https://img.shields.io/github/release/bloom42/rz-go.svg)](https://github.com/bloom42/rz-go/releases)
 <!-- [![Coverage](http://gocover.io/_badge/github.com/bloom42/rz-go)](http://gocover.io/github.com/bloom42/rz-go) -->
 
@@ -171,34 +170,12 @@ See the [examples](https://github.com/bloom42/rz-go/tree/master/examples) folder
 
 ## Benchmarks
 
+See [Logbench](http://hackemist.com/logbench/)
+
+or
+
 ```
 $ make benchmarks
-cd benchmarks && ./run.sh
-goos: linux
-goarch: amd64
-pkg: github.com/bloom42/rz-go/benchmarks
-BenchmarkDisabledWithoutFields/sirupsen/logrus-4         	100000000	        17.2 ns/op	      16 B/op	       1 allocs/op
-BenchmarkDisabledWithoutFields/uber-go/zap-4             	30000000	        37.6 ns/op	       0 B/op	       0 allocs/op
-BenchmarkDisabledWithoutFields/rs/zerolog-4              	1000000000	         2.35 ns/op	       0 B/op	       0 allocs/op
-BenchmarkDisabledWithoutFields/bloom42/rz-go-4           	2000000000	         1.67 ns/op	       0 B/op	       0 allocs/op
-BenchmarkWithoutFields/sirupsen/logrus-4                 	  300000	      4521 ns/op	    1126 B/op	      24 allocs/op
-BenchmarkWithoutFields/uber-go/zap-4                     	 5000000	       322 ns/op	       0 B/op	       0 allocs/op
-BenchmarkWithoutFields/rs/zerolog-4                      	10000000	       118 ns/op	       0 B/op	       0 allocs/op
-BenchmarkWithoutFields/bloom42/rz-go-4                   	10000000	       113 ns/op	       0 B/op	       0 allocs/op
-Benchmark10Context/sirupsen/logrus-4                     	  100000	     18139 ns/op	    3246 B/op	      50 allocs/op
-Benchmark10Context/uber-go/zap-4                         	 5000000	       331 ns/op	       0 B/op	       0 allocs/op
-Benchmark10Context/rs/zerolog-4                          	10000000	       133 ns/op	       0 B/op	       0 allocs/op
-Benchmark10Context/bloom42/rz-go-4                       	10000000	       124 ns/op	       0 B/op	       0 allocs/op
-Benchmark10Fields/sirupsen/logrus-4                      	  100000	     21705 ns/op	    4025 B/op	      54 allocs/op
-Benchmark10Fields/uber-go/zap-4                          	  500000	      2400 ns/op	      80 B/op	       1 allocs/op
-Benchmark10Fields/rs/zerolog-4                           	 1000000	      1914 ns/op	     640 B/op	       6 allocs/op
-Benchmark10Fields/bloom42/rz-go-4                        	 1000000	      1794 ns/op	     512 B/op	       3 allocs/op
-Benchmark10Fields10Context/sirupsen/logrus-4             	  100000	     23873 ns/op	    4550 B/op	      53 allocs/op
-Benchmark10Fields10Context/uber-go/zap-4                 	  500000	      2381 ns/op	      80 B/op	       1 allocs/op
-Benchmark10Fields10Context/rs/zerolog-4                  	 1000000	      1914 ns/op	     640 B/op	       6 allocs/op
-Benchmark10Fields10Context/bloom42/rz-go-4               	 1000000	      1807 ns/op	     512 B/op	       3 allocs/op
-PASS
-ok  	github.com/bloom42/rz-go/benchmarks	36.783s
 ```
 
 ## Versions
