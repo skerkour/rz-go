@@ -56,6 +56,8 @@ func FormatterLogfmt() LogFormatter {
 
 		}
 
+		ret.WriteByte('\n')
+
 		return ret.Bytes(), nil
 	}
 }

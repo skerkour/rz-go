@@ -78,6 +78,8 @@ func FormatterCLI() LogFormatter {
 
 		}
 
+		ret.WriteByte('\n')
+
 		return ret.Bytes(), nil
 	}
 }
