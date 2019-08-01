@@ -25,7 +25,7 @@ func With(options ...rz.LoggerOption) rz.Logger {
 }
 
 // LogWithLevel logs a new message with the given level.
-func LogWithLevel(level LogLevel, message string, fields ...rz.Field) {
+func LogWithLevel(level rz.LogLevel, message string, fields ...rz.Field) {
 	logger.LogWithLevel(level, message, fields...)
 }
 
