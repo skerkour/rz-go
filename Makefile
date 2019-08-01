@@ -5,7 +5,7 @@ VERSION := $(shell cat version.go| grep "\sVersion =" | cut -d '"' -f2)
 all: test build
 
 test:
-	go tool vet -all -shadowstrict .
+	go vet -all .
 	go test -v -race ./...
 
 bench:
