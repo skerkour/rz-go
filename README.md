@@ -178,8 +178,6 @@ or
 $ make benchmarks
 ```
 
-Note that data may be biased, see http://hackemist.com/logbench/ for more details
-
 ## Versions
 
 For v2 (current) see the [master branch](https://github.com/z0mbie42/rz-go).
