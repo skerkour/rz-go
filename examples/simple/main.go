@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/z0mbie42/rz-go/v2"
-	"github.com/z0mbie42/rz-go/v2/log"
+	"gitlab.com/z0mbie42/rz-go/v2"
+	"gitlab.com/z0mbie42/rz-go/v2/log"
 )
 
 func main() {

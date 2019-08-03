@@ -1,1 +1,1 @@
-module github.com/z0mbie42/rz-go/v2
+module gitlab.com/z0mbie42/rz-go/v2

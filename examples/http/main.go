@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/z0mbie42/rz-go/v2"
-	"github.com/z0mbie42/rz-go/v2/log"
-	"github.com/z0mbie42/rz-go/v2/rzhttp"
+	"gitlab.com/z0mbie42/rz-go/v2"
+	"gitlab.com/z0mbie42/rz-go/v2/log"
+	"gitlab.com/z0mbie42/rz-go/v2/rzhttp"
 	"github.com/go-chi/chi"
 	"github.com/google/uuid"
 )
