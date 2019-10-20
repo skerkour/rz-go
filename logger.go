@@ -35,7 +35,7 @@ type Logger struct {
 	timeFieldFormat      string
 	formatter            LogFormatter
 	timestampFunc        func() time.Time
-	contextMutext        *sync.Mutex
+	contextMutex         *sync.Mutex
 	encoder              Encoder
 }
 
@@ -60,7 +60,7 @@ func New(options ...LoggerOption) Logger {
 		errorStackFieldName:  DefaultErrorStackFieldName,
 		timeFieldFormat:      DefaultTimeFieldFormat,
 		timestampFunc:        DefaultTimestampFunc,
-		contextMutext:        &sync.Mutex{},
+		contextMutex:         &sync.Mutex{},
 		encoder:              json.Encoder{},
 	}
 	return logger.With(options...)
@@ -75,7 +75,7 @@ func Nop() Logger {
 func (l Logger) With(options ...LoggerOption) Logger {
 	oldContext := l.context
 	l.context = make([]byte, 0, 500)
-	l.contextMutext = &sync.Mutex{}
+	l.contextMutex = &sync.Mutex{}
 	if oldContext != nil {
 		l.context = append(l.context, oldContext...)
 	}
@@ -259,7 +259,7 @@ func (l *Logger) Append(fields ...Field) {
 	for i := range fields {
 		fields[i](e)
 	}
-	l.contextMutext.Lock()
+	l.contextMutex.Lock()
 	if e.stack != l.stack {
 		l.stack = e.stack
 	}
@@ -272,7 +272,7 @@ func (l *Logger) Append(fields ...Field) {
 	if e.buf != nil {
 		l.context = enc.AppendObjectData(l.context, e.buf)
 	}
-	l.contextMutext.Unlock()
+	l.contextMutex.Unlock()
 }
 
 func copyInternalLoggerFieldsToEvent(l *Logger, e *Event) {
