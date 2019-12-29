@@ -1,7 +1,7 @@
 package rz_test
 
 import (
-	"gitlab.com/z0mbie42/rz-go/v2"
+	"gitlab.com/bloom42/libs/rz-go/v2"
 )
 
 func ExampleNew() {

@@ -4,7 +4,7 @@ package rz
 // JSON encoded byte stream.
 
 import (
-	"gitlab.com/z0mbie42/rz-go/v2/internal/json"
+	"gitlab.com/bloom42/libs/rz-go/v2/internal/json"
 )
 
 var (

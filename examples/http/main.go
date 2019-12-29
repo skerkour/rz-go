@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"os"
 
-	"gitlab.com/z0mbie42/rz-go/v2"
-	"gitlab.com/z0mbie42/rz-go/v2/log"
-	"gitlab.com/z0mbie42/rz-go/v2/rzhttp"
 	"github.com/go-chi/chi"
 	"github.com/google/uuid"
+	"gitlab.com/bloom42/libs/rz-go/v2"
+	"gitlab.com/bloom42/libs/rz-go/v2/log"
+	"gitlab.com/bloom42/libs/rz-go/v2/rzhttp"
 )
 
 func main() {
@@ -22,7 +22,7 @@ func main() {
 
 	log.SetLogger(log.With(
 		rz.Fields(
-			rz.Caller(true),
+			// rz.Caller(true),
 			rz.String("service", "api"), rz.String("host", "abcd.local"), rz.String("environment", env),
 		),
 	))
@@ -71,7 +71,7 @@ func injectLoggerMiddleware(logger rz.Logger) func(next http.Handler) http.Handl
 }
 
 func helloWorld(w http.ResponseWriter, r *http.Request) {
-	logger := rz.FromCtx(r.Context())
-	logger.Info("hello from GET /")
+	// logger := rz.FromCtx(r.Context())
+	// logger.Info("hello from GET /")
 	fmt.Fprintf(w, "Hello, you've requested: %s\n", r.URL.Path)
 }

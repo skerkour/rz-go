@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"gitlab.com/z0mbie42/rz-go/v2/internal/json"
+	"gitlab.com/bloom42/libs/rz-go/v2/internal/json"
 )
 
 // A Logger represents an active logging object that generates lines

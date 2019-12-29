@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"gitlab.com/z0mbie42/rz-go/v2"
+	"gitlab.com/bloom42/libs/rz-go/v2"
 	"github.com/rs/zerolog"
 	"github.com/sirupsen/logrus"
 	"go.uber.org/zap"
