@@ -2,7 +2,7 @@
 package log
 
 import (
-	"gitlab.com/bloom42/libs/rz-go/v2"
+	"gitlab.com/bloom42/libs/rz-go"
 )
 
 // logger is the global logger.

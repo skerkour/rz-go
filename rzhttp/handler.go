@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"gitlab.com/bloom42/libs/rz-go/v2"
+	"gitlab.com/bloom42/libs/rz-go"
 )
 
 // Key to use when setting the request ID.

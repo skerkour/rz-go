@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"gitlab.com/bloom42/libs/rz-go/v2"
-	"gitlab.com/bloom42/libs/rz-go/v2/log"
+	"gitlab.com/bloom42/libs/rz-go"
+	"gitlab.com/bloom42/libs/rz-go/log"
 )
 
 func main() {
