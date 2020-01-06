@@ -9,7 +9,7 @@ stages:
 ## Test
 ####################################################################################################
 
-build:
+test:
   image: $GO_IMAGE
   stage: test
   script:
@@ -24,4 +24,3 @@ build:
   stage: build
   script:
     - make build
-    - make gzip
