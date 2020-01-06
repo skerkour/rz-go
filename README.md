@@ -32,9 +32,8 @@ Pretty logging on the console is made possible using the provided (but inefficie
 4. [HTTP Handler](#http-handler)
 5. [Examples](#examples)
 6. [Benchmarks](#benchmarks)
-7. [Versions](#versions)
-8. [Contributing](#contributing)
-9. [License](#license)
+7. [Contributing](#contributing)
+8. [License](#license)
 
 -------------------
 
@@ -177,13 +176,6 @@ or
 ```
 $ make benchmarks
 ```
-
-## Versions
-
-For v2 (current) see the [master branch](https://gitlab.com/bloom42/libs/rz-go).
-
-For v1 see the [v1 branch](https://gitlab.com/bloom42/libs/rz-go/tree/v1).
-
 
 ## Contributing
 
