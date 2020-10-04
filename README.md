@@ -1,14 +1,14 @@
 <p align="center">
   <h3 align="center">rz</h3>
-  <p align="center">RipZap - The fastest structured, leveled JSON logger for Go ⚡️. Dependency free.</p>
+  <p align="center">RipZap - Fast and 0 allocs leveled JSON logger for Go ⚡️. Dependency free. </p>
 </p>
 
 --------
 
-[Make logging great again](https://kerkour.com/post/logging/)
+[Make logging great again](https://fatalentropy.com/logging/)
 
-[![GoDoc](https://godoc.org/gitlab.com/bloom42/libs/rz-go?status.svg)](https://godoc.org/gitlab.com/bloom42/libs/rz-go)
-[![GitHub release](https://img.shields.io/github/release/z0mbie42/rz-go.svg)](https://gitlab.com/bloom42/libs/rz-go/releases)
+[![GoDoc](https://godoc.org/github.com/bloom42/libs/rz-go?status.svg)](https://godoc.org/github.com/bloom42/libs/rz-go)
+[![GitHub release](https://img.shields.io/github/release/bloom42/rz-go.svg)](https://github.com/bloom42/libs/rz-go/releases)
 <!-- [![Coverage](http://gocover.io/_badge/gitlab.com/bloom42/libs/rz-go)](http://gocover.io/gitlab.com/bloom42/libs/rz-go) -->
 
 ![Console logging](docs/example_screenshot.png)
@@ -24,6 +24,13 @@ API and even better [performance](#benchmarks).
 To keep the code base and the API simple, ripzap focuses on efficient structured logging only.
 Pretty logging on the console is made possible using the provided (but inefficient)
 [`Formatter`s](https://godoc.org/gitlab.com/bloom42/libs/rz-go#LogFormatter).
+
+
+# Project status
+
+Rz-go is stable and the API is fixed. The project is considered as **done** and will not accept contributions other than for bug fixes.
+
+Forks are welcome if you want to more features.
 
 
 1. [Quickstart](#quickstart)
