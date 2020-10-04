@@ -7,8 +7,8 @@
 
 [Make logging great again](https://fatalentropy.com/logging/)
 
-[![GoDoc](https://godoc.org/github.com/bloom42/libs/rz-go?status.svg)](https://godoc.org/github.com/bloom42/libs/rz-go)
-[![GitHub release](https://img.shields.io/github/release/bloom42/rz-go.svg)](https://github.com/bloom42/libs/rz-go/releases)
+[![GoDoc](https://godoc.org/github.com/bloom42/rz-go?status.svg)](https://godoc.org/github.com/bloom42/rz-go)
+[![GitHub release](https://img.shields.io/github/release/bloom42/rz-go.svg)](https://github.com/bloom42/rz-go/releases)
 <!-- [![Coverage](http://gocover.io/_badge/gitlab.com/bloom42/libs/rz-go)](http://gocover.io/gitlab.com/bloom42/libs/rz-go) -->
 
 ![Console logging](docs/example_screenshot.png)
