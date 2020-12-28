@@ -8,9 +8,9 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/google/uuid"
-	"gitlab.com/bloom42/libs/rz-go"
-	"gitlab.com/bloom42/libs/rz-go/log"
-	"gitlab.com/bloom42/libs/rz-go/rzhttp"
+	"github.com/bloom42/rz-go"
+	"github.com/bloom42/rz-go/log"
+	"github.com/bloom42/rz-go/rzhttp"
 )
 
 func main() {
