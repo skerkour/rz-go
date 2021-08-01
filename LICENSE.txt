@@ -1,6 +1,6 @@
-Copyright for portions of project rz-go are
+Copyright for portions of project rz are
 held by Olivier Poitrey, 2017 as part of project zerolog (see LICENSE_MIT.txt).
-All other copyright for project rz-go are held by Sylvain Kerkour, 2018-2019.
+All other copyright for project rz are held by Sylvain Kerkour, 2018-2019.
 
 
 ----------------------------------------------------------------------------------------------------

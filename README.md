@@ -7,8 +7,8 @@
 
 [Make logging great again](https://kerkour.com/blog/logging/)
 
-[![GoDoc](https://godoc.org/github.com/bloom42/libs/rz-go?status.svg)](https://godoc.org/github.com/bloom42/libs/rz-go)
-[![GitHub release](https://img.shields.io/github/release/bloom42/rz-go.svg)](https://github.com/bloom42/libs/rz-go/releases)
+[![Go Reference](https://pkg.go.dev/badge/github.com/skerkour/rz.svg)](https://pkg.go.dev/github.com/skerkour/rz)
+<!-- [![GitHub release](https://img.shields.io/github/release/skerkour/rz.svg)](https://github.com/skerkour/libs/rz/releases) -->
 <!-- [![Coverage](http://gocover.io/_badge/github.com/skerkour/rz)](http://gocover.io/github.com/skerkour/rz) -->
 
 ![Console logging](docs/example_screenshot.png)
@@ -28,7 +28,7 @@ Pretty logging on the console is made possible using the provided (but inefficie
 
 # Project status
 
-Rz-go is stable and the API is fixed. The project is considered as **done** and will not accept contributions other than for bug fixes.
+rz is stable and the API is fixed. The project is considered as **done** and will not accept contributions other than for bug fixes.
 
 Forks are welcome if you want to more features.
 
@@ -165,7 +165,7 @@ var (
 
 ## HTTP Handler
 
-See the [z0mbie42/rz-go/rzhttp](https://godoc.org/github.com/skerkour/rz/rzhttp) package or the
+See the [skerkour/rz/rzhttp](https://godoc.org/github.com/skerkour/rz/rzhttp) package or the
 [example here](https://github.com/skerkour/rz/tree/master/examples/http).
 
 

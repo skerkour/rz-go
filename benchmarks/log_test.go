@@ -202,7 +202,7 @@ func BenchmarkDisabledWithoutFields(b *testing.B) {
 			}
 		})
 	})
-	b.Run("z0mbie42/rz-go", func(b *testing.B) {
+	b.Run("skerkour/rz", func(b *testing.B) {
 		logger := newDisabledRz()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
@@ -242,7 +242,7 @@ func BenchmarkWithoutFields(b *testing.B) {
 			}
 		})
 	})
-	b.Run("z0mbie42/rz-go", func(b *testing.B) {
+	b.Run("skerkour/rz", func(b *testing.B) {
 		logger := newRz()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
@@ -285,7 +285,7 @@ func Benchmark10Context(b *testing.B) {
 			}
 		})
 	})
-	b.Run("z0mbie42/rz-go", func(b *testing.B) {
+	b.Run("skerkour/rz", func(b *testing.B) {
 		fields := rz10Fields()
 		logger := newRz().With(rz.Fields(fields...))
 		b.ResetTimer()
@@ -328,7 +328,7 @@ func Benchmark10Fields(b *testing.B) {
 			}
 		})
 	})
-	b.Run("z0mbie42/rz-go", func(b *testing.B) {
+	b.Run("skerkour/rz", func(b *testing.B) {
 		fields := rz10Fields()
 		logger := newRz()
 		b.ResetTimer()
@@ -372,7 +372,7 @@ func Benchmark10Fields10Context(b *testing.B) {
 			}
 		})
 	})
-	b.Run("z0mbie42/rz-go", func(b *testing.B) {
+	b.Run("skerkour/rz", func(b *testing.B) {
 		fields := rz10Fields()
 		logger := newRz().With(rz.Fields(fields...))
 		b.ResetTimer()
