@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/bloom42/rz-go"
-	"github.com/bloom42/rz-go/log"
+	"github.com/skerkour/rz"
+	"github.com/skerkour/rz/log"
 )
 
 func main() {

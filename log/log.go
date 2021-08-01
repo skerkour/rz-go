@@ -2,7 +2,7 @@
 package log
 
 import (
-	"github.com/bloom42/rz-go"
+	"github.com/skerkour/rz"
 )
 
 // logger is the global logger.

@@ -8,9 +8,9 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/google/uuid"
-	"github.com/bloom42/rz-go"
-	"github.com/bloom42/rz-go/log"
-	"github.com/bloom42/rz-go/rzhttp"
+	"github.com/skerkour/rz"
+	"github.com/skerkour/rz/log"
+	"github.com/skerkour/rz/rzhttp"
 )
 
 func main() {

@@ -1,3 +1,3 @@
-module github.com/bloom42/rz-go
+module github.com/skerkour/rz
 
-go 1.13
+go 1.16

@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bloom42/rz-go"
 	"github.com/rs/zerolog"
 	"github.com/sirupsen/logrus"
+	"github.com/skerkour/rz"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"go.uber.org/zap/zaptest"

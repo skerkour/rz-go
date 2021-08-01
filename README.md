@@ -9,7 +9,7 @@
 
 [![GoDoc](https://godoc.org/github.com/bloom42/libs/rz-go?status.svg)](https://godoc.org/github.com/bloom42/libs/rz-go)
 [![GitHub release](https://img.shields.io/github/release/bloom42/rz-go.svg)](https://github.com/bloom42/libs/rz-go/releases)
-<!-- [![Coverage](http://gocover.io/_badge/github.com/bloom42/rz-go)](http://gocover.io/github.com/bloom42/rz-go) -->
+<!-- [![Coverage](http://gocover.io/_badge/github.com/skerkour/rz)](http://gocover.io/github.com/skerkour/rz) -->
 
 ![Console logging](docs/example_screenshot.png)
 
@@ -23,7 +23,7 @@ API and even better [performance](#benchmarks).
 
 To keep the code base and the API simple, ripzap focuses on efficient structured logging only.
 Pretty logging on the console is made possible using the provided (but inefficient)
-[`Formatter`s](https://godoc.org/github.com/bloom42/rz-go#LogFormatter).
+[`Formatter`s](https://godoc.org/github.com/skerkour/rz#LogFormatter).
 
 
 # Project status
@@ -55,8 +55,8 @@ package main
 import (
 	"os"
 
-	"github.com/bloom42/rz-go"
-	"github.com/bloom42/rz-go/log"
+	"github.com/skerkour/rz"
+	"github.com/skerkour/rz/log"
 )
 
 func main() {
@@ -165,13 +165,13 @@ var (
 
 ## HTTP Handler
 
-See the [z0mbie42/rz-go/rzhttp](https://godoc.org/github.com/bloom42/rz-go/rzhttp) package or the
-[example here](https://github.com/bloom42/rz-go/tree/master/examples/http).
+See the [z0mbie42/rz-go/rzhttp](https://godoc.org/github.com/skerkour/rz/rzhttp) package or the
+[example here](https://github.com/skerkour/rz/tree/master/examples/http).
 
 
 ## Examples
 
-See the [examples](https://github.com/bloom42/rz-go/tree/master/examples) folder.
+See the [examples](https://github.com/skerkour/rz/tree/master/examples) folder.
 
 
 ## Benchmarks
