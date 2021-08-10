@@ -191,6 +191,6 @@ See [https://bloom.sh/contribute](https://bloom.sh/contribute)
 
 ## License
 
-See `LICENSE.txt` and https://bloom.sh/licensing
+`Apache 2.0`. See `LICENSE.txt`
 
 From an original work by [rs](https://github.com/rs): [zerolog](https://github.com/rs/zerolog) - commit aa55558e4cb2e8f05cd079342d430f77e946d00a
