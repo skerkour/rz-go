@@ -68,7 +68,7 @@ func Log(message string, fields ...rz.Field) {
 }
 
 // Append the fields to the internal logger's context.
-// It does not create a noew copy of the logger and rely on a mutex to enable thread safety,
+// It does not create a new copy of the logger and rely on a mutex to enable thread safety,
 // so `Config(With(fields...))` often is preferable.
 func Append(fields ...rz.Field) {
 	logger.Append(fields...)
