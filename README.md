@@ -6,18 +6,10 @@
 
 
 
-# DEPRECATED. Use stdlib's slog instead
+# ⚠️  DEPRECATED. Use stdlib's slog instead ⚠️
 
 
 --------
-
-[Make logging great again](https://kerkour.com/blog/logging/)
-
-[![Go Reference](https://pkg.go.dev/badge/github.com/skerkour/rz.svg)](https://pkg.go.dev/github.com/skerkour/rz)
-<!-- [![GitHub release](https://img.shields.io/github/release/skerkour/rz.svg)](https://github.com/skerkour/libs/rz/releases) -->
-<!-- [![Coverage](http://gocover.io/_badge/github.com/skerkour/rz)](http://gocover.io/github.com/skerkour/rz) -->
-
-![Console logging](docs/example_screenshot.png)
 
 The rz package provides a fast and simple logger dedicated to JSON output avoiding allocations and reflection..
 
