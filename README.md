@@ -3,6 +3,12 @@
   <p align="center">RipZap - Fast and 0 allocs leveled JSON logger for Go ⚡️. Dependency free. </p>
 </p>
 
+
+
+
+# DEPRECATED. Use stdlib's slog instead
+
+
 --------
 
 [Make logging great again](https://kerkour.com/blog/logging/)
